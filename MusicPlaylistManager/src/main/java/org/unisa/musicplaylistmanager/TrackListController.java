@@ -17,6 +17,6 @@ public class TrackListController
     @FXML
     public void azione1(ActionEvent actionEvent) {
 
-        System.out.println("azione1");
+        System.out.println("azione_prova");
     }
 }
