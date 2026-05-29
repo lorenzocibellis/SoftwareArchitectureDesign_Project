@@ -33,12 +33,12 @@ public class Track {
         if (isBlank(title) || isBlank(author) || isBlank(genre) || year == null) {
             throw new IllegalArgumentException("I campi non possono essere vuoti.");
         }
-        if (year.getValue() > 2026) {
-            throw new IllegalArgumentException("L'anno non può essere superiore al 2026.");
+        if (year.getValue() > Year.now().getValue()) {
+            throw new IllegalArgumentException("L'anno non può essere superiore all'anno attuale.");
         }
     }
     
-    // funzione per verificare se i campi inseriti dall'utente sono vuoti
+    //funzione per verificare se i campi inseriti dall'utente sono vuoti
     private static boolean isBlank(String s) {
         return s == null || s.trim().isEmpty();
     }
