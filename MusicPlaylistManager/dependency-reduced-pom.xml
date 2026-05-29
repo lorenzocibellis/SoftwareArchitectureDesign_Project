@@ -23,7 +23,7 @@
           <execution>
             <id>default-cli</id>
             <configuration>
-              <mainClass>org.unisa.musicplaylistmanagerorg.unisa.musicplaylistmanager.HelloApplication</mainClass>
+              <mainClass>org.unisa.musicplaylistmanager.HelloApplication</mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
               <jlinkImageName>app</jlinkImageName>
