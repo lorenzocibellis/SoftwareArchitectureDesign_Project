@@ -7,10 +7,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class MusicPlaylistManagerApp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("TrackListView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MusicPlaylistManagerApp.class.getResource("TrackListView.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 500, 500);
         stage.setTitle("Music Playlist Manager");
         stage.setScene(scene);
