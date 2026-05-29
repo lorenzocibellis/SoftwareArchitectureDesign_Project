@@ -1,6 +1,7 @@
 package org.unisa.musicplaylistmanager;
 
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
@@ -34,6 +35,8 @@ public class TrackController {
     @FXML
     private RadioButton explicitContentRadio;
 
+    private TrackList trackList;
+    private ObservableList observableList;
 
     //METODI
 
@@ -60,7 +63,18 @@ public class TrackController {
         alert.showAndWait();
     }
 
+    public void setTrackList(TrackList tl){
+        trackList = tl;
+    }
 
+    public void setObservable(ObservableList ol){
+        this.observableList = ol;
+    }
+
+    private void add(Track t){
+        trackList.addTrack(t);
+        observableList.add(t);
+    }
 
     @FXML
     public void goBack(ActionEvent event) throws IOException {
@@ -90,15 +104,14 @@ public class TrackController {
                     newReleaseRadio.isSelected()
             );
 
-            System.out.println("Track valida: " + track.getTitle());
-
+            System.out.println("Track valida: " + track);
+            this.add(track);
 
         } catch (IllegalArgumentException e) {
             showError(e.getMessage());
         }
 
 
-        // crea traccia
 
     }
 }

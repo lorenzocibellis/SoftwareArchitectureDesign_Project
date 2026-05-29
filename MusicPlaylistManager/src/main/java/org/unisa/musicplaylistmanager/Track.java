@@ -94,4 +94,10 @@ public class Track {
     public int hashCode(){
         return Objects.hash(this.getTitle(), this.getAuthor(), this.getYear());
     }
+
+    //Override metodo di print
+    @Override
+    public String toString(){
+        return this.getTitle() + " | " + this.getAuthor() + " | " + this.getYear();
+    }
 }

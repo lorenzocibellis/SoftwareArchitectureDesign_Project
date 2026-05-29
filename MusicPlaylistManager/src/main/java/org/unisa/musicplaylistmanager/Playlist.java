@@ -1,22 +1,21 @@
 package org.unisa.musicplaylistmanager;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
 
 public class Playlist {
 
     private String name;
-    private LinkedHashSet<Track> tracks;
+    private ArrayList<Track> tracks;
 
 
     public Playlist(String name) {
         this.name = name;
-        this.tracks = new LinkedHashSet<Track>();
+        this.tracks = new ArrayList<Track>();
     }
 
 
         // metodi getter
-    public LinkedHashSet<Track> getTracks() {
+    public ArrayList<Track> getTracks() {
         return this.tracks;
     }
 

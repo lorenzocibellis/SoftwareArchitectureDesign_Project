@@ -10,7 +10,7 @@ public class Player {
     private Iterator it;
     private Track currentTrack;
     private PlayerState defaultState;
-    private PlayerState currentState;
+//    private PlayerState currentState;
   
     // costruttore della classe Player
     public Player(PlayerState defaultState, Playlist playlist) {
