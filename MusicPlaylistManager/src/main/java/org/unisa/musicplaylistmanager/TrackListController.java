@@ -20,7 +20,7 @@ public class TrackListController
 
 
 
-    public void openTrackInfo(ActionEvent actionEvent) throws IOException {
+    public void addNewTrack(ActionEvent actionEvent) throws IOException {
 
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
