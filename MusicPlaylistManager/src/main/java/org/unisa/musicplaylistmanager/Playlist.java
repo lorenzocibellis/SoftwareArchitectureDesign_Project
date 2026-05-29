@@ -1,30 +1,31 @@
 package org.unisa.musicplaylistmanager;
 
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class Playlist {
 
     private String name;
-    private ArrayList<Track> tracks;
+    private LinkedHashSet<Track> tracks;
 
 
     public Playlist(String name) {
         this.name = name;
-        this.tracks = new ArrayList<>();
+        this.tracks = new LinkedHashSet<Track>();
     }
 
 
         // metodi getter
-    public ArrayList<Track> getTracks() {
-        return tracks;
+    public LinkedHashSet<Track> getTracks() {
+        return this.tracks;
     }
 
     public String getName() {
         return name;
     }
 
-    public ArrayList<Track> getTrack() {
-        return tracks;
+    public Track getTrack() {
+        throw new UnsupportedOperationException();
     }
 
 
@@ -48,21 +49,18 @@ public class Playlist {
 
     // restituisce l'indice di una traccia nella lista
     public int getIndex(Track track){
-
-        return tracks.indexOf(track);
-
+        throw new UnsupportedOperationException();
     }
 
     // restituisce la dimensione della lista
     public int getSize(){
-
         return tracks.size();
     }
 
 
 
     public void undo(){
-        return;
+        throw new UnsupportedOperationException();
     }
 
 }
