@@ -36,6 +36,9 @@ public class Playlist {
 
     // aggiunge una traccia alla lista
     public void addTrack(Track track) {
+        for(int i = 0; i < tracks.size(); i++){
+            if (tracks.get(i).equals(track)) throw new IllegalArgumentException("La traccia esiste già");
+        }
         tracks.add(track);
     }
 

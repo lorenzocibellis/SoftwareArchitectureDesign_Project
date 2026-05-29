@@ -106,11 +106,12 @@ public class TrackController {
 
             System.out.println("Track valida: " + track);
             this.add(track);
-
+            goBack(actionEvent);
         } catch (IllegalArgumentException e) {
             showError(e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-
 
 
     }
