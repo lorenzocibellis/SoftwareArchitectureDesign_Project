@@ -19,20 +19,20 @@ public class TrackListController
     }
 
 
-    @Deprecated
-    public void azione1(ActionEvent actionEvent) throws IOException {
 
-        // 1. Get the Stage from the button that triggered the event
+    public void openTrackInfo(ActionEvent actionEvent) throws IOException {
+
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
-        // 2. Load the new FXML file
-        Parent newRoot = FXMLLoader.load(getClass().getResource("TrackView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("TrackView.fxml"));
+        Parent root = loader.load();
 
-        // 3. Create a new Scene and set it to the stage
-        Scene newScene = new Scene(newRoot);
-        stage.setScene(newScene);
+        TrackController controller = loader.getController();
 
-        // 4. Keep the stage visible
+        controller.setBack("TrackListView.fxml");
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
         stage.show();
     }
 }
