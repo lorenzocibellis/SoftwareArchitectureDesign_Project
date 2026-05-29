@@ -13,7 +13,7 @@ public class TrackController
     @FXML
     private RadioButton contenutiEspliciti;
     @FXML
-    private TextField traccia;
+    private TextField titolo;
     @FXML
     private TextField genere;
     @FXML

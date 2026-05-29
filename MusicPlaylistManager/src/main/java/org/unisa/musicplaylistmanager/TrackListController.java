@@ -35,4 +35,5 @@ public class TrackListController
         // 4. Keep the stage visible
         stage.show();
     }
+    
 }
