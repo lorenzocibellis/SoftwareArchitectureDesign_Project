@@ -11,6 +11,6 @@ public abstract class BaseObserverPlaylist {
     }
 
     public void update(){
-        return
+        throw new UnsupportedOperationException();
     }
 }

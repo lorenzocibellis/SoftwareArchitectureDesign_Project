@@ -12,15 +12,15 @@ public abstract class BaseSubjectTrackList {
         playlistObserver = new ArrayList<BaseObserverPlaylist>();
     }
 
-    public void attach(BaseObserverPlaylist){
-        return;
+    public void attach(BaseObserverPlaylist observer){
+        throw new UnsupportedOperationException();
     }
 
-    public void detach(BaseObserverPlaylist){
-        return;
+    public void detach(BaseObserverPlaylist observer){
+        throw new UnsupportedOperationException();
     }
 
     public void notify(){
-        return
+        throw new UnsupportedOperationException();
     }
 }
