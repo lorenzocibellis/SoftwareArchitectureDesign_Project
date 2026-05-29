@@ -29,7 +29,6 @@ public class Track {
     }
 
     //Metodi getter
-
     public String getTitle() {
         return title;
     }
@@ -63,7 +62,6 @@ public class Track {
     }
 
     //Metodi setter
-
     public void setTitle(String title) {
         this.title = title;
     }
