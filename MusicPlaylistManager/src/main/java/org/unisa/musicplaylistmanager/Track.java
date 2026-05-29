@@ -14,6 +14,7 @@ public class Track {
     private boolean explicit;
     private boolean newRelease;
 
+    //METODI
     //Costruttore
     public Track(String title, String author, Year year, String genre, int duration, boolean favourite,
                  boolean explicit, boolean newRelease){
