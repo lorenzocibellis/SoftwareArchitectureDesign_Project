@@ -22,19 +22,23 @@ public class TrackListController
 
     public void addNewTrack(ActionEvent actionEvent) throws IOException {
 
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("TrackView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("TrackView.fxml"));
 
-    Parent root = loader.load();
+        Parent root = loader.load();
 
-    Stage stage = new Stage();
+        Stage stage = new Stage();
 
-    stage.setTitle("Add Track");
+        stage.setTitle("Add track");
 
-    Scene scene = new Scene(root);
 
-    stage.setScene(scene);
+        Scene scene = new Scene(root);
 
-    stage.show();
-}
-    
+        stage.setScene(scene);
+
+        stage.show();
+
+
+
+    }
+
 }
