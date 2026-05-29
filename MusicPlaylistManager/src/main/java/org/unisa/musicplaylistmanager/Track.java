@@ -33,11 +33,16 @@ public class Track {
         if (isBlank(title) || isBlank(author) || isBlank(genre) || year == null) {
             throw new IllegalArgumentException("I campi non possono essere vuoti.");
         }
-        if (year.getValue() > Year.now().getValue()) {
+        if (validateYear(year)) {
             throw new IllegalArgumentException("L'anno non può essere superiore all'anno attuale.");
         }
     }
-    
+
+    //verifica se l'anno è stato inserito e se è valido
+    private static boolean validateYear(Year y){
+        return y != null && y.getValue() > Year.now().getValue();
+    }
+
     //funzione per verificare se i campi inseriti dall'utente sono vuoti
     private static boolean isBlank(String s) {
         return s == null || s.trim().isEmpty();
@@ -67,8 +72,7 @@ public class Track {
         this.genre = genre;
     }
     public void setYear(Year year) {
-        if (year == null) throw new IllegalArgumentException("L'anno non può essere nullo.");
-        if (year.getValue() > 2026) throw new IllegalArgumentException("L'anno non può essere superiore al 2026.");
+        if (validateYear(year)) throw new IllegalArgumentException("L'anno è obbligatorio e non può essere superiore all'anno corrente.");
         this.year = year;
     }
     public void setSeconds(int seconds)         { this.seconds = seconds; }
