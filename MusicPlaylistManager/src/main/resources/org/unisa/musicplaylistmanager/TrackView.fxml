@@ -6,23 +6,23 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NOME_CONTROLLER">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.TrackController">
    <children>
       <HBox prefHeight="400.0" prefWidth="600.0">
          <children>
             <VBox prefHeight="400.0" prefWidth="146.0">
                <children>
-                  <TextField editable="false" prefHeight="26.0" prefWidth="249.0" text="Traccia: " />
-                  <TextField editable="false" text="Autore:" />
-                  <TextField editable="false" text="Anno pubblicazione" />
-                  <TextField editable="false" text="genere" />
+                  <TextField fx:id="traccia" editable="false" prefHeight="26.0" prefWidth="249.0" text="Traccia: " />
+                  <TextField fx:id="autore" editable="false" text="Autore:" />
+                  <TextField fx:id="anno" editable="false" text="Anno pubblicazione" />
+                  <TextField fx:id="genere" editable="false" text="genere" />
                   <HBox prefHeight="19.0" prefWidth="296.0">
                      <children>
                         <RadioButton mnemonicParsing="false" prefHeight="18.0" prefWidth="151.0" text="Preferita" />
                      </children>
                   </HBox>
-                  <RadioButton mnemonicParsing="false" prefHeight="18.0" prefWidth="297.0" text="Contenuti espliciti" />
-                  <RadioButton mnemonicParsing="false" prefHeight="18.0" prefWidth="151.0" text="New Release" />
+                  <RadioButton fx:id="contenutiEspliciti" mnemonicParsing="false" prefHeight="18.0" prefWidth="297.0" text="Contenuti espliciti" />
+                  <RadioButton fx:id="newRelease" mnemonicParsing="false" prefHeight="18.0" prefWidth="151.0" text="New Release" />
                </children>
             </VBox>
             <VBox prefHeight="210.0" prefWidth="296.0">
