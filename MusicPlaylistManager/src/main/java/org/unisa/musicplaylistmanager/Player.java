@@ -13,8 +13,9 @@ public class Player {
     private PlayerState currentState;
   
     // costruttore della classe Player
-    public Player(PlayerState defaultState, null) {
+    public Player(PlayerState defaultState, Playlist playlist) {
         this.defaultState = defaultState;
+        //this.it = playlist.createIterator();
     }
     
     // implementazione del metodo per cambiare lo stato di riproduzione
