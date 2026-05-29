@@ -1,60 +1,64 @@
 package org.unisa.musicplaylistmanager;
 
-
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.fxml.FXML;
-import javafx.stage.Stage;
-
-import java.io.IOException;
+import java.time.Year;
 
 public class TrackController {
 
+    @FXML private TextField anno;
+    @FXML private RadioButton newRelease;
+    @FXML private RadioButton contenutiEspliciti;
+    @FXML private TextField titolo;
+    @FXML private TextField genere;
+    @FXML private TextField autore;
+    @FXML private Button confirmButton;
 
     @FXML
-    private TextField anno;
-
-    @FXML
-    private RadioButton newRelease;
-
-    @FXML
-    private RadioButton contenutiEspliciti;
-
-    @FXML
-    private TextField titolo;
-
-    @FXML
-    private TextField genere;
-
-    @FXML
-    private TextField autore;
-
+    public void initialize() {}
     
-    //METODI
-
+    // funzione per confermare o meno la creazione di una nuova traccia
     @FXML
-    public void initialize() {
+    public void confirm() {
+        // Parsing dell'anno: se non è un numero intero a 4 cifre, segnaliamo l'input non valido
+        String yearText = anno.getText() == null ? "" : anno.getText().trim();
+        if (!yearText.matches("\\d{4}")) {
+            showError("L'anno deve contenere esattamente 4 cifre numeriche.");
+            return;
+        }
 
+        Year year = Year.of(Integer.parseInt(yearText));
 
-        anno.setTextFormatter(
-                new TextFormatter<>(change -> {
+        try {
+            Track track = new Track(
+                titolo.getText(),
+                autore.getText(),
+                year,
+                genere.getText(),
+                0,                                  
+                false,                            
+                contenutiEspliciti.isSelected(),
+                newRelease.isSelected()
+            );
 
-                    if (change.getControlNewText().matches("\\d{0,4}")) {
-                        return change;
-                    }
+            System.out.println("Track valida: " + track.getTitle());
+            
+            // QUI VA AGGIUNTA LA TRACK ALLA TRACKLIST
 
-                    return null;
-                })
-        );
+        } catch (IllegalArgumentException e) {
+            showError(e.getMessage());
+        }
     }
-
+    
+    // funzione per mostrare un emssaggio di errore con contenuto personalizzato
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Errore");
+        alert.setHeaderText("Input non valido");
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }
