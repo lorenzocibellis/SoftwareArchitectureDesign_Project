@@ -6,6 +6,6 @@ package org.unisa.musicplaylistmanager;
  */
 public interface PlayerState {
     
-    // dichiarazione del metodo per riprodurre la traccia
+    // dichiarazione del metodo per riprodurre o mettere in pausa la traccia
     public void execute();
 }
