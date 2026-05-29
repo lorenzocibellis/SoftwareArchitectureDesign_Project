@@ -12,10 +12,10 @@
          <children>
             <VBox prefHeight="400.0" prefWidth="146.0">
                <children>
-                  <TextField fx:id="titolo" editable="false" prefHeight="26.0" prefWidth="249.0" text="Titolo: " />
-                  <TextField fx:id="autore" editable="false" text="Autore:" />
-                  <TextField fx:id="anno" editable="false" text="Anno di Pubblicazione" />
-                  <TextField fx:id="genere" editable="false" text="Genere" />
+                  <TextField editable="false" prefHeight="26.0" prefWidth="249.0" text="Titolo: " />
+                  <TextField editable="false" text="Autore:" />
+                  <TextField editable="false" text="Anno di Pubblicazione" />
+                  <TextField editable="false" text="Genere" />
                   <HBox prefHeight="19.0" prefWidth="296.0">
                      <children>
                         <RadioButton mnemonicParsing="false" prefHeight="18.0" prefWidth="151.0" text="Preferita" />
@@ -27,10 +27,10 @@
             </VBox>
             <VBox prefHeight="210.0" prefWidth="296.0">
                <children>
-                  <TextField />
-                  <TextField />
-                  <TextField />
-                  <TextField />
+                  <TextField fx:id="titolo" />
+                  <TextField fx:id="autore" />
+                  <TextField fx:id="anno" />
+                  <TextField fx:id="genere" />
                </children>
             </VBox>
          </children>
