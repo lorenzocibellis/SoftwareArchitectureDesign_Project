@@ -13,15 +13,13 @@ import java.io.IOException;
 
 public class TrackListController
 {
-    @FXML
-    private Button button1;
 
     @FXML
     public void initialize() {
     }
 
 
-    @FXML
+    @Deprecated
     public void azione1(ActionEvent actionEvent) throws IOException {
 
         // 1. Get the Stage from the button that triggered the event
