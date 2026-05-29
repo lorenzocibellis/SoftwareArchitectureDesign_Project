@@ -1,6 +1,7 @@
 package org.unisa.musicplaylistmanager;
 
 import java.time.Year;
+import java.util.Objects;
 
 public class Track {
 
@@ -74,4 +75,19 @@ public class Track {
     public void setFavourite(boolean favourite)  { this.favourite = favourite; }
     public void setExplicit(boolean explicit)    { this.explicit = explicit; }
     public void setNewRelease(boolean newRelease){ this.newRelease = newRelease; }
+
+    //Override metodo per uguaglianza tra tracce
+    @Override
+    public boolean equals(Object t){
+        if (this == t) return true;
+        if ((t == null) || this.getClass() != t.getClass()) return false;
+        Track track = (Track) t;
+        return track.getTitle().equals(this.getTitle()) && track.getAuthor().equals(this.getAuthor()) && track.getYear().equals(this.getYear());
+    }
+
+    //Override metodo di hashCode
+    @Override
+    public int hashCode(){
+        return Objects.hash(this.getTitle(), this.getAuthor(), this.getYear());
+    }
 }
