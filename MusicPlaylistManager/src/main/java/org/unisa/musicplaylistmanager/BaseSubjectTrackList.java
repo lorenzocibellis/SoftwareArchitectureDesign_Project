@@ -20,7 +20,8 @@ public abstract class BaseSubjectTrackList {
         throw new UnsupportedOperationException();
     }
 
-    public void notify(){
+
+    public void notifyObserver(){
         throw new UnsupportedOperationException();
     }
 }

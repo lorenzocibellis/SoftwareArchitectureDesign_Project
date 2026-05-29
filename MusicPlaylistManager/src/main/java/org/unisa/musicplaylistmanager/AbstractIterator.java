@@ -10,6 +10,6 @@ public interface AbstractIterator extends IterableCollection {
     public Track getCurrent();
     public Track getNext();
     public Track getPrevious();
-    public void setStrategy(ExecutionStrategy);
+    public void setStrategy(ExecutionStrategy strategy);
     
 }

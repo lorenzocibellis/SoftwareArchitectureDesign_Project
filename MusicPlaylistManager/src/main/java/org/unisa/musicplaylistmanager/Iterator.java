@@ -5,7 +5,7 @@ package org.unisa.musicplaylistmanager;
  * @author gruppo10
  */
 public class Iterator implements AbstractIterator {
-    
+
     // variabili di istanza della classe Iterator
     private int currentindext;
     private int[] iterationindex;
@@ -15,7 +15,7 @@ public class Iterator implements AbstractIterator {
     public Iterator(Playlist playlist) {
         this.playlist = playlist;
     }
-    
+
     // implementazione del metodo per ottenere la traccia corrente in esecuzione
     @Override
     public Track getCurrent() {
@@ -25,15 +25,24 @@ public class Iterator implements AbstractIterator {
     // implementazione del metodo per ottenere la traccia successiva
     @Override
     public Track getNext() {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        throw new UnsupportedOperationException("Not supported yet.");
     }
+
     // implementazione del metodo per ottenere la traccia precedente
     @Override
     public Track getPrevious() {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        throw new UnsupportedOperationException("Not supported yet.");
     }
-    // implementazione del metodo per definire la modalità di riproduzione 
+
+    // implementazione del metodo per definire la modalità di riproduzione
     @Override
     public void setStrategy(ExecutionStrategy es) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+
+    @Override
+    public AbstractIterator createIterator() {
+        return null;
+    }
+}
