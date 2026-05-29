@@ -7,16 +7,16 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.TrackController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.TrackController">
    <children>
       <HBox prefHeight="400.0" prefWidth="600.0">
          <children>
             <VBox prefHeight="400.0" prefWidth="146.0">
                <children>
-                  <TextField fx:id="traccia" editable="false" prefHeight="26.0" prefWidth="249.0" text="Traccia: " />
+                  <TextField fx:id="titolo" editable="false" prefHeight="26.0" prefWidth="249.0" text="Titolo: " />
                   <TextField fx:id="autore" editable="false" text="Autore:" />
-                  <TextField fx:id="anno" editable="false" text="Anno pubblicazione" />
-                  <TextField fx:id="genere" editable="false" text="genere" />
+                  <TextField fx:id="anno" editable="false" text="Anno di Pubblicazione" />
+                  <TextField fx:id="genere" editable="false" text="Genere" />
                   <HBox prefHeight="19.0" prefWidth="296.0">
                      <children>
                         <RadioButton mnemonicParsing="false" prefHeight="18.0" prefWidth="151.0" text="Preferita" />
