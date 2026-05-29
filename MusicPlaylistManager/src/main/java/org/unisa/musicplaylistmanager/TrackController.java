@@ -1,58 +1,56 @@
 package org.unisa.musicplaylistmanager;
 
+
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.time.Year;
 
 public class TrackController {
 
-    @FXML private TextField anno;
-    @FXML private RadioButton newRelease;
-    @FXML private RadioButton contenutiEspliciti;
-    @FXML private TextField titolo;
-    @FXML private TextField genere;
-    @FXML private TextField autore;
-    @FXML private Button confirmButton;
 
     @FXML
-    public void initialize() {}
-    
-    // funzione per confermare o meno la creazione di una nuova traccia
+    private Button addTrackButton;
     @FXML
-    public void confirm() {
+    private Button buttonBack;
+    @FXML
+    private TextField titleInput;
+    @FXML
+    private TextField yearInput;
+    @FXML
+    private TextField genreInput;
+    @FXML
+    private TextField authorInput;
+    @FXML
+    private RadioButton favouriteRadio;
+    @FXML
+    private RadioButton newReleaseRadio;
+    @FXML
+    private RadioButton explicitContentRadio;
+
+
+    //METODI
+
+    @FXML
+    public void initialize() {
+
+    }
+
+    @FXML
+    public void inputValidation() {
         // Parsing dell'anno: se non è un numero intero a 4 cifre, segnaliamo l'input non valido
-        String yearText = anno.getText() == null ? "" : anno.getText().trim();
+        String yearText = yearInput.getText() == null ? "" : yearInput.getText().trim();
         if (!yearText.matches("\\d{4}")) {
             showError("L'anno deve contenere esattamente 4 cifre numeriche.");
-            return;
-        }
-
-        Year year = Year.of(Integer.parseInt(yearText));
-
-        try {
-            Track track = new Track(
-                titolo.getText(),
-                autore.getText(),
-                year,
-                genere.getText(),
-                0,                                  
-                false,                            
-                contenutiEspliciti.isSelected(),
-                newRelease.isSelected()
-            );
-
-            System.out.println("Track valida: " + track.getTitle());
-            
-            // QUI VA AGGIUNTA LA TRACK ALLA TRACKLIST
-
-        } catch (IllegalArgumentException e) {
-            showError(e.getMessage());
         }
     }
-    
+
     // funzione per mostrare un emssaggio di errore con contenuto personalizzato
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -60,5 +58,47 @@ public class TrackController {
         alert.setHeaderText("Input non valido");
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+
+
+    @FXML
+    public void goBack(ActionEvent event) throws IOException {
+
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
+
+    }
+
+    @FXML
+    public void addTrack(ActionEvent actionEvent) {
+
+        inputValidation();
+
+        Year year = Year.of(Integer.parseInt(yearInput.getText()));
+
+        try {
+            Track track = new Track(
+                    titleInput.getText(),
+                    authorInput.getText(),
+                    year,
+                    genreInput.getText(),
+                    0,
+                    false,
+                    explicitContentRadio.isSelected(),
+                    newReleaseRadio.isSelected()
+            );
+
+            System.out.println("Track valida: " + track.getTitle());
+
+
+        } catch (IllegalArgumentException e) {
+            showError(e.getMessage());
+        }
+
+
+        // crea traccia
+
     }
 }

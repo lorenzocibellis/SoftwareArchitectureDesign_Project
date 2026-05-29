@@ -1,45 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.TrackController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.TrackController">
    <children>
-      <HBox prefHeight="258.0" prefWidth="600.0">
+      <HBox prefHeight="400.0" prefWidth="600.0">
          <children>
             <VBox prefHeight="400.0" prefWidth="146.0">
                <children>
-                  <TextField editable="false" prefHeight="26.0" prefWidth="249.0" text="Titolo: " />
-                  <TextField editable="false" text="Autore:" />
-                  <TextField editable="false" text="Anno di Pubblicazione" />
-                  <TextField editable="false" text="Genere" />
-                  <HBox prefHeight="19.0" prefWidth="296.0">
-                     <children>
-                        <RadioButton mnemonicParsing="false" prefHeight="18.0" prefWidth="151.0" text="Preferita" />
-                     </children>
-                  </HBox>
-                  <RadioButton fx:id="contenutiEspliciti" mnemonicParsing="false" prefHeight="18.0" prefWidth="297.0" text="Contenuti espliciti" />
-                  <RadioButton fx:id="newRelease" mnemonicParsing="false" prefHeight="18.0" prefWidth="151.0" text="New Release" />
+                  <Label text="Titolo:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label text="Autore:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label text="Anno:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label text="Genere">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <HBox prefHeight="73.0" prefWidth="123.0" />
+                  <RadioButton fx:id="favouriteRadio" mnemonicParsing="false" text="Preferita" />
+                  <RadioButton fx:id="explicitContentRadio" mnemonicParsing="false" prefHeight="18.0" prefWidth="297.0" text="Contenuti espliciti" />
+                  <RadioButton fx:id="newReleaseRadio" mnemonicParsing="false" prefHeight="18.0" prefWidth="151.0" text="Nuova uscita" />
                </children>
             </VBox>
-            <VBox prefHeight="160.0" prefWidth="296.0">
+            <VBox prefHeight="400.0" prefWidth="363.0">
                <children>
-                  <TextField fx:id="titolo" />
-                  <TextField fx:id="autore" />
-                  <TextField fx:id="anno" />
-                  <TextField fx:id="genere" />
+                  <TextField fx:id="titleInput" />
+                  <TextField fx:id="authorInput" />
+                  <TextField fx:id="yearInput" />
+                  <TextField fx:id="genreInput" />
                </children>
-               <HBox.margin>
-                  <Insets bottom="100.0" />
-               </HBox.margin>
+            </VBox>
+            <VBox alignment="BOTTOM_RIGHT" prefHeight="400.0" prefWidth="159.0">
+               <children>
+                  <Button fx:id="addTrackButton" mnemonicParsing="false" onAction="#addTrack" text="add track" />
+                  <Button fx:id="buttonBack" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#goBack" text="go back" />
+               </children>
             </VBox>
          </children>
       </HBox>
-      <Button fx:id="confirmButton" layoutX="264.0" layoutY="326.0" mnemonicParsing="false" onAction="#confirm" prefHeight="38.0" prefWidth="71.0" text="Conferma" />
    </children>
 </AnchorPane>
