@@ -1,5 +1,9 @@
 package org.unisa.musicplaylistmanager;
 
+/**
+ * @author gruppo10
+ */
+
 public class TrackList extends Playlist{
 
     //definizione subject per pattern Observer

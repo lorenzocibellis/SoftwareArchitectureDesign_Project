@@ -1,14 +1,14 @@
 package org.unisa.musicplaylistmanager;
 
 /**
- *
  * @author gruppo10
  */
-public class Pause implements PlayerState {
 
-    // implementazione del metodo per mettere in pausa una traccia
+public class Pause implements PlayerState {
     @Override
-    public void execute() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void execute(Player player) {
+        player.stopPlayback();
+        // Cambia lo stato interno del player al prossimo stato logico
+        player.setState(new Play()); 
     }
 }

@@ -1,14 +1,14 @@
 package org.unisa.musicplaylistmanager;
 
 /**
- *
  * @author gruppo10
  */
-public class Play implements PlayerState {
 
-    // dichiarazione del metodo per riprodurre la traccia
+public class Play implements PlayerState {
     @Override
-    public void execute() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void execute(Player player) {
+        player.startPlayback();
+        // Cambia lo stato interno del player al prossimo stato logico
+        player.setState(new Pause()); 
     }
 }

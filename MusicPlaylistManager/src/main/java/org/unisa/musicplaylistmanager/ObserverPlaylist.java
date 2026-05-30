@@ -1,5 +1,9 @@
 package org.unisa.musicplaylistmanager;
 
+/**
+ * @author gruppo10
+ */
+
 public class ObserverPlaylist extends BaseObserverPlaylist{
 
     //METODI

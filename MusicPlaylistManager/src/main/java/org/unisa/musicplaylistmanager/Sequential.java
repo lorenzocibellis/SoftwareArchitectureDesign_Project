@@ -4,6 +4,7 @@ package org.unisa.musicplaylistmanager;
  *
  * @author gruppo10
  */
+
 public class Sequential implements ExecutionStrategy{
     
     // implementazione del metodo per eseguire la modalità di riproduzione sequenziale

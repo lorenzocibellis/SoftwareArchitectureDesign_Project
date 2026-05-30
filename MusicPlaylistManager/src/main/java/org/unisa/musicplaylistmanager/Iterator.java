@@ -4,6 +4,7 @@ package org.unisa.musicplaylistmanager;
  *
  * @author gruppo10
  */
+
 public class Iterator implements AbstractIterator {
 
     // variabili di istanza della classe Iterator
@@ -19,7 +20,7 @@ public class Iterator implements AbstractIterator {
     // implementazione del metodo per ottenere la traccia corrente in esecuzione
     @Override
     public Track getCurrent() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     // implementazione del metodo per ottenere la traccia successiva
@@ -40,8 +41,6 @@ public class Iterator implements AbstractIterator {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-
-    @Override
     public AbstractIterator createIterator() {
         return null;
     }

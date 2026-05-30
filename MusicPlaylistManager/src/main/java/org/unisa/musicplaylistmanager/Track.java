@@ -1,5 +1,9 @@
 package org.unisa.musicplaylistmanager;
 
+/**
+ * @author gruppo10
+ */
+
 import java.time.Year;
 import java.util.Objects;
 
@@ -17,7 +21,7 @@ public class Track {
     public Track(String title, String author, Year year, String genre, int duration,
                  boolean favourite, boolean explicit, boolean newRelease) {
 
-        validate(title, author, genre, year);
+        validate(title, author, genre, year, duration);
 
         this.title = title;
         this.author = author;
@@ -28,13 +32,18 @@ public class Track {
         this.explicit = explicit;
         this.newRelease = newRelease;
     }
+    
     // funzione di validazione interna
-    private static void validate(String title, String author, String genre, Year year) {
+    private static void validate(String title, String author, String genre, Year year, int duration) {
         if (isBlank(title) || isBlank(author) || isBlank(genre) || year == null) {
             throw new IllegalArgumentException("I campi non possono essere vuoti.");
         }
         if (validateYear(year)) {
             throw new IllegalArgumentException("L'anno non può essere superiore all'anno attuale.");
+        }
+        // Validazione aggiuntiva per la durata positiva
+        if (duration < 0) {
+            throw new IllegalArgumentException("La durata non può essere negativa.");
         }
     }
 
@@ -49,11 +58,11 @@ public class Track {
     }
 
     // Getters
-    public String getTitle()      { return title; }
-    public String getAuthor()     { return author; }
-    public String getGenre()      { return genre; }
-    public Year getYear()         { return year; }
-    public int getSeconds()       { return seconds; }
+    public String getTitle()    { return title; }
+    public String getAuthor()   { return author; }
+    public String getGenre()    { return genre; }
+    public Year getYear()       { return year; }
+    public int getSeconds()     { return seconds; }
     public boolean isFavourite()  { return favourite; }
     public boolean isExplicit()   { return explicit; }
     public boolean isNewRelease() { return newRelease; }
@@ -75,7 +84,13 @@ public class Track {
         if (validateYear(year)) throw new IllegalArgumentException("L'anno è obbligatorio e non può essere superiore all'anno corrente.");
         this.year = year;
     }
-    public void setSeconds(int seconds)         { this.seconds = seconds; }
+    
+    // Aggiornamento setter con controllo validazione
+    public void setSeconds(int seconds) { 
+        if (seconds < 0) throw new IllegalArgumentException("La durata non può essere negativa.");
+        this.seconds = seconds; 
+    }
+    
     public void setFavourite(boolean favourite)  { this.favourite = favourite; }
     public void setExplicit(boolean explicit)    { this.explicit = explicit; }
     public void setNewRelease(boolean newRelease){ this.newRelease = newRelease; }

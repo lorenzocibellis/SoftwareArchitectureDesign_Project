@@ -1,49 +1,96 @@
 package org.unisa.musicplaylistmanager;
 
 /**
- *
  * @author gruppo10
  */
+
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.function.IntConsumer;
+
 public class Player {
+    // variabili dello State Pattern  
+    private PlayerState currentState;
+    private PlayerState defaultState; // Aggiunto per fedeltà all'UML!
     
-    // metodi d'istanza della classe Player
-    private Iterator it;
+    // playlist o tracklist in cui scorrere le tracce
+    private Playlist playlist;
+    
+    //  Dati della singola traccia in riproduzione 
     private Track currentTrack;
-    private PlayerState defaultState;
-//    private PlayerState currentState;
-  
-    // costruttore della classe Player
-    public Player(PlayerState defaultState, Playlist playlist) {
+    
+    //  Variabili interne per la riproduzione 
+    private int elapsedSeconds;
+    private Timer timer;
+
+    // Variabili di callbacks per la GUI 
+    private IntConsumer onTimeTick;
+    private Runnable onPlayUIUpdate;
+    private Runnable onPauseUIUpdate;
+
+    // Costruttore: Accetta TEMPORANEAMENTE anche la Track 
+    public Player(PlayerState defaultState, Playlist playlist, Track currentTrack) {
         this.defaultState = defaultState;
-        //this.it = playlist.createIterator();
+        this.currentState = defaultState; // Inizializza lo stato corrente con quello di default
+        
+        this.playlist = playlist;
+        this.currentTrack = currentTrack;
+        this.elapsedSeconds = 0;
     }
+
+    //  Registrazione eventi sulla GUI  in tempo reale
     
-    // implementazione del metodo per cambiare lo stato di riproduzione
+    public void setOnTimeTick(IntConsumer listener) { this.onTimeTick = listener; }
+    public void setOnPlayUIUpdate(Runnable listener) { this.onPlayUIUpdate = listener; }
+    public void setOnPauseUIUpdate(Runnable listener) { this.onPauseUIUpdate = listener; }
+
+    // Metodi di gestione dello State Pattern
+    
     public void changeState() {
-        
-        
+        currentState.execute(this);
     }
-    // 
-    public void defaultState() {
+
+    public void setState(PlayerState state) {
+        this.currentState = state;
     }
-    // implementazione del metodo che chiama l'omonimo metodo della classe Iterator per definire la modalità di riproduzione
-    public void setStrategy(ExecutionStrategy es) {
-        it.setStrategy(es);
-    }
+
+    // Logica di Riproduzione della Traccia
     
-    // implementazione del metodo che chiama l'omonimo metodo della classe Iterator per ottenere la traccia corrente
-    public Track getCurrent() {
+    public void startPlayback() {
+        // pulizia risorse timer
+        if (timer != null) timer.cancel();
+        // creazione di un nuovo timer
+        timer = new Timer();
         
-        return it.getCurrent();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            // Thread per la riproduzione 
+            @Override
+            public void run() {
+                if (currentTrack != null && elapsedSeconds < currentTrack.getSeconds()) {
+                    elapsedSeconds++;
+                    if (onTimeTick != null) onTimeTick.accept(elapsedSeconds);
+                } else {
+                    // La canzone è finita
+                    stopPlayback(); 
+                }
+            }
+        }, 1000, 1000);
+
+        if (onPlayUIUpdate != null) onPlayUIUpdate.run();
     }
-    // implementazione del metodo che chiama l'omonimo metodo della classe Iterator per ottenere la traccia successiva
-    public Track getNext() {
-        
-        return it.getNext();
+
+    // Funzione per interrompere la riproduzione della traccia
+    public void stopPlayback() {
+        // pulizia risorse timer
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+        if (onPauseUIUpdate != null) onPauseUIUpdate.run();
     }
-    // implementazione del metodo che chiama l'omonimo metodo della classe Iterator per ottenere la traccia precedente
-    public Track getPrevious() {
-        
-        return it.getPrevious();
+
+    // Funzione per interrompere bruscamente la riproduzione (come quando si chiude la finestra del player)
+    public void terminate() {
+        stopPlayback();
     }
 }

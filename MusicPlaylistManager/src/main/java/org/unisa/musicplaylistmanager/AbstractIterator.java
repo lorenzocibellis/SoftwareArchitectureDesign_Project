@@ -1,15 +1,13 @@
 package org.unisa.musicplaylistmanager;
 
 /**
- *
  * @author gruppo10
  */
-public interface AbstractIterator extends IterableCollection {
-    
-    // dichiarazione dei metodi per lo scorrimento delle tracce nella tracklist o nella playlist
-    public Track getCurrent();
-    public Track getNext();
-    public Track getPrevious();
-    public void setStrategy(ExecutionStrategy strategy);
-    
+
+public interface AbstractIterator {
+    // dichiarazione dei metodi per lo scorrimento delle tracce
+    Track getCurrent();
+    Track getNext();
+    Track getPrevious();
+    void setStrategy(ExecutionStrategy strategy);
 }

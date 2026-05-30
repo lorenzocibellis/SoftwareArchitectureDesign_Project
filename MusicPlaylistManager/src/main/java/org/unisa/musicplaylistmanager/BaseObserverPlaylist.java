@@ -1,5 +1,9 @@
 package org.unisa.musicplaylistmanager;
 
+/**
+ * @author gruppo10
+ */
+
 public abstract class BaseObserverPlaylist {
     //Definizione attributi
     private Playlist playlist;

@@ -1,5 +1,9 @@
 package org.unisa.musicplaylistmanager;
 
+/**
+ * @author gruppo10
+ */
+
 import java.util.ArrayList;
 
 public abstract class BaseSubjectTrackList {
