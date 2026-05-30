@@ -8,10 +8,10 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.PlayerController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.PlayerController">
    <children>
 
-      <Pane fx:id="topPane" style="-fx-background-color: #f4f4f4; -fx-border-color: #cccccc; -fx-border-width: 2 0 0 0;" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="130.0">
+      <Pane fx:id="topPane" style="-fx-background-color: #f4f4f4; -fx-border-color: #cccccc; -fx-border-width: 2 0 0 0;" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Button fx:id="closeButton" layoutX="555.0" layoutY="15.0" mnemonicParsing="false" onAction="#handleClose" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: #ff4c4c; -fx-text-fill: white; -fx-background-radius: 15; -fx-cursor: hand;" text="X">
                <font><Font name="System Bold" size="14.0" /></font>
@@ -44,7 +44,7 @@
             <Label fx:id="duration" layoutX="430.0" layoutY="75.0" text="3:00" />
 
             <Button fx:id="skipToPreviousButton" layoutX="210.0" layoutY="80.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent;" />
-            <Button fx:id="executeButton" layoutX="275.0" layoutY="75.0" mnemonicParsing="false" onAction="#handleExecute" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: transparent; -fx-cursor: hand;" />
+            <Button fx:id="executeButton" layoutX="277.0" layoutY="80.0" mnemonicParsing="false" onAction="#handleExecute" prefHeight="40.0" prefWidth="46.0" style="-fx-background-color: transparent; -fx-cursor: hand;" />
             <Button fx:id="skipToNextButton" layoutX="340.0" layoutY="80.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent;" />
             
          </children>
