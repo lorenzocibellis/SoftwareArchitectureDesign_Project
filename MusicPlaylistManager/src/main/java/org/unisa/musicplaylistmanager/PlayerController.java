@@ -159,9 +159,9 @@ public class PlayerController implements Initializable {
             authorName.setText(track.getAuthor());
 
             songProgress.setMin(0);
-            songProgress.setMax(track.getSeconds());
+            songProgress.setMax(track.getDuration());
             songProgress.setValue(0);
-            duration.setText(formatTime(track.getSeconds()));
+            duration.setText(formatTime(track.getDuration()));
             counter.setText("0:00");
         }
     }

@@ -42,25 +42,28 @@ public class TrackController {
 
     private TrackList trackList;
     private ObservableList<Track> observableList;
+    // Aggiunto flag per la modalità sola lettura per le info della traccia
+    private boolean isReadOnly = false;
 
     @FXML
     public void initialize() {
         // Listener per forzare l'input a essere solo numerico per i minuti
         minutesInput.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
+            if (!isReadOnly && !newValue.matches("\\d*")) {
                 minutesInput.setText(newValue.replaceAll("[^\\d]", ""));
             }
         });
 
         // Listener per forzare l'input a essere solo numerico per i secondi
         secondsInput.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
+            if (!isReadOnly && !newValue.matches("\\d*")) {
                 secondsInput.setText(newValue.replaceAll("[^\\d]", ""));
             }
         });
 
         // Listener per forzare l'input a essere solo numerico e di massimo 4 cifre per l'anno
         yearInput.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (isReadOnly) return;
             // Rimuove tutto ciò che non è un numero
             String filtered = newValue.replaceAll("[^\\d]", "");
             // Limita la lunghezza a 4 cifre
@@ -72,6 +75,48 @@ public class TrackController {
                 yearInput.setText(filtered);
             }
         });
+    }
+
+    /**
+     * Metodo chiamato dal TrackListController per mostrare i dettagli in sola lettura.
+     * @param track La traccia da mostrare.
+     */
+    public void setTrackDetails(Track track) {
+        this.isReadOnly = true;
+
+        // Popola i campi con i dati della traccia
+        titleInput.setText(track.getTitle());
+        authorInput.setText(track.getAuthor());
+        yearInput.setText(String.valueOf(track.getYear().getValue()));
+        genreInput.setText(track.getGenre());
+
+        int minutes = track.getDuration() / 60;
+        int seconds = track.getDuration() % 60;
+        minutesInput.setText(String.valueOf(minutes));
+        secondsInput.setText(String.format("%02d", seconds)); // Usa %02d per formattare "05" invece di "5"
+
+        favouriteRadio.setSelected(track.isFavourite());
+        explicitContentRadio.setSelected(track.isExplicitContent());
+        newReleaseRadio.setSelected(track.isNewRelease());
+
+        // Disabilita le modifiche per tutti i campi
+        titleInput.setEditable(false);
+        authorInput.setEditable(false);
+        yearInput.setEditable(false);
+        genreInput.setEditable(false);
+        minutesInput.setEditable(false);
+        secondsInput.setEditable(false);
+
+        // Disabilita l'interazione con i radio button
+        favouriteRadio.setDisable(true);
+        explicitContentRadio.setDisable(true);
+        newReleaseRadio.setDisable(true);
+
+        // Nasconde il bottone "conferma"
+        addTrackButton.setVisible(false);
+        
+        // Cambia il testo del bottone annulla in "chiudi"
+        buttonBack.setText("Chiudi");
     }
 
     /**

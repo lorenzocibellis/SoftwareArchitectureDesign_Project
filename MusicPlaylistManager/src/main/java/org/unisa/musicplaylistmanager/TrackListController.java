@@ -1,111 +1,115 @@
 package org.unisa.musicplaylistmanager;
 
-/**
- * @author gruppo10
- */
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
-import javafx.stage.Stage;
-import javafx.geometry.Pos;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
 
 import java.io.IOException;
 
-public class TrackListController
-{
-    // recupero della radice della schermata
+/**
+ * @author gruppo10
+ */
+public class TrackListController {
+
     @FXML
     private StackPane mainStackPane;
-
-    //definizione strutture dati "visibili"
     @FXML
     private ListView<Track> listView;
+
     private ObservableList<Track> trackListObservable;
     private TrackList trackList;
 
     @FXML
     public void initialize() {
-
         if (trackList == null) trackList = new TrackList();
         trackListObservable = FXCollections.observableArrayList(trackList.getTracks());
 
+        // fa in modo che la list view usi la cella peronalizzata
+        listView.setCellFactory(param -> new TrackCellController(this::showTrackDetails));
+
         listView.setItems(trackListObservable);
-        
-        // gestione del click su una traccia
+
+        // Gestione del doppio click su una riga per aprire il player
         listView.setOnMouseClicked(event -> {
-            Track selected = listView.getSelectionModel().getSelectedItem();
-            
-            // controllo di sicurezza se l'utente dovesse cliccare su uno spazio vuoto
-            if (selected == null) return; 
-
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("PlayerView.fxml"));
-   
-                AnchorPane playerRoot = loader.load(); 
-
-                PlayerController ctrl = loader.getController();
-                
-                // Passiamo momentaneamente sia la traccia che la playlist (castata)
-                ctrl.setPlaylistContext(selected, (Playlist) trackList); 
-                // ──────────────────────────────────────────────────────────────────────
-                
-                // Passiamo al controller il riferimento alla sua stessa radice (per l'animazione di chiusura)
-                ctrl.setPlayerRoot(playerRoot);
-
-                // LOGICA DELL'OVERLAY DEL PLAYER
-                
-                // Se c'è già un player aperto nello StackPane (l'utente ha cliccato un'altra canzone senza chiudere), 
-                // rimuoviamo il vecchio player prima di aggiungere il nuovo per evitare sovrapposizioni multiple.
-                if (mainStackPane.getChildren().size() > 1) {
-                     mainStackPane.getChildren().remove(1);
-                }
-
-                // Aggiungiamo il Player allo StackPane (si posizionerà sopra la lista)
-                mainStackPane.getChildren().add(playerRoot);
-                // Ancoriamo in basso
-                StackPane.setAlignment(playerRoot, Pos.BOTTOM_CENTER);
-                // Posizioniamo il player "fuori" dallo schermo (in basso) prima dell'animazione
-                playerRoot.setTranslateY(mainStackPane.getHeight());
-
-                // Creiamo l'animazione per farlo salire dal centro
-                TranslateTransition slideUp = new TranslateTransition(Duration.seconds(0.4), playerRoot);
-                slideUp.setToY(0); 
-                slideUp.play();
-
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (event.getClickCount() == 2) { // Apri il player solo con un doppio click
+                Track selected = listView.getSelectionModel().getSelectedItem();
+                if (selected == null) return;
+                openPlayerFor(selected);
             }
         });
     }
 
+    // Metodo chiamato quando viene cliccato il bottone "i" in una riga
+    private void showTrackDetails(Track track) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("TrackView.fxml"));
+            Parent root = loader.load();
+
+            TrackController controller = loader.getController();
+            // Passa la traccia e imposta la modalità di sola lettura
+            controller.setTrackDetails(track);
+
+            Stage stage = new Stage();
+            stage.setTitle("Dettagli Traccia");
+            stage.initModality(Modality.APPLICATION_MODAL); // Blocca l'interazione con la finestra principale
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void openPlayerFor(Track selected) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("PlayerView.fxml"));
+            AnchorPane playerRoot = loader.load();
+            PlayerController ctrl = loader.getController();
+            ctrl.setPlaylistContext(selected, trackList);
+            ctrl.setPlayerRoot(playerRoot);
+
+            if (mainStackPane.getChildren().size() > 1) {
+                mainStackPane.getChildren().remove(1);
+            }
+
+            mainStackPane.getChildren().add(playerRoot);
+            StackPane.setAlignment(playerRoot, Pos.BOTTOM_CENTER);
+            playerRoot.setTranslateY(mainStackPane.getHeight());
+
+            TranslateTransition slideUp = new TranslateTransition(Duration.seconds(0.4), playerRoot);
+            slideUp.setToY(0);
+            slideUp.play();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void addNewTrack(ActionEvent actionEvent) throws IOException {
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("TrackView.fxml"));
-
         Parent root = loader.load();
 
         Stage stage = new Stage();
-
-        stage.setTitle("Add track");
+        stage.setTitle("Aggiungi Traccia");
 
         Scene scene = new Scene(root);
         TrackController controller = loader.getController();
         controller.setTrackList(trackList);
         controller.setObservable(trackListObservable);
         stage.setScene(scene);
-
         stage.show();
     }
 }

@@ -66,7 +66,7 @@ public class Player {
             // Thread per la riproduzione 
             @Override
             public void run() {
-                if (currentTrack != null && elapsedSeconds < currentTrack.getSeconds()) {
+                if (currentTrack != null && elapsedSeconds < currentTrack.getDuration()) {
                     elapsedSeconds++;
                     if (onTimeTick != null) onTimeTick.accept(elapsedSeconds);
                 } else {

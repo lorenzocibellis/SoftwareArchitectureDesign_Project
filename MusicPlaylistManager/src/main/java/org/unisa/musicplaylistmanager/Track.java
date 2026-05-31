@@ -13,7 +13,7 @@ public class Track {
     private String author;
     private String genre;
     private Year year;
-    private int seconds;
+    private int duration;
     private boolean favourite;
     private boolean explicit;
     private boolean newRelease;
@@ -27,7 +27,7 @@ public class Track {
         this.author = author;
         this.year = year;
         this.genre = genre;
-        this.seconds = duration;
+        this.duration = duration;
         this.favourite = favourite;
         this.explicit = explicit;
         this.newRelease = newRelease;
@@ -58,14 +58,14 @@ public class Track {
     }
 
     // Getters
-    public String getTitle()    { return title; }
-    public String getAuthor()   { return author; }
-    public String getGenre()    { return genre; }
-    public Year getYear()       { return year; }
-    public int getSeconds()     { return seconds; }
-    public boolean isFavourite()  { return favourite; }
-    public boolean isExplicit()   { return explicit; }
-    public boolean isNewRelease() { return newRelease; }
+    public String getTitle()      { return title; }
+    public String getAuthor()     { return author; }
+    public String getGenre()      { return genre; }
+    public Year getYear()         { return year; }
+    public int getDuration()      { return duration; }
+    public boolean isFavourite()    { return favourite; }
+    public boolean isExplicitContent() { return explicit; }
+    public boolean isNewRelease()   { return newRelease; }
 
     // Setters
     public void setTitle(String title) {
@@ -85,10 +85,9 @@ public class Track {
         this.year = year;
     }
     
-    // Aggiornamento setter con controllo validazione
-    public void setSeconds(int seconds) { 
-        if (seconds < 0) throw new IllegalArgumentException("La durata non può essere negativa.");
-        this.seconds = seconds; 
+    public void setDuration(int duration) {
+        if (duration < 0) throw new IllegalArgumentException("La durata non può essere negativa.");
+        this.duration = duration;
     }
     
     public void setFavourite(boolean favourite)  { this.favourite = favourite; }
