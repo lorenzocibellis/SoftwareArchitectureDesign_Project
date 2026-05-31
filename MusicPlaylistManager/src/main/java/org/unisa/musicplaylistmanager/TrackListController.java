@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
@@ -18,6 +19,7 @@ import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * @author gruppo10
@@ -45,6 +47,10 @@ public class TrackListController {
 
         listView.setItems(trackListObservable);
 
+        //Abilito la selezione multipla di elementi
+        listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+
         // Gestione del doppio click su una riga per aprire il player
         listView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) { // Apri il player con un doppio click
@@ -53,6 +59,7 @@ public class TrackListController {
                 openPlayerFor(selected);
             }
         });
+
     }
 
     // Metodo chiamato quando viene cliccato il bottone "i" in una riga
@@ -122,19 +129,14 @@ public class TrackListController {
 
     public void deleteTrack(ActionEvent actionEvent){
 
-        //ottengo la traccia selezionata all'interno della lista
-        Track selected = listView.getSelectionModel().getSelectedItem();
+        //ottengo le traccie selezionate all'interno della lista
+        ObservableList<Track> selected = listView.getSelectionModel().getSelectedItems();
 
-        //controllo che non sia null
-        if (selected != null){
-
-            //la rimuovo dalla lista osservabile e dalla trackList
-            trackListObservable.remove(selected);
-            trackList.removeTrack(selected);
-            return;
+        //la rimuovo dalla lista osservabile e dalla trackList
+        for(Track t:new ArrayList<>(selected)) {
+            trackListObservable.remove(t);
+            trackList.removeTrack(t);
         }
 
-        //nel caso la traccia selezionata sia null, lancio un'eccezione
-        throw new IllegalArgumentException();
     }
 }
