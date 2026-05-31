@@ -1,12 +1,9 @@
 package org.unisa.musicplaylistmanager;
 
-/**
- * @author gruppo10
- */
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -15,7 +12,7 @@ public class MusicPlaylistManagerApp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MusicPlaylistManagerApp.class.getResource("TrackListView.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 650, 500);
+        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
         stage.setTitle("Music Playlist Manager");
         stage.setScene(scene);
         stage.show();

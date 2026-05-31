@@ -3,52 +3,69 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.PlayerController">
-   <children>
+    <children>
 
-      <Pane fx:id="topPane" style="-fx-background-color: #f4f4f4; -fx-border-color: #cccccc; -fx-border-width: 2 0 0 0;" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <Button fx:id="closeButton" layoutX="555.0" layoutY="15.0" mnemonicParsing="false" onAction="#handleClose" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: #ff4c4c; -fx-text-fill: white; -fx-background-radius: 15; -fx-cursor: hand;" text="X">
-               <font><Font name="System Bold" size="14.0" /></font>
-            </Button>
-            <Button layoutX="515.0" layoutY="15.0" mnemonicParsing="false" onAction="#toggleMinimize" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: #dddddd; -fx-background-radius: 15; -fx-cursor: hand;" text="v">
-               <font><Font name="System Bold" size="14.0" /></font>
-            </Button>
-         </children>
-      </Pane>
+        <AnchorPane fx:id="topPane" style="-fx-background-color: #f4f4f4; -fx-border-color: #cccccc; -fx-border-width: 2 0 0 0;" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <StackPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+                    <children>
+                        <ImageView fx:id="albumArt" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                    </children>
+                </StackPane>
 
-      <Pane fx:id="bottomPane" prefHeight="130.0" style="-fx-background-color: #f4f4f4; -fx-border-color: #cccccc; -fx-border-width: 1 0 0 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-         <children>
-            
-            <Button fx:id="expandButton" layoutX="515.0" layoutY="15.0" mnemonicParsing="false" onAction="#toggleMinimize" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: #dddddd; -fx-background-radius: 15; -fx-cursor: hand;" text="^" visible="false">
-               <font><Font name="System Bold" size="14.0" /></font>
-            </Button>
-            <Button fx:id="closeButtonMin" layoutX="555.0" layoutY="15.0" mnemonicParsing="false" onAction="#handleClose" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: #ff4c4c; -fx-text-fill: white; -fx-background-radius: 15; -fx-cursor: hand;" text="X" visible="false">
-               <font><Font name="System Bold" size="14.0" /></font>
-            </Button>
+                <Button fx:id="closeButton" mnemonicParsing="false" onAction="#handleClose" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: #ff4c4c; -fx-text-fill: white; -fx-background-radius: 15; -fx-cursor: hand;" text="X" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                    <font><Font name="System Bold" size="14.0" /></font>
+                </Button>
+                <Button fx:id="minimizeButton" mnemonicParsing="false" onAction="#toggleMinimize" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: #dddddd; -fx-background-radius: 15; -fx-cursor: hand;" text="v" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="15.0">
+                    <font><Font name="System Bold" size="14.0" /></font>
+                </Button>
+            </children>
+        </AnchorPane>
 
-            <Text fx:id="trackTitle" layoutX="144.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NomeBrano" textAlignment="CENTER" wrappingWidth="312.0">
-               <font><Font name="System Bold" size="16.0" /></font>
-            </Text>
-            <Text fx:id="authorName" fill="#666666" layoutX="144.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NomeAutore" textAlignment="CENTER" wrappingWidth="312.0">
-               <font><Font size="13.0" /></font>
-            </Text>
+        <AnchorPane fx:id="bottomPane" prefHeight="130.0" style="-fx-background-color: #f4f4f4; -fx-border-color: #cccccc; -fx-border-width: 1 0 0 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <children>
 
-            <Slider fx:id="songProgress" layoutX="144.0" layoutY="60.0" prefHeight="14.0" prefWidth="312.0" style="-fx-cursor: hand;" />
-            <Label fx:id="counter" layoutX="144.0" layoutY="75.0" text="0:00" />
-            <Label fx:id="duration" layoutX="430.0" layoutY="75.0" text="3:00" />
+                <VBox alignment="CENTER" mouseTransparent="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0">
+                    <children>
+                        <Text fx:id="trackTitle" strokeType="OUTSIDE" strokeWidth="0.0" text="NomeBrano">
+                            <font><Font name="System Bold" size="16.0" /></font>
+                        </Text>
+                        <Text fx:id="authorName" fill="#666666" strokeType="OUTSIDE" strokeWidth="0.0" text="NomeAutore">
+                            <font><Font size="13.0" /></font>
+                        </Text>
+                    </children>
+                </VBox>
 
-            <Button fx:id="skipToPreviousButton" layoutX="210.0" layoutY="80.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent;" />
-            <Button fx:id="executeButton" layoutX="277.0" layoutY="80.0" mnemonicParsing="false" onAction="#handleExecute" prefHeight="40.0" prefWidth="46.0" style="-fx-background-color: transparent; -fx-cursor: hand;" />
-            <Button fx:id="skipToNextButton" layoutX="340.0" layoutY="80.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent;" />
-            
-         </children>
-      </Pane>
+                <Slider fx:id="songProgress" style="-fx-cursor: hand;" AnchorPane.leftAnchor="144.0" AnchorPane.rightAnchor="144.0" AnchorPane.topAnchor="60.0" />
+                <Label fx:id="counter" text="0:00" AnchorPane.leftAnchor="144.0" AnchorPane.topAnchor="75.0" />
+                <Label fx:id="duration" text="3:00" AnchorPane.rightAnchor="144.0" AnchorPane.topAnchor="75.0" />
 
-   </children>
+                <HBox alignment="CENTER" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <children>
+                        <Button fx:id="skipToPreviousButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent;" />
+                        <Button fx:id="executeButton" mnemonicParsing="false" onAction="#handleExecute" prefHeight="40.0" prefWidth="46.0" style="-fx-background-color: transparent; -fx-cursor: hand;" />
+                        <Button fx:id="skipToNextButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent;" />
+                    </children>
+                </HBox>
+
+                <Button fx:id="expandButton" mnemonicParsing="false" onAction="#toggleMinimize" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: #dddddd; -fx-background-radius: 15; -fx-cursor: hand;" text="^" visible="false" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="15.0">
+                    <font><Font name="System Bold" size="14.0" /></font>
+                </Button>
+                <Button fx:id="closeButtonMin" mnemonicParsing="false" onAction="#handleClose" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: #ff4c4c; -fx-text-fill: white; -fx-background-radius: 15; -fx-cursor: hand;" text="X" visible="false" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                    <font><Font name="System Bold" size="14.0" /></font>
+                </Button>
+
+            </children>
+        </AnchorPane>
+
+    </children>
 </AnchorPane>
