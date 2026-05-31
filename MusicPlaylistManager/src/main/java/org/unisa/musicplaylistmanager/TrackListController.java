@@ -29,6 +29,9 @@ public class TrackListController {
     @FXML
     private ListView<Track> listView;
 
+    @FXML
+    private Button deleteButton;
+
     private ObservableList<Track> trackListObservable;
     private TrackList trackList;
 
@@ -115,5 +118,23 @@ public class TrackListController {
         controller.setObservable(trackListObservable);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void deleteTrack(ActionEvent actionEvent){
+
+        //ottengo la traccia selezionata all'interno della lista
+        Track selected = listView.getSelectionModel().getSelectedItem();
+
+        //controllo che non sia null
+        if (selected != null){
+
+            //la rimuovo dalla lista osservabile e dalla trackList
+            trackListObservable.remove(selected);
+            trackList.removeTrack(selected);
+            return;
+        }
+
+        //nel caso la traccia selezionata sia null, lancio un'eccezione
+        throw new IllegalArgumentException();
     }
 }

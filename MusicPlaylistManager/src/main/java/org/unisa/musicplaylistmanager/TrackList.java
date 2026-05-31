@@ -14,4 +14,9 @@ public class TrackList extends Playlist{
     public TrackList(){
         super(null);
     }
+
+    @Override
+    public void removeTrack(Track track){
+        this.getTracks().remove(track);
+    }
 }
