@@ -29,15 +29,30 @@
     -fx-background-color: #F0F8FF;
 }
 
-/* Stile per i bottoni di eliminazione (rosso) */
+/* Stile per i bottoni di eliminazione */
 .delete-button {
-    -fx-background-color: #FF3B30;
+    -fx-background-color: #E53935;
     -fx-text-fill: white;
 }
 
 .delete-button:hover {
     -fx-background-color: #C70000;
 }
+
+
+/* Stile per il bottone di chiusura */
+.close-button {
+    -fx-background-color: #D6DBE0;
+    -fx-text-fill: #333333;
+
+}
+
+.close-button:hover {
+    -fx-background-color: #FF6B6B;
+
+}
+
+
 
 
 /* Stile per il bottone "info" nella cella */

@@ -1,5 +1,6 @@
 package org.unisa.musicplaylistmanager;
 
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -7,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -37,6 +39,8 @@ public class TrackListController {
 
     @FXML
     private Button deleteButton;
+    @FXML
+    private Button closeButton;
 
     private ObservableList<Track> trackListObservable;
     private TrackList trackList;
@@ -166,6 +170,18 @@ public class TrackListController {
             trackListObservable.removeAll(toRemove);
             trackList.getTracks().removeAll(toRemove);
         }
+    }
+
+    public void closeApp(ActionEvent actionEvent) {
+
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        stage.close();
+        Platform.exit();
+        // Termina l'intero programma
+        System.exit(0);
+
+
+
     }
 
 }
