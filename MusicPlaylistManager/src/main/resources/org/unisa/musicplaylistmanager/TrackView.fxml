@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
@@ -9,76 +10,55 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.TrackController">
+<AnchorPane prefHeight="450.0" prefWidth="500.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.TrackController">
     <children>
-        <HBox prefHeight="400.0" prefWidth="600.0">
+        <VBox alignment="TOP_CENTER" prefHeight="450.0" prefWidth="500.0" spacing="20.0" style="-fx-background-color: #F8F8F8;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
             <children>
-                <VBox prefHeight="400.0" prefWidth="146.0" spacing="10.0" style="-fx-padding: 5;">
+
+                <VBox spacing="10.0">
                     <children>
-                        <Label text="Titolo:">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                        </Label>
-                        <Label text="Autore:">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                        </Label>
-                        <Label text="Anno:">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                        </Label>
-                        <Label text="Genere:">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                        </Label>
-                        <Label text="Durata (m:s)">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                        </Label>
+                        <Label text="Titolo" />
+                        <TextField fx:id="titleInput" promptText="Es. Yesterday" />
+                        <Label text="Autore" />
+                        <TextField fx:id="authorInput" promptText="Es. The Beatles" />
+                        <Label text="Anno" />
+                        <TextField fx:id="yearInput" promptText="Es. 1965" />
+                        <Label text="Genere" />
+                        <TextField fx:id="genreInput" promptText="Es. Pop" />
+                        <Label text="Durata" />
+                        <HBox alignment="CENTER_LEFT" spacing="5.0">
+                            <children>
+                                <TextField fx:id="minutesInput" prefWidth="70.0" promptText="Minuti" />
+                                <Label text=":" />
+                                <TextField fx:id="secondsInput" prefWidth="70.0" promptText="Secondi" />
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+
+
+                <HBox alignment="CENTER_LEFT" spacing="20.0">
+                    <children>
                         <RadioButton fx:id="favouriteRadio" mnemonicParsing="false" text="Preferita" />
                         <RadioButton fx:id="explicitContentRadio" mnemonicParsing="false" text="Contenuti espliciti" />
                         <RadioButton fx:id="newReleaseRadio" mnemonicParsing="false" text="Nuova uscita" />
                     </children>
-                </VBox>
-                <VBox prefHeight="400.0" prefWidth="454.0" spacing="5.0" style="-fx-padding: 5;">
+                </HBox>
+
+
+                <HBox alignment="CENTER_RIGHT" spacing="10.0" VBox.vgrow="ALWAYS">
                     <children>
-                        <TextField fx:id="titleInput" />
-                        <TextField fx:id="authorInput" />
-                        <TextField fx:id="yearInput" />
-                        <TextField fx:id="genreInput" />
-                        <HBox alignment="CENTER_LEFT" prefHeight="30.0" spacing="5">
-                            <children>
-                                <TextField fx:id="minutesInput" prefWidth="50.0" promptText="Min" />
-                                <Label text=":">
-                                    <font>
-                                        <Font size="18.0" />
-                                    </font>
-                                </Label>
-                                <TextField fx:id="secondsInput" prefWidth="50.0" promptText="Sec" />
-                            </children>
-                        </HBox>
-                        <VBox alignment="BOTTOM_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
-                            <children>
-                                <!-- Bottoni per la modalità Aggiungi/Modifica -->
-                                <Button fx:id="addTrackButton" mnemonicParsing="false" onAction="#addTrack" text="Conferma" />
-                                <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveChanges" text="Salva Modifiche" visible="false" />
-
-                                <!-- Bottoni per la modalità Info -->
-                                <Button fx:id="editButton" mnemonicParsing="false" onAction="#editTrack" text="Modifica" visible="false" />
-
-                                <!-- Bottoni di chiusura/annullamento -->
-                                <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelChanges" text="Annulla modifiche" visible="false" />
-                                <Button fx:id="buttonBack" mnemonicParsing="false" onAction="#goBack" text="Annulla aggiunta" />
-                            </children>
-                        </VBox>
+                        <Button fx:id="addTrackButton" mnemonicParsing="false" onAction="#addTrack" text="Conferma" />
+                        <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveChanges" text="Salva Modifiche" visible="false" />
+                        <Button fx:id="editButton" mnemonicParsing="false" onAction="#editTrack" text="Modifica" visible="false" />
+                        <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelChanges" styleClass="cancel-button" text="Annulla" visible="false" />
+                        <Button fx:id="buttonBack" mnemonicParsing="false" onAction="#goBack" styleClass="cancel-button" text="Annulla" />
                     </children>
-                </VBox>
+                </HBox>
             </children>
-        </HBox>
+        </VBox>
     </children>
 </AnchorPane>

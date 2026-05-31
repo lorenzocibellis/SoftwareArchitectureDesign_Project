@@ -1,0 +1,95 @@
+/* Stile Globale */
+.root {
+    -fx-font-family: "System";
+    -fx-base: #F5F5F7;
+}
+
+/* Stile per i bottoni di conferma (blu) */
+.button {
+    -fx-background-color: #007AFF;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #0056b3;
+}
+
+/* Stile per i bottoni di cancellazione/secondari */
+.cancel-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #007AFF;
+    -fx-border-color: #007AFF;
+    -fx-border-radius: 8;
+}
+
+.cancel-button:hover {
+    -fx-background-color: #F0F8FF;
+}
+
+/* Stile per i bottoni di eliminazione (rosso) */
+.delete-button {
+    -fx-background-color: #FF3B30;
+    -fx-text-fill: white;
+}
+
+.delete-button:hover {
+    -fx-background-color: #C70000;
+}
+
+
+/* Stile per il bottone "info" nella cella */
+.info-button {
+    -fx-background-color: #EAEAEA;
+    -fx-text-fill: #333333;
+    -fx-font-size: 12px;
+    -fx-background-radius: 20;
+    -fx-min-width: 25px;
+    -fx-min-height: 25px;
+    -fx-max-width: 25px;
+    -fx-max-height: 25px;
+}
+
+.info-button:hover {
+    -fx-background-color: #DCDCDC;
+}
+
+/* Stile per la ListView e le sue celle */
+.list-view {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+    -fx-border-color: #EAEAEA;
+    -fx-border-width: 0 0 1 0;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: #F0F0F0;
+}
+
+/* Stile per la selezione di un brano */
+.list-cell:filled:selected, .list-cell:filled:selected:hover {
+    -fx-background-color: #D5E5F5; /* Azzurro polvere */
+}
+
+
+.list-cell:filled:selected .label, .list-cell:filled:selected:hover .label {
+    -fx-text-fill: #1D1D1F;
+}
+
+/* Stile per i TextField */
+.text-field {
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #CCCCCC;
+}
+
+.text-field:focused {
+    -fx-border-color: #007AFF;
+}

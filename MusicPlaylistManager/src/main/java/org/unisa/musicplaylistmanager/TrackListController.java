@@ -1,5 +1,6 @@
 package org.unisa.musicplaylistmanager;
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -8,7 +9,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.AnchorPane;
@@ -20,6 +23,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  * @author gruppo10
@@ -49,6 +53,10 @@ public class TrackListController {
 
         //Abilito la selezione multipla di elementi
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        // Lega la proprietà 'disable' del bottone 'deleteButton' allo stato della selezione della lista.
+        // Se non ci sono elementi selezionati (isEmpty() è true), il bottone sarà disabilitato.
+        deleteButton.disableProperty().bind(Bindings.isEmpty(listView.getSelectionModel().getSelectedItems()));
 
 
         // Gestione del doppio click su una riga per aprire il player
@@ -127,16 +135,37 @@ public class TrackListController {
         stage.show();
     }
 
-    public void deleteTrack(ActionEvent actionEvent){
+    public void deleteTrack(ActionEvent actionEvent) {
+        ObservableList<Track> selectedItems = listView.getSelectionModel().getSelectedItems();
 
-        //ottengo le traccie selezionate all'interno della lista
-        ObservableList<Track> selected = listView.getSelectionModel().getSelectedItems();
-
-        //la rimuovo dalla lista osservabile e dalla trackList
-        for(Track t:new ArrayList<>(selected)) {
-            trackListObservable.remove(t);
-            trackList.removeTrack(t);
+        if (selectedItems.isEmpty()) {
+            return;
         }
 
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Conferma Eliminazione");
+
+        // cambia il messaggio in base al numero di elementi selezionati
+        if (selectedItems.size() == 1) {
+            alert.setHeaderText("Sei sicuro di voler eliminare la traccia selezionata?");
+            alert.setContentText("L'azione è irreversibile.");
+        } else {
+            alert.setHeaderText("Sei sicuro di voler eliminare le " + selectedItems.size() + " tracce selezionate?");
+            alert.setContentText("L'azione è irreversibile.");
+        }
+
+        // Mostra l'alert e attendi la risposta dell'utente
+        Optional<ButtonType> result = alert.showAndWait();
+
+        // Se l'utente ha cliccato "OK"
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+
+            ArrayList<Track> toRemove = new ArrayList<>(selectedItems);
+
+            // Rimuovi gli elementi dalla lista osservabile e dalla tracklist
+            trackListObservable.removeAll(toRemove);
+            trackList.getTracks().removeAll(toRemove);
+        }
     }
+
 }
