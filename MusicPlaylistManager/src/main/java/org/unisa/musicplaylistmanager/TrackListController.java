@@ -37,14 +37,14 @@ public class TrackListController {
         if (trackList == null) trackList = new TrackList();
         trackListObservable = FXCollections.observableArrayList(trackList.getTracks());
 
-        // fa in modo che la list view usi la cella peronalizzata
+        // fa in modo che la list view usi la cella personalizzata
         listView.setCellFactory(param -> new TrackCellController(this::showTrackDetails));
 
         listView.setItems(trackListObservable);
 
         // Gestione del doppio click su una riga per aprire il player
         listView.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2) { // Apri il player solo con un doppio click
+            if (event.getClickCount() == 2) { // Apri il player con un doppio click
                 Track selected = listView.getSelectionModel().getSelectedItem();
                 if (selected == null) return;
                 openPlayerFor(selected);
@@ -61,6 +61,9 @@ public class TrackListController {
             TrackController controller = loader.getController();
             // Passa la traccia e imposta la modalità di sola lettura
             controller.setTrackDetails(track);
+            // Passa anche la lista osservabile per permettere l'aggiornamento della lista nella UI
+            // se viene modificata una traccia
+            controller.setObservable(trackListObservable);
 
             Stage stage = new Stage();
             stage.setTitle("Dettagli Traccia");
@@ -104,6 +107,7 @@ public class TrackListController {
 
         Stage stage = new Stage();
         stage.setTitle("Aggiungi Traccia");
+
 
         Scene scene = new Scene(root);
         TrackController controller = loader.getController();
