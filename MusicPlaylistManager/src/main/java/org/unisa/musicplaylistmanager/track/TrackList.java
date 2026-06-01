@@ -1,6 +1,7 @@
 package org.unisa.musicplaylistmanager.track;
 
 import org.unisa.musicplaylistmanager.observer.BaseSubjectTrackList;
+import org.unisa.musicplaylistmanager.observer.SubjectTrackList;
 import org.unisa.musicplaylistmanager.playlist.Playlist;
 
 /**
@@ -19,6 +20,7 @@ public class TrackList extends Playlist {
     //Costruttore
     public TrackList(){
         super(null);
+        subjectTrackList = new SubjectTrackList();
         pnt = this;
     }
 
@@ -33,5 +35,9 @@ public class TrackList extends Playlist {
 
     public static TrackList getTrackListPointer(){
         return pnt;
+    }
+
+    public BaseSubjectTrackList getSubjectTrackList(){
+        return subjectTrackList;
     }
 }

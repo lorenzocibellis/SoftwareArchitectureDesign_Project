@@ -1,6 +1,7 @@
 package org.unisa.musicplaylistmanager.observer;
 
 import org.unisa.musicplaylistmanager.playlist.Playlist;
+import org.unisa.musicplaylistmanager.track.Track;
 
 /**
  * @author gruppo10
@@ -16,7 +17,8 @@ public abstract class BaseObserverPlaylist {
         this.playlist = playlist;
     }
 
-    public void update(){
-        throw new UnsupportedOperationException();
+    //metodo per aggiornare la playlist osservatrice riguardo un evento (eliminazione traccia)
+    public void update(Track track){
+        playlist.removeTrack(track);
     }
 }

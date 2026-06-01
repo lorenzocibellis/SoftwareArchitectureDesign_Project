@@ -4,6 +4,8 @@ package org.unisa.musicplaylistmanager.observer;
  * @author gruppo10
  */
 
+import org.unisa.musicplaylistmanager.track.Track;
+
 import java.util.ArrayList;
 
 public abstract class BaseSubjectTrackList {
@@ -17,15 +19,18 @@ public abstract class BaseSubjectTrackList {
     }
 
     public void attach(BaseObserverPlaylist observer){
-        throw new UnsupportedOperationException();
+        if (observer != null)
+            playlistObserver.add(observer);
     }
 
     public void detach(BaseObserverPlaylist observer){
-        throw new UnsupportedOperationException();
+        playlistObserver.remove(observer);
     }
 
-
-    public void notifyObserver(){
-        throw new UnsupportedOperationException();
+    //metodo per notificare eventi alle playlist (eliminazione traccia)
+    public void notifyObserver(Track track){
+        for(int i = 0; i < playlistObserver.size(); i++){
+            playlistObserver.get(i).update(track);
+        }
     }
 }
