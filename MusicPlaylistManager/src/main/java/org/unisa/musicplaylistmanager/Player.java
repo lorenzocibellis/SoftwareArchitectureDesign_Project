@@ -11,7 +11,7 @@ import java.util.function.IntConsumer;
 public class Player {
     // variabili dello State Pattern  
     private PlayerState currentState;
-    private PlayerState defaultState; // Aggiunto per fedeltà all'UML!
+    private PlayerState defaultState; 
     
     // playlist o tracklist in cui scorrere le tracce
     private Playlist playlist;
@@ -22,7 +22,7 @@ public class Player {
     //  Variabili interne per la riproduzione 
     private int elapsedSeconds;
     private Timer timer;
-    private boolean isTerminated = false; // NUOVA VARIABILE: Guardia per evitare loop infiniti
+    private boolean isTerminated = false; // Variabile per evitare loop infiniti
 
     // Variabili di callbacks per la GUI 
     private IntConsumer onTimeTick;
@@ -94,7 +94,7 @@ public class Player {
 
     // Funzione per interrompere bruscamente la riproduzione (come quando si chiude la finestra del player)
     public void terminate() {
-        if (isTerminated) return; // CONTROLLO SALVAVITA: Se è già terminato, ignora la chiamata ed esci
+        if (isTerminated) return; // Se è già terminato, ignora la chiamata ed esci
         isTerminated = true;      // Segna come terminato
         
         stopPlayback();

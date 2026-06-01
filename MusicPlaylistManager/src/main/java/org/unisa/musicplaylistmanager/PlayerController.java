@@ -193,7 +193,7 @@ public class PlayerController implements Initializable {
             trackTitle.textProperty().bind(track.titleProperty());
             authorName.textProperty().bind(track.authorProperty());
 
-            // GESTIAMO IL CAMBIO DI DURATA IN TEMPO REALE
+            // GESTIONE DEL CAMBIO DI DURATA IN TEMPO REALE
             // Aggiungiamo un listener che si attiva ogni volta che la durata cambia in TrackController
             javafx.beans.value.ChangeListener<Number> durationListener = (obs, oldVal, newVal) -> {
                 songProgress.setMax(newVal.intValue());
