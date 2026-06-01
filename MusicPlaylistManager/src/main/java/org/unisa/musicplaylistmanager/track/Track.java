@@ -23,7 +23,19 @@ public class Track {
 
     //METODI
 
-    //Costruttore
+    /**
+     * Costruttore
+     *
+     * @param title Titolo della traccia.
+     * @param author L'autore della traccia.
+     * @param year Anno di pubblicazione.
+     * @param genre Genere della traccia.
+     * @param duration Durata della traccia
+     * @param favourite Flag indicante che la traccia è una tra le preferita
+     * @param explicit Flag indicante la presenza di contenuto esplicito
+     * @param newRelease Flag indicante che la traccia è una nuova uscita
+     *
+     */
     public Track(String title, String author, Year year, String genre, int duration,
                  boolean favourite, boolean explicit, boolean newRelease) {
 
@@ -42,7 +54,16 @@ public class Track {
     }
 
 
-    //funzione di validazione interna
+    /**
+     * Costruttore
+     *
+     * @param title Titolo della traccia.
+     * @param author L'autore della traccia.
+     * @param year Anno di pubblicazione.
+     * @param genre Genere della traccia.
+     * @param duration Durata della traccia
+     *                 
+     */
     private static void validate(String title, String author, String genre, Year year, int duration) {
         if (isBlank(title) || isBlank(author) || isBlank(genre) || year == null) {
             throw new IllegalArgumentException("I campi non possono essere vuoti.");

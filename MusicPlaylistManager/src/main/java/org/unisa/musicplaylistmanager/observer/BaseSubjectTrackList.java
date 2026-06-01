@@ -18,11 +18,13 @@ public abstract class BaseSubjectTrackList {
         playlistObserver = new ArrayList<BaseObserverPlaylist>();
     }
 
+    // aggiunta di un osservatore alla lista
     public void attach(BaseObserverPlaylist observer){
-        if (observer != null)
+        if (observer != null) // controllo esistenza dell'osservatore
             playlistObserver.add(observer);
     }
 
+    // staccamento di un osservatore dalla lista
     public void detach(BaseObserverPlaylist observer){
         playlistObserver.remove(observer);
     }
@@ -30,6 +32,7 @@ public abstract class BaseSubjectTrackList {
     //metodo per notificare eventi alle playlist (eliminazione traccia)
     public void notifyObserver(Track track){
         for(int i = 0; i < playlistObserver.size(); i++){
+            // aggiornamento degli osservatori
             playlistObserver.get(i).update(track);
         }
     }
