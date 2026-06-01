@@ -4,6 +4,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.unisa.musicplaylistmanager.player.Player;
+import org.unisa.musicplaylistmanager.playlist.Playlist;
+import org.unisa.musicplaylistmanager.state.PlayerState;
+import org.unisa.musicplaylistmanager.track.Track;
 
 import java.time.Year;
 import java.util.concurrent.atomic.AtomicBoolean;

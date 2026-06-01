@@ -27,7 +27,7 @@
           <execution>
             <id>default-cli</id>
             <configuration>
-              <mainClass>org.unisa.musicplaylistmanager.MusicPlaylistManagerApp</mainClass>
+              <mainClass>org.unisa.musicplaylistmanager.app.MusicPlaylistManagerApp</mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
               <jlinkImageName>app</jlinkImageName>
@@ -50,7 +50,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>org.unisa.musicplaylistmanager.Launcher</mainClass>
+                  <mainClass>org.unisa.musicplaylistmanager.app.Launcher</mainClass>
                 </transformer>
               </transformers>
               <filters>

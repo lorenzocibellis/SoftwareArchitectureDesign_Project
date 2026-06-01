@@ -1,0 +1,51 @@
+package org.unisa.musicplaylistmanager.iterator;
+
+import org.unisa.musicplaylistmanager.playlist.Playlist;
+import org.unisa.musicplaylistmanager.strategy.ExecutionStrategy;
+import org.unisa.musicplaylistmanager.track.Track;
+
+/**
+ *
+ * @author gruppo10
+ */
+
+public class Iterator implements AbstractIterator {
+
+    // variabili di istanza della classe Iterator
+    private int currentindext;
+    private int[] iterationindex;
+    private Playlist playlist;
+
+    // costruttore della classe Iterator
+    public Iterator(Playlist playlist) {
+        this.playlist = playlist;
+    }
+
+    // implementazione del metodo per ottenere la traccia corrente in esecuzione
+    @Override
+    public Track getCurrent() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    // implementazione del metodo per ottenere la traccia successiva
+    @Override
+    public Track getNext() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    // implementazione del metodo per ottenere la traccia precedente
+    @Override
+    public Track getPrevious() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    // implementazione del metodo per definire la modalità di riproduzione
+    @Override
+    public void setStrategy(ExecutionStrategy es) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public AbstractIterator createIterator() {
+        return null;
+    }
+}

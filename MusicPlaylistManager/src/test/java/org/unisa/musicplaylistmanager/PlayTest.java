@@ -3,6 +3,12 @@ package org.unisa.musicplaylistmanager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.unisa.musicplaylistmanager.player.Player;
+import org.unisa.musicplaylistmanager.playlist.Playlist;
+import org.unisa.musicplaylistmanager.state.Pause;
+import org.unisa.musicplaylistmanager.state.Play;
+import org.unisa.musicplaylistmanager.track.Track;
+
 import java.time.Year;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,7 +26,7 @@ class PlayTest {
         Track dummyTrack = new Track("Titolo", "Autore", Year.of(2020), "Pop", 100, false, false, false);
         
         // CORREZIONE: Il costruttore di Playlist accetta una sola stringa!
-        Playlist dummyPlaylist = new Playlist("Mia Playlist"); 
+        Playlist dummyPlaylist = new Playlist("Mia Playlist");
         
         playState = new Play();
         // Inizializziamo il player partendo dallo stato Play
@@ -35,7 +41,7 @@ class PlayTest {
 
         // Verifichiamo che la transizione di stato sia avvenuta correttamente.
         // In JUnit 5, assertInstanceOf verifica che l'oggetto sia esattamente di quella classe.
-       assertInstanceOf(Pause.class, player.getCurrentState(), 
+       assertInstanceOf(Pause.class, player.getCurrentState(),
                 "Dopo aver eseguito Play, lo stato del player deve diventare Pause");
     }
 }

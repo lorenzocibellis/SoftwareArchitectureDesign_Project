@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="506.0" prefWidth="449.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="org.unisa.musicplaylistmanager.PlayerController">
+<AnchorPane id="AnchorPane" prefHeight="506.0" prefWidth="449.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="org.unisa.musicplaylistmanager.player.PlayerController">
 
    <children>
       <Pane layoutY="262.0" prefHeight="247.0" prefWidth="450.0">

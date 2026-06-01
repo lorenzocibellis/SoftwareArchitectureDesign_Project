@@ -66,7 +66,7 @@
                     <execution>
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>org.unisa.musicplaylistmanager.MusicPlaylistManagerApp</mainClass>
+                            <mainClass>org.unisa.musicplaylistmanager.app.MusicPlaylistManagerApp</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
@@ -91,7 +91,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>org.unisa.musicplaylistmanager.Launcher</mainClass>
+                                    <mainClass>org.unisa.musicplaylistmanager.app.Launcher</mainClass>
                                 </transformer>
                             </transformers>
                             <filters>
