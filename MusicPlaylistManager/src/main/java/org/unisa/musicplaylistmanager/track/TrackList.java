@@ -24,11 +24,6 @@ public class TrackList extends Playlist {
         pnt = this;
     }
 
-    @Override
-    public void removeTrack(Track track){
-        this.getTracks().remove(track);
-    }
-
     public static boolean exists(){
         return !(pnt == null);
     }
