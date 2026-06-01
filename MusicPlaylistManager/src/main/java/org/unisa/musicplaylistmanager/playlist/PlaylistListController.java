@@ -1,6 +1,7 @@
 package org.unisa.musicplaylistmanager.playlist;
 
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -77,6 +78,9 @@ public class PlaylistListController {
         listView.setItems(playlistListObservable);
 
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        deleteButton.disableProperty().bind(Bindings.isEmpty(listView.getSelectionModel().getSelectedItems()));
+
 
         listView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) { // Apri la playlist con doppio click
