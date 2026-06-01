@@ -11,10 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
@@ -27,6 +24,8 @@ import org.unisa.musicplaylistmanager.track.TrackController;
 import org.unisa.musicplaylistmanager.track.TrackList;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Optional;
 
 public class PlaylistController {
 
@@ -147,6 +146,17 @@ public class PlaylistController {
 
     @FXML
     void removeTrack(ActionEvent event) {
+        ObservableList<Track> selectedItems = listView.getSelectionModel().getSelectedItems();
+
+        if (selectedItems.isEmpty()) {
+            return;
+        }
+
+        ArrayList<Track> toRemove = new ArrayList<>(selectedItems);
+        
+        // Rimuovi gli elementi dalla lista osservabile e dalla tracklist
+        playlistObservable.removeAll(toRemove);
+        playlist.getTracks().removeAll(toRemove);
 
     }
 
