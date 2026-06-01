@@ -242,6 +242,58 @@ class PlaylistTest {
     }
 
     // -----------------------------------------------------------------------
+    // updateTrack()
+    // -----------------------------------------------------------------------
+
+    @Test
+    @DisplayName("updateTrack: aggiorna i campi in-place con successo se non si creano duplicati")
+    void testUpdateTrackSuccess() {
+        playlist.addTrack(track1);
+        playlist.addTrack(track2);
+
+        // Nuovi dati per track1 (cambiamo titolo, genere, durata e flag)
+        Track newData = new Track("Bohemian Rhapsody (2011 Remaster)", "Queen", Year.of(1975), "Classic Rock", 359, true, false, true);
+
+        playlist.updateTrack(track1, newData);
+
+        // Verifichiamo che l'oggetto track1 originale sia stato aggiornato internamente
+        assertEquals("Bohemian Rhapsody (2011 Remaster)", track1.getTitle());
+        assertEquals("Classic Rock", track1.getGenre());
+        assertEquals(359, track1.getDuration());
+        assertTrue(track1.isNewRelease());
+
+        // La dimensione della playlist deve essere rimasta invariata
+        assertEquals(2, playlist.getSize());
+    }
+
+    @Test
+    @DisplayName("updateTrack: lancia IllegalArgumentException se la modifica crea un duplicato con un'altra traccia")
+    void testUpdateTrackDuplicateError() {
+        playlist.addTrack(track1);
+        playlist.addTrack(track2);
+
+        // Creiamo dati che sono "uguali" (per equals) a track2, ma vogliamo applicarli a track1
+        Track duplicateData = new Track("Stairway to Heaven", "Led Zeppelin", Year.of(1971), "Pop", 100, false, false, false);
+
+        // Deve fallire perché 'Stairway to Heaven' esiste già nella playlist ed è un'istanza diversa da track1
+        assertThrows(IllegalArgumentException.class, () -> playlist.updateTrack(track1, duplicateData));
+    }
+
+    @Test
+    @DisplayName("updateTrack: permette la modifica se i dati uguali appartengono alla traccia stessa (Self-Update)")
+    void testUpdateTrackSelfUpdate() {
+        playlist.addTrack(track1);
+        playlist.addTrack(track2);
+
+        // Modifichiamo solo la durata di track1. Titolo, autore e anno rimangono identici.
+        Track selfUpdateData = new Track("Bohemian Rhapsody", "Queen", Year.of(1975), "Rock", 400, true, false, false);
+
+        // Non deve lanciare eccezioni perché il controllo (t != existingTrack) scavalca track1 durante il loop
+        assertDoesNotThrow(() -> playlist.updateTrack(track1, selfUpdateData));
+        assertEquals(400, track1.getDuration());
+    }
+
+    // -----------------------------------------------------------------------
     // Metodi che lanciano UnsupportedOperationException
     // -----------------------------------------------------------------------
 
@@ -263,4 +315,3 @@ class PlaylistTest {
         assertThrows(UnsupportedOperationException.class, () -> playlist.undo());
     }
 }
-
