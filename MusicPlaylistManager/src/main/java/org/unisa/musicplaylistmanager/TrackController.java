@@ -162,6 +162,9 @@ public class TrackController {
     private void setEditMode() {
         setFieldsEditable(true);
 
+        // --- FORZATURA PER IL GRUPPO: Congeliamo la durata durante la modifica ---
+        minutesInput.setEditable(false);
+        secondsInput.setEditable(false);
 
         addTrackButton.setVisible(false);
         editButton.setVisible(false);

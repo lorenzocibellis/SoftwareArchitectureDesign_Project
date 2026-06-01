@@ -99,15 +99,6 @@ public class PlayerController implements Initializable {
             Platform.runLater(() -> setExecuteButtonImage("/icons/playButton.jpg", 24, 24));
         });
 
-        // GESTIAMO IL CASO LIMITE: Il player si è accorto che la traccia è finita (o accorciata)
-        player.setOnTerminateUIUpdate(() -> {
-            Platform.runLater(() -> {
-                // Cosa vuoi che faccia visivamente quando si interrompe? 
-                // Chiudiamo il player chiamando il tuo metodo handleClose()
-                handleClose(); 
-            });
-        });
-
         player.changeState();
     }
 
@@ -184,24 +175,9 @@ public class PlayerController implements Initializable {
         if (track != null) {
             trackTitle.textProperty().unbind();
             authorName.textProperty().unbind();
-            
-            // Rimuoviamo il listener precedente se c'era
-            if (songProgress.getUserData() != null) {
-                track.durationProperty().removeListener((javafx.beans.value.ChangeListener<Number>) songProgress.getUserData());
-            }
 
             trackTitle.textProperty().bind(track.titleProperty());
             authorName.textProperty().bind(track.authorProperty());
-
-            // GESTIONE DEL CAMBIO DI DURATA IN TEMPO REALE
-            // Aggiungiamo un listener che si attiva ogni volta che la durata cambia in TrackController
-            javafx.beans.value.ChangeListener<Number> durationListener = (obs, oldVal, newVal) -> {
-                songProgress.setMax(newVal.intValue());
-                duration.setText(formatTime(newVal.intValue()));
-            };
-            track.durationProperty().addListener(durationListener);
-            // Salviamo il riferimento al listener per poterlo rimuovere alla traccia successiva
-            songProgress.setUserData(durationListener);
 
             // Setup iniziale
             songProgress.setMin(0);

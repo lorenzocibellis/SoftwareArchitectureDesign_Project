@@ -4,8 +4,6 @@ package org.unisa.musicplaylistmanager;
  * @author gruppo10
  */
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import java.time.Year;
@@ -17,7 +15,7 @@ public class Track {
     private StringProperty author;
     private String genre;
     private Year year;
-    private IntegerProperty duration;
+    private int duration;
     private boolean favourite;
     private boolean explicit;
     private boolean newRelease;
@@ -31,7 +29,7 @@ public class Track {
         this.author = new SimpleStringProperty(author);
         this.year = year;
         this.genre = genre;
-        this.duration = new SimpleIntegerProperty(duration);
+        this.duration = duration;
         this.favourite = favourite;
         this.explicit = explicit;
         this.newRelease = newRelease;
@@ -66,7 +64,7 @@ public class Track {
     public String getAuthor()     { return author.get(); }
     public String getGenre()      { return genre; }
     public Year getYear()         { return year; }
-    public int getDuration()      { return duration.get(); }
+    public int getDuration()      { return duration; }
     public boolean isFavourite()    { return favourite; }
     public boolean isExplicitContent() { return explicit; }
     public boolean isNewRelease()   { return newRelease; }
@@ -91,7 +89,7 @@ public class Track {
     
     public void setDuration(int duration) {
         if (duration < 0) throw new IllegalArgumentException("La durata non può essere negativa.");
-        this.duration.set(duration);
+        this.duration = duration;
     }
     
     public void setFavourite(boolean favourite)  { this.favourite = favourite; }
@@ -101,7 +99,6 @@ public class Track {
     // --- Metodi Property (Nuovi, necessari per implementare il pattern Observer tramite Binding) ---
     public StringProperty titleProperty() { return title; }
     public StringProperty authorProperty() { return author; }
-    public IntegerProperty durationProperty() { return duration; }
 
     //Override metodo per uguaglianza tra tracce
     @Override
