@@ -50,7 +50,8 @@ public class TrackListController {
 
     @FXML
     public void initialize() {
-        if (trackList == null) trackList = new TrackList();
+        if (!TrackList.exists()) trackList = new TrackList();
+        else trackList = TrackList.getTrackListPointer();
         trackListObservable = FXCollections.observableArrayList(trackList.getTracks());
 
         // fa in modo che la list view usi la cella personalizzata

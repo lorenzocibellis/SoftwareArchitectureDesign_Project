@@ -1,6 +1,7 @@
 package org.unisa.musicplaylistmanager;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,7 @@ import java.io.IOException;
 
 public class PlaylistListController {
 
+    //Dichiarazione attributi
     @FXML
     private Button button1;
 
@@ -29,10 +31,20 @@ public class PlaylistListController {
     private Button tracksButton;
 
     @FXML
-    private ListView<?> listView;
+    private ListView<Playlist> listView;
 
     @FXML
     private StackPane mainStackPane;
+
+    private ObservableList<Playlist> playlistListObservable;
+    private PlaylistList playlistList;
+
+    //METODI
+    @FXML
+    public void initialize(){
+        if (!PlaylistList.exists()) playlistList = new PlaylistList();
+        else playlistList = PlaylistList.getPlaylistListPointer();
+    }
 
     @FXML
     void addNewPlaylist(ActionEvent event) {
