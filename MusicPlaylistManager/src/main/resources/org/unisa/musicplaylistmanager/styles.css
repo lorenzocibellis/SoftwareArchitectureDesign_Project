@@ -108,3 +108,14 @@
 .text-field:focused {
     -fx-border-color: #007AFF;
 }
+
+.playlist-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #007AFF;
+    -fx-border-color: #007AFF;
+    -fx-border-radius: 8;
+}
+
+.playlist-button:hover {
+    -fx-background-color: #F0F8FF;
+}
