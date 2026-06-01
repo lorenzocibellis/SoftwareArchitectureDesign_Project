@@ -22,7 +22,7 @@
 
         <VBox HBox.hgrow="ALWAYS">
             <children>
-                <Label fx:id="titleLabel" text="Titolo Playlist" textFill="#1D1D1F">
+                <Label fx:id="nameLabel" text="Titolo Playlist" textFill="#1D1D1F">
                     <font>
                         <Font name="System Bold" size="16.0" />
                     </font>

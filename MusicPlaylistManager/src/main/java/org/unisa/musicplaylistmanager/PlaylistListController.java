@@ -48,6 +48,8 @@ public class PlaylistListController {
 
         playlistListObservable = FXCollections.observableArrayList(playlistList.getPlaylists());
 
+        listView.setCellFactory(param -> new PlaylistCellController());
+
         listView.setItems(playlistListObservable);
     }
 
