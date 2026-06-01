@@ -53,7 +53,7 @@ public class PlayerController implements Initializable {
     private Button minimizeButton;
 
     private String resourceRoot = "/org/unisa/musicplaylistmanager/";
-    private String iconsRoot = "/org/unisa/icons/";
+    private String iconsRoot = "/icons/";
     private Player player;
     private AnchorPane playerRoot;
     private boolean isMinimized = false;
@@ -64,12 +64,12 @@ public class PlayerController implements Initializable {
         skipToNextButton.setDisable(true);
         skipToPreviousButton.setDisable(true);
         // Carichiamo le icone per i tasti di skip
-        setButtonImage(skipToNextButton, iconsRoot + "/skipNextButton.png", 37, 37);
-        setButtonImage(skipToPreviousButton, iconsRoot + "/skipPreviousButton.png", 37, 37);
+        setButtonImage(skipToNextButton, iconsRoot + "skipNextButton.png", 37, 37);
+        setButtonImage(skipToPreviousButton, iconsRoot + "skipPreviousButton.png", 37, 37);
 
         // Placeholder per l'eventuale copertina della canzone
         try {
-            Image image = new Image(getClass().getResourceAsStream(iconsRoot + "/musical-note.png"));
+            Image image = new Image(getClass().getResourceAsStream(iconsRoot + "musical-note.png"));
             albumArt.setImage(image);
         } catch (Exception e) {
             System.err.println("Immagine di placeholder non trovata: /icons/musical-note.png");
@@ -96,11 +96,11 @@ public class PlayerController implements Initializable {
         });
         
         player.setOnPlayUIUpdate(() -> {
-            Platform.runLater(() -> setExecuteButtonImage(iconsRoot + "/pauseButton.png", 37, 37));
+            Platform.runLater(() -> setExecuteButtonImage(iconsRoot + "pauseButton.png", 37, 37));
         });
         
         player.setOnPauseUIUpdate(() -> {
-            Platform.runLater(() -> setExecuteButtonImage(iconsRoot + "/playButton.jpg", 24, 24));
+            Platform.runLater(() -> setExecuteButtonImage(iconsRoot + "playButton.jpg", 24, 24));
         });
 
         player.changeState();
