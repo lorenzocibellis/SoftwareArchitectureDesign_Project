@@ -10,8 +10,12 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.unisa.musicplaylistmanager.app.MusicPlaylistManagerApp;
+import org.unisa.musicplaylistmanager.track.Track;
+import org.unisa.musicplaylistmanager.track.TrackController;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,6 +47,24 @@ public class PlaylistListController {
     private PlaylistList playlistList;
 
     //METODI
+
+    private void openPlaylist(Playlist p) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "PlaylistView.fxml"));
+        Parent root = loader.load();
+
+        PlaylistController controller = loader.getController();
+        controller.setPlaylist(p);
+
+        Stage stage = new Stage();
+        stage.setTitle("Playlist");
+
+
+        Scene scene = new Scene(root);
+
+        stage.setScene(scene);
+        stage.show();
+    }
+
     @FXML
     public void initialize(){
         if (!PlaylistList.exists()) playlistList = new PlaylistList();
@@ -55,6 +77,18 @@ public class PlaylistListController {
         listView.setItems(playlistListObservable);
 
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        listView.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) { // Apri la playlist con doppio click
+                Playlist selected = listView.getSelectionModel().getSelectedItem();
+                if (selected == null) return;
+                try {
+                    openPlaylist(selected);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 
     @FXML
