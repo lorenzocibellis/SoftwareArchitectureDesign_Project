@@ -51,13 +51,19 @@
                     <target>17</target>
                 </configuration>
             </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+            </plugin>
+
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <executions>
                     <execution>
-                        <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>org.unisa.musicplaylistmanager.MusicPlaylistManagerApp</mainClass>
@@ -88,7 +94,6 @@
                                     <mainClass>org.unisa.musicplaylistmanager.Launcher</mainClass>
                                 </transformer>
                             </transformers>
-                            <!-- Escludiamo il file module-info.class dal fat jar -->
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>
@@ -107,4 +112,3 @@
         </plugins>
     </build>
 </project>
-

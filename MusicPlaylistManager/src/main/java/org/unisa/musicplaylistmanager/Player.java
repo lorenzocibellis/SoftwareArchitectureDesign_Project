@@ -54,6 +54,11 @@ public class Player {
         this.currentState = state;
     }
 
+    //  METODO AGGIUNTO PER I TEST JUNIT 
+    public PlayerState getCurrentState() {
+        return this.currentState;
+    }
+
     // Logica di Riproduzione della Traccia
     
     public void startPlayback() {
