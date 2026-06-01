@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.TrackListController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.PlaylistlistController">
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="70.0" style="-fx-background-color: #F8F8F8; -fx-border-color: #E0E0E0; -fx-border-width: 0 0 1 0;">
             <children>
@@ -48,8 +48,8 @@
     <bottom>
         <HBox alignment="CENTER" prefHeight="70.0" spacing="15.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 1 0 0 0;">
             <children>
-                <Button fx:id="button1" mnemonicParsing="false" onAction="#addNewTrack" prefHeight="35.0" prefWidth="150.0" text="Nuova Playlist" />
-                <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteTrack" prefHeight="35.0" prefWidth="150.0" styleClass="delete-button" text="Elimina Selezionata" />
+                <Button fx:id="button1" mnemonicParsing="false" onAction="#addNewPlaylist" prefHeight="35.0" prefWidth="150.0" text="Nuova Playlist" />
+                <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deletePlaylist" prefHeight="35.0" prefWidth="150.0" styleClass="delete-button" text="Elimina Selezionata" />
             </children>
         </HBox>
     </bottom>

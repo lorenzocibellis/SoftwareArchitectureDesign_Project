@@ -73,7 +73,7 @@ public class Playlist {
     @Override
     public boolean equals(Object o){
         if (this == o) return true;
-        if ((o == null) ||  o.getClass() != this.getClass()) return false
+        if ((o == null) ||  o.getClass() != this.getClass()) return false;
         Playlist p = (Playlist) o;
         return p.getName().equals(this.getName());
     }
