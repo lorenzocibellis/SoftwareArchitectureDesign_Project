@@ -11,6 +11,7 @@ import java.util.Objects;
 
 public class Track {
 
+    //ATTRIBUTI
     private StringProperty title;
     private StringProperty author;
     private String genre;
@@ -20,11 +21,16 @@ public class Track {
     private boolean explicit;
     private boolean newRelease;
 
+    //METODI
+
+    //Costruttore
     public Track(String title, String author, Year year, String genre, int duration,
                  boolean favourite, boolean explicit, boolean newRelease) {
 
+        //Controllo validità dati di input
         validate(title, author, genre, year, duration);
 
+        //setttaggio valori di input come dati della traccia
         this.title = new SimpleStringProperty(title);
         this.author = new SimpleStringProperty(author);
         this.year = year;
@@ -34,25 +40,29 @@ public class Track {
         this.explicit = explicit;
         this.newRelease = newRelease;
     }
-    
-    // funzione di validazione interna
+
+
+    //funzione di validazione interna
     private static void validate(String title, String author, String genre, Year year, int duration) {
         if (isBlank(title) || isBlank(author) || isBlank(genre) || year == null) {
             throw new IllegalArgumentException("I campi non possono essere vuoti.");
         }
-        if (validateYear(year)) {
+        if (!validateYear(year)) {
             throw new IllegalArgumentException("L'anno non può essere superiore all'anno attuale.");
         }
         // Validazione aggiuntiva per la durata positiva
-        if (duration < 0) {
+        if (!validateDuration(duration)) {
             throw new IllegalArgumentException("La durata non può essere negativa.");
         }
     }
 
     //verifica se l'anno è stato inserito e se è valido
     private static boolean validateYear(Year y){
-        return y != null && y.getValue() > Year.now().getValue();
+        return !(y != null && y.getValue() > Year.now().getValue());
     }
+
+    //verifica che la durata sia >0
+    private static boolean validateDuration(int duration){ return duration >= 0;}
 
     //funzione per verificare se i campi inseriti dall'utente sono vuoti
     private static boolean isBlank(String s) {
@@ -86,12 +96,10 @@ public class Track {
         if (validateYear(year)) throw new IllegalArgumentException("L'anno è obbligatorio e non può essere superiore all'anno corrente.");
         this.year = year;
     }
-    
     public void setDuration(int duration) {
         if (duration < 0) throw new IllegalArgumentException("La durata non può essere negativa.");
         this.duration = duration;
     }
-    
     public void setFavourite(boolean favourite)  { this.favourite = favourite; }
     public void setExplicit(boolean explicit)    { this.explicit = explicit; }
     public void setNewRelease(boolean newRelease){ this.newRelease = newRelease; }
@@ -112,10 +120,10 @@ public class Track {
     //Override metodo di hashCode
     @Override
     public int hashCode(){
-        return Objects.hash(this.getTitle(), this.getAuthor(), this.getYear());
+        return (getTitle() + getAuthor() + getYear()).hashCode();
     }
 
-    //Override metodo di print
+    //Override metodo per print di dati della traccia
     @Override
     public String toString(){
         return this.getTitle() + " | " + this.getAuthor() + " | " + this.getYear();

@@ -33,11 +33,11 @@ import java.util.Optional;
  */
 public class TrackListController {
 
+    //DEFINIZIONE OGGETTI JAVAFX
     @FXML
     private StackPane mainStackPane;
     @FXML
     private ListView<Track> listView;
-
     @FXML
     private Button deleteButton;
     @FXML
@@ -45,19 +45,35 @@ public class TrackListController {
     @FXML
     private Button goPlaylistButton;
 
+    //Definizione attributi
+    //Path per accedere agli oggetti View.fxml
     private String resourceRoot = "/org/unisa/musicplaylistmanager/";
+
+    //struttura dati per implementare la lista sulla UI
     private ObservableList<Track> trackListObservable;
+    //Struttura dati per memorizzazione tracce
     private TrackList trackList;
 
+    //METODI
+    //METODI FXML
+
+    //Inizializzatore
     @FXML
     public void initialize() {
+
+        //Controlla se la TrackList non è stata già inizializzata
+        //Se è la prima volra la inizializza
         if (!TrackList.exists()) trackList = new TrackList();
+        //altrimenti ottiene il puntatore alla TrackList già creata
         else trackList = TrackList.getTrackListPointer();
+
+        //inizializzazione della struttura dati osservabile
         trackListObservable = FXCollections.observableArrayList(trackList.getTracks());
 
         // fa in modo che la list view usi la cella personalizzata
         listView.setCellFactory(param -> new TrackCellController(this::showTrackDetails));
 
+        //wrapping della struttura dati osservabile in una lista della UI
         listView.setItems(trackListObservable);
 
         //Abilito la selezione multipla di elementi
@@ -79,47 +95,136 @@ public class TrackListController {
 
     }
 
+    //passaggio alla lista di Playlist
     @FXML
     void goPlaylist(ActionEvent event) throws IOException {
+
+        //caricamento della View
         Parent playlistParent = FXMLLoader.load(getClass().getResource(resourceRoot + "PlaylistListView.fxml"));
 
-        // 2. Crea la nuova scena
+        // creazione della nuova scena
         Scene playlistScene = new Scene(playlistParent);
 
-        // 3. Ottieni lo stage (finestra) corrente dall'evento
+        // ottienimento della finestra corrente dall'evento
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-        // 4. Cambia la scena
+        // cambio scena
         window.setScene(playlistScene);
         window.show();
     }
 
+
+    // Dichiarazioni metodi interni
+
     // Metodo chiamato quando viene cliccato il bottone "i" in una riga
+    // permette di mostrare le info di una traccia
     private void showTrackDetails(Track track) {
         try {
+
+            // caricamento della View
             FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "TrackView.fxml"));
             Parent root = loader.load();
 
+            // ottenimento del controller
             TrackController controller = loader.getController();
             // Passa la traccia e imposta la modalità di sola lettura
             controller.setTrackDetails(track);
             // Passa anche la lista osservabile per permettere l'aggiornamento della lista nella UI
             // se viene modificata una traccia
             controller.setObservable(trackListObservable);
-            
+
+            // settaggio della lista di tracce in cui memorizzare effettivamente i dati della traccia
             controller.setTrackList(trackList);
-            
+
+
+            // caricamento della finestra
             Stage stage = new Stage();
             stage.setTitle("Dettagli Traccia");
             stage.initModality(Modality.APPLICATION_MODAL); // Blocca l'interazione con la finestra principale
             stage.setScene(new Scene(root));
+            // apertura della finestra
             stage.showAndWait();
 
-        } catch (IOException e) {
+        } catch (IOException e) { //catch di eventuali eccezioni e print dello stack
             e.printStackTrace();
         }
     }
 
+    // apertura della finestra di aggiunta di una traccia alla TrackList
+    public void addNewTrack(ActionEvent actionEvent) throws IOException {
+
+        // caricamento della View e della finestra in cui verranno immessi i dati di input
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "TrackView.fxml"));
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        stage.setTitle("Aggiungi Traccia");
+        Scene scene = new Scene(root);
+
+        // ottenimento controller della finestra
+        TrackController controller = loader.getController();
+
+        // settaggio della lista di memorizzazione e di visualizzazione delle tracce
+        controller.setTrackList(trackList);
+        controller.setObservable(trackListObservable);
+
+        // visualizzazione finestra
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    // eliminazione di una traccia
+    public void deleteTrack(ActionEvent actionEvent) {
+
+        // ottenimento tracce selezionate
+        ObservableList<Track> selectedItems = listView.getSelectionModel().getSelectedItems();
+
+        // return se non sono state selezionate le tracce (missfire)
+        if (selectedItems.isEmpty()) {
+            return;
+        }
+
+        // apertura finestra di Alert per accertarsi dell'eliminazione
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Conferma Eliminazione");
+
+        // cambia il messaggio in base al numero di elementi selezionati
+        if (selectedItems.size() == 1) {
+            alert.setHeaderText("Sei sicuro di voler eliminare la traccia selezionata?");
+            alert.setContentText("L'azione è irreversibile.");
+        } else {
+            alert.setHeaderText("Sei sicuro di voler eliminare le " + selectedItems.size() + " tracce selezionate?");
+            alert.setContentText("L'azione è irreversibile.");
+        }
+
+        // Mostra l'alert e attendi la risposta dell'utente
+        Optional<ButtonType> result = alert.showAndWait();
+
+        // controlla se l'utente ha cliccato "OK"
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+
+            // crea la lista di tracce da rimuovere
+            ArrayList<Track> toRemove = new ArrayList<>(selectedItems);
+
+            // Rimuovi gli elementi dalla lista osservabile e dalla tracklist
+            trackListObservable.removeAll(toRemove);
+            trackList.getTracks().removeAll(toRemove);
+        }
+    }
+
+    // chiusura dell'applicazione
+    public void closeApp(ActionEvent actionEvent) {
+
+        // ottiene la finestra in cui è stato clickato il bottone e la chiude
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        stage.close();
+        Platform.exit();
+        // Termina l'intero programma
+        System.exit(0);
+
+    }
+
+    // Metodi utilitari
+    // apertura del player
     private void openPlayerFor(Track selected) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "PlayerView.fxml"));
@@ -143,67 +248,6 @@ public class TrackListController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void addNewTrack(ActionEvent actionEvent) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "TrackView.fxml"));
-        Parent root = loader.load();
-
-        Stage stage = new Stage();
-        stage.setTitle("Aggiungi Traccia");
-
-
-        Scene scene = new Scene(root);
-        TrackController controller = loader.getController();
-        controller.setTrackList(trackList);
-        controller.setObservable(trackListObservable);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public void deleteTrack(ActionEvent actionEvent) {
-        ObservableList<Track> selectedItems = listView.getSelectionModel().getSelectedItems();
-
-        if (selectedItems.isEmpty()) {
-            return;
-        }
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Conferma Eliminazione");
-
-        // cambia il messaggio in base al numero di elementi selezionati
-        if (selectedItems.size() == 1) {
-            alert.setHeaderText("Sei sicuro di voler eliminare la traccia selezionata?");
-            alert.setContentText("L'azione è irreversibile.");
-        } else {
-            alert.setHeaderText("Sei sicuro di voler eliminare le " + selectedItems.size() + " tracce selezionate?");
-            alert.setContentText("L'azione è irreversibile.");
-        }
-
-        // Mostra l'alert e attendi la risposta dell'utente
-        Optional<ButtonType> result = alert.showAndWait();
-
-        // Se l'utente ha cliccato "OK"
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-
-            ArrayList<Track> toRemove = new ArrayList<>(selectedItems);
-
-            // Rimuovi gli elementi dalla lista osservabile e dalla tracklist
-            trackListObservable.removeAll(toRemove);
-            trackList.getTracks().removeAll(toRemove);
-        }
-    }
-
-    public void closeApp(ActionEvent actionEvent) {
-
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        stage.close();
-        Platform.exit();
-        // Termina l'intero programma
-        System.exit(0);
-
-
-
     }
 
 }

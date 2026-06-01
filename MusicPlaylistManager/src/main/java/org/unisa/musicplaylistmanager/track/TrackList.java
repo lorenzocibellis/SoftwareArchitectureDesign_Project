@@ -10,7 +10,7 @@ import org.unisa.musicplaylistmanager.playlist.Playlist;
 
 public class TrackList extends Playlist {
 
-    //definizione subject per pattern Observer
+    //definizione attributo subject per pattern Observer
     private BaseSubjectTrackList subjectTrackList;
 
     //definizione puntatore per pattern Singleton
@@ -24,14 +24,17 @@ public class TrackList extends Playlist {
         pnt = this;
     }
 
+    //verifica esistenza di un obj TrackList
     public static boolean exists(){
         return !(pnt == null);
     }
 
+    //ottenimento obj TrackList
     public static TrackList getTrackListPointer(){
         return pnt;
     }
 
+    //ottenimento obj Subject del pattern Observer
     public BaseSubjectTrackList getSubjectTrackList(){
         return subjectTrackList;
     }
