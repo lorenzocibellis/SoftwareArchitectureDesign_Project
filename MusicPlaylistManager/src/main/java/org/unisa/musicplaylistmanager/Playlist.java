@@ -40,10 +40,11 @@ public class Playlist {
 
     // aggiunge una traccia alla lista
     public void addTrack(Track track) {
-        for(int i = 0; i < tracks.size(); i++){
-            if (tracks.get(i).equals(track)) throw new IllegalArgumentException("La traccia esiste già");
+        if(track!= null && !tracks.contains(track)) {
+            tracks.add(track);
+            return;
         }
-        tracks.add(track);
+        throw new IllegalArgumentException();
     }
 
 
@@ -86,6 +87,9 @@ public class Playlist {
         return tracks.size();
     }
 
+    public void deleteAll(){
+        tracks.clear();
+    }
 
     public void undo(){
         throw new UnsupportedOperationException();
@@ -95,7 +99,7 @@ public class Playlist {
     @Override
     public boolean equals(Object o){
         if (this == o) return true;
-        if ((o == null) ||  o.getClass() != this.getClass()) return false;
+        if ((o == null) ||  (o.getClass() != this.getClass())) return false;
         Playlist p = (Playlist) o;
         return p.getName().equals(this.getName());
     }

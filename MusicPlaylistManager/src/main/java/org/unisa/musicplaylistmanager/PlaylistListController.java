@@ -9,12 +9,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Optional;
 
 public class PlaylistListController {
 
@@ -51,6 +52,8 @@ public class PlaylistListController {
         listView.setCellFactory(param -> new PlaylistCellController());
 
         listView.setItems(playlistListObservable);
+
+        listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
     @FXML
@@ -59,7 +62,7 @@ public class PlaylistListController {
         Parent root = loader.load();
 
         Stage stage = new Stage();
-        stage.setTitle("Aggiungi Traccia");
+        stage.setTitle("Aggiungi Playlist");
 
         Scene scene = new Scene(root);
         PlaylistCreationController controller = loader.getController();
@@ -71,7 +74,36 @@ public class PlaylistListController {
 
     @FXML
     void deletePlaylist(ActionEvent event) {
+        ObservableList<Playlist> selectedItems = listView.getSelectionModel().getSelectedItems();
 
+        if (selectedItems.isEmpty()) {
+            return;
+        }
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Conferma Eliminazione");
+
+        // cambia il messaggio in base al numero di elementi selezionati
+        if (selectedItems.size() == 1) {
+            alert.setHeaderText("Sei sicuro di voler eliminare la playlist selezionata?");
+            alert.setContentText("L'azione è irreversibile.");
+        } else {
+            alert.setHeaderText("Sei sicuro di voler eliminare le " + selectedItems.size() + " playlist selezionate?");
+            alert.setContentText("L'azione è irreversibile.");
+        }
+
+        // Mostra l'alert e attendi la risposta dell'utente
+        Optional<ButtonType> result = alert.showAndWait();
+
+        // Se l'utente ha cliccato "OK"
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+
+            ArrayList<Playlist> toRemove = new ArrayList<>(selectedItems);
+
+            // Rimuovi gli elementi dalla lista osservabile e dalla tracklist
+            playlistListObservable.removeAll(toRemove);
+            playlistList.deletePlaylists(toRemove);
+        }
     }
 
     @FXML
