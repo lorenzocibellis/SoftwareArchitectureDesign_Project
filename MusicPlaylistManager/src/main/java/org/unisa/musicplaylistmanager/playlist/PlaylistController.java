@@ -144,6 +144,12 @@ public class PlaylistController {
 
     }
 
+
+    @FXML
+    void removeTrack(ActionEvent event) {
+
+    }
+
     @FXML
     void goBack(ActionEvent actionEvent) throws IOException {
         Parent playlistParent = FXMLLoader.load(getClass().getResource(resourceRoot + "PlaylistListView.fxml"));
@@ -157,11 +163,6 @@ public class PlaylistController {
         // 4. Cambia la scena
         window.setScene(playlistScene);
         window.show();
-    }
-
-    @FXML
-    void removeTrack(ActionEvent event) {
-
     }
 
 }
