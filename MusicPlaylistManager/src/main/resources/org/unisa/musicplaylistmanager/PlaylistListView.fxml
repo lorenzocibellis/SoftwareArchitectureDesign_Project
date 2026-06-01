@@ -20,7 +20,7 @@
                     </font>
                 </Label>
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <Button fx:id="tracksButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#goTrackList" prefHeight="35.0" prefWidth="80.0" styleClass="close-button" text="Tracce">
+            <Button fx:id="tracksButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#goTrackList" prefHeight="35.0" prefWidth="80.0" styleClass="playlist-button" text="Tracce">
                <HBox.margin>
                   <Insets right="20.0" />
                </HBox.margin></Button>
