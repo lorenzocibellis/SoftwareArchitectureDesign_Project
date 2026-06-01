@@ -78,28 +78,36 @@ public class PlayerController implements Initializable {
 
     // metodo che inizializza il contesto di riproduzione per una nuova traccia e termina l'eventuale ruproduzione precedente
     public void setPlaylistContext(Track initialTrack, Playlist playlist) {
-        // Interrompe la riproduzione attiva, se presente, prima di procedere.
         updateTrackUI(initialTrack);
         if (player != null) {
             player.terminate();
         }
         player = new Player(new Play(), playlist, initialTrack);
-        // aggiorna in tempo reale i secondi di riproduzione nell'etichetta a sinsitra della traccia
+        
         player.setOnTimeTick(seconds -> {
             Platform.runLater(() -> {
                 songProgress.setValue(seconds);
                 counter.setText(formatTime(seconds));
             });
         });
-        // se la traccia è in play, il tasto centrale diventa un tasto di pausa
+        
         player.setOnPlayUIUpdate(() -> {
             Platform.runLater(() -> setExecuteButtonImage("/icons/pauseButton.png", 37, 37));
         });
-        // se la traccia è in pausa, il tasto centrale diventa un tasto di play
+        
         player.setOnPauseUIUpdate(() -> {
             Platform.runLater(() -> setExecuteButtonImage("/icons/playButton.jpg", 24, 24));
         });
-        // aggiorna lo stato di riproduzione
+
+        // GESTIAMO IL CASO LIMITE: Il player si è accorto che la traccia è finita (o accorciata)
+        player.setOnTerminateUIUpdate(() -> {
+            Platform.runLater(() -> {
+                // Cosa vuoi che faccia visivamente quando si interrompe? 
+                // Chiudiamo il player chiamando il tuo metodo handleClose()
+                handleClose(); 
+            });
+        });
+
         player.changeState();
     }
 
@@ -174,9 +182,28 @@ public class PlayerController implements Initializable {
     // metodo di aggiornamento dell'interfaccia del player in tempo reale
     private void updateTrackUI(Track track) {
         if (track != null) {
-            trackTitle.setText(track.getTitle());
-            authorName.setText(track.getAuthor());
+            trackTitle.textProperty().unbind();
+            authorName.textProperty().unbind();
+            
+            // Rimuoviamo il listener precedente se c'era
+            if (songProgress.getUserData() != null) {
+                track.durationProperty().removeListener((javafx.beans.value.ChangeListener<Number>) songProgress.getUserData());
+            }
 
+            trackTitle.textProperty().bind(track.titleProperty());
+            authorName.textProperty().bind(track.authorProperty());
+
+            // GESTIAMO IL CAMBIO DI DURATA IN TEMPO REALE
+            // Aggiungiamo un listener che si attiva ogni volta che la durata cambia in TrackController
+            javafx.beans.value.ChangeListener<Number> durationListener = (obs, oldVal, newVal) -> {
+                songProgress.setMax(newVal.intValue());
+                duration.setText(formatTime(newVal.intValue()));
+            };
+            track.durationProperty().addListener(durationListener);
+            // Salviamo il riferimento al listener per poterlo rimuovere alla traccia successiva
+            songProgress.setUserData(durationListener);
+
+            // Setup iniziale
             songProgress.setMin(0);
             songProgress.setMax(track.getDuration());
             songProgress.setValue(0);

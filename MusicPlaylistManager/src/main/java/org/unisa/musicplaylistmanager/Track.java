@@ -4,16 +4,20 @@ package org.unisa.musicplaylistmanager;
  * @author gruppo10
  */
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import java.time.Year;
 import java.util.Objects;
 
 public class Track {
 
-    private String title;
-    private String author;
+    private StringProperty title;
+    private StringProperty author;
     private String genre;
     private Year year;
-    private int duration;
+    private IntegerProperty duration;
     private boolean favourite;
     private boolean explicit;
     private boolean newRelease;
@@ -23,11 +27,11 @@ public class Track {
 
         validate(title, author, genre, year, duration);
 
-        this.title = title;
-        this.author = author;
+        this.title = new SimpleStringProperty(title);
+        this.author = new SimpleStringProperty(author);
         this.year = year;
         this.genre = genre;
-        this.duration = duration;
+        this.duration = new SimpleIntegerProperty(duration);
         this.favourite = favourite;
         this.explicit = explicit;
         this.newRelease = newRelease;
@@ -58,11 +62,11 @@ public class Track {
     }
 
     // Getters
-    public String getTitle()      { return title; }
-    public String getAuthor()     { return author; }
+    public String getTitle()      { return title.get(); }
+    public String getAuthor()     { return author.get(); }
     public String getGenre()      { return genre; }
     public Year getYear()         { return year; }
-    public int getDuration()      { return duration; }
+    public int getDuration()      { return duration.get(); }
     public boolean isFavourite()    { return favourite; }
     public boolean isExplicitContent() { return explicit; }
     public boolean isNewRelease()   { return newRelease; }
@@ -70,11 +74,11 @@ public class Track {
     // Setters
     public void setTitle(String title) {
         if (isBlank(title)) throw new IllegalArgumentException("Il titolo non può essere vuoto.");
-        this.title = title;
+        this.title.set(title);
     }
     public void setAuthor(String author) {
         if (isBlank(author)) throw new IllegalArgumentException("L'autore non può essere vuoto.");
-        this.author = author;
+        this.author.set(author);
     }
     public void setGenre(String genre) {
         if (isBlank(genre)) throw new IllegalArgumentException("Il genere non può essere vuoto.");
@@ -87,12 +91,17 @@ public class Track {
     
     public void setDuration(int duration) {
         if (duration < 0) throw new IllegalArgumentException("La durata non può essere negativa.");
-        this.duration = duration;
+        this.duration.set(duration);
     }
     
     public void setFavourite(boolean favourite)  { this.favourite = favourite; }
     public void setExplicit(boolean explicit)    { this.explicit = explicit; }
     public void setNewRelease(boolean newRelease){ this.newRelease = newRelease; }
+
+    // --- Metodi Property (Nuovi, necessari per implementare il pattern Observer tramite Binding) ---
+    public StringProperty titleProperty() { return title; }
+    public StringProperty authorProperty() { return author; }
+    public IntegerProperty durationProperty() { return duration; }
 
     //Override metodo per uguaglianza tra tracce
     @Override
