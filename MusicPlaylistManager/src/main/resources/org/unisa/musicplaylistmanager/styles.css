@@ -90,7 +90,10 @@
 }
 
 .list-cell:filled:hover {
-    -fx-background-color: #F0F0F0;
+    -fx-background-color: #E8E8E8;
+    -fx-border-color: #007AFF transparent #EAEAEA transparent;
+    -fx-border-width: 0 0 1 3;
+    -fx-cursor: hand;
 }
 
 /* Stile per la selezione di un brano */
