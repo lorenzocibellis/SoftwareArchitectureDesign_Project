@@ -42,7 +42,7 @@ public class Track {
         //Controllo validità dati di input
         validate(title, author, genre, year, duration);
 
-        //setttaggio valori di input come dati della traccia
+        //settaggio valori di input come dati della traccia
         this.title = new SimpleStringProperty(title);
         this.author = new SimpleStringProperty(author);
         this.year = year;
@@ -54,8 +54,9 @@ public class Track {
     }
 
 
+    // METODI UTILITARI
     /**
-     * 
+     * Metodo per la validazione interna di dati.
      *
      * @param title Titolo della traccia.
      * @param author L'autore della traccia.
@@ -63,6 +64,7 @@ public class Track {
      * @param genre Genere della traccia.
      * @param duration Durata della traccia
      *
+     * @return true se i dati sono validi, false altrimenti
      */
     private static void validate(String title, String author, String genre, Year year, int duration) {
         if (isBlank(title) || isBlank(author) || isBlank(genre) || year == null) {
@@ -77,18 +79,40 @@ public class Track {
         }
     }
 
+    /**
+     * Metodo di supporto per la validazione dell'anno.
+     *
+     * @param y Anno da validare.
+     *
+     * @return true se l'anno non è nullo e minore o uguale all'anno attuale, false altrimenti
+     */
     //verifica se l'anno è stato inserito e se è valido
     private static boolean validateYear(Year y){
         return !(y != null && y.getValue() > Year.now().getValue());
     }
 
-    //verifica che la durata sia >0
+    /**
+     * Metodo di supporto per la validazione della durata.
+     * Controlla che essa sia > 0.
+     *
+     * @param duration Durata da validare.
+     *
+     * @return true se la durata è >= 0, false altrimenti
+     */
     private static boolean validateDuration(int duration){ return duration >= 0;}
 
-    //funzione per verificare se i campi inseriti dall'utente sono vuoti
+    /**
+     * Metodo di supporto per controllare se una stringa è vuota.
+     *
+     * @param s Stringa da controllare.
+     *
+     * @return true se la stringa non è vuota, false altrimenti
+     */
     private static boolean isBlank(String s) {
         return s == null || s.trim().isEmpty();
     }
+
+    // METODI PUBBLICI
 
     // Getters
     public String getTitle()      { return title.get(); }
@@ -129,22 +153,37 @@ public class Track {
     public StringProperty titleProperty() { return title; }
     public StringProperty authorProperty() { return author; }
 
-    //Override metodo per uguaglianza tra tracce
+
+    /**
+     * Metodo per controllare che l'oggetto chiamante sia uguale all'oggetto passato come parametro.
+     *
+     * @param o Oggetto da controllare.
+     *
+     * @return True se i 2 oggetti sono uguali, false altrimenti
+     */
     @Override
-    public boolean equals(Object t){
-        if (this == t) return true;
-        if ((t == null) || this.getClass() != t.getClass()) return false;
-        Track track = (Track) t;
+    public boolean equals(Object o){
+        if (this == o) return true;
+        if ((o == null) || this.getClass() != o.getClass()) return false;
+        Track track = (Track) o;
         return track.getTitle().equals(this.getTitle()) && track.getAuthor().equals(this.getAuthor()) && track.getYear().equals(this.getYear());
     }
 
-    //Override metodo di hashCode
+    /**
+     * Metodo per la generazione del codice hash dell'oggetto chiamante.
+     *
+     * @return Codice hash dell'oggetto
+     */
     @Override
     public int hashCode(){
         return (getTitle() + getAuthor() + getYear()).hashCode();
     }
 
-    //Override metodo per print di dati della traccia
+    /**
+     * Metodo per la generazione della strina da printare quando l'oggetto chiamante è passato ad una print.
+     *
+     * @return stringa che identifica l'oggetto
+     */
     @Override
     public String toString(){
         return this.getTitle() + " | " + this.getAuthor() + " | " + this.getYear();
