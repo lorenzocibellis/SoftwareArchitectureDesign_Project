@@ -7,8 +7,15 @@ public class PlaylistList {
     //Dichiarazione Attributi
     private ArrayList<Playlist> playlistList;
 
-    public void addPlaylist(Playlist playlist){
-        if (playlist)
-        playlistList.add(playlist)
+    //metodo per aggiunta playlist
+    public void addPlaylist(Playlist p){
+        if (p != null && !playlistList.contains(p))
+            playlistList.add(p);
+    }
+
+    //metodo per eliminazione playlist
+    public void deletePlaylist(Playlist p){
+        if (p != null)
+            playlistList.remove(p);
     }
 }
