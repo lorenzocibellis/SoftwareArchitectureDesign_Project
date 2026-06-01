@@ -1,5 +1,6 @@
 package org.unisa.musicplaylistmanager;
 
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -249,3 +250,4 @@ class TrackListTest {
         assertInstanceOf(Playlist.class, trackList);
     }
 }
+

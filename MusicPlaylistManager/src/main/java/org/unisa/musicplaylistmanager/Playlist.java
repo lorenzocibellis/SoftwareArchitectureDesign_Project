@@ -69,4 +69,23 @@ public class Playlist {
         throw new UnsupportedOperationException();
     }
 
+    //metodi per uguaglianza playlist
+    @Override
+    public boolean equals(Object o){
+        if (this == o) return true;
+        if ((o == null) ||  o.getClass() != this.getClass()) return false;
+        Playlist p = (Playlist) o;
+        return p.getName().equals(this.getName());
+    }
+
+    @Override
+    public int hashCode(){
+        return this.getName().hashCode();
+    }
+
+    //metodo per stampa playlist
+    @Override
+    public String toString(){
+        return this.getName();
+    }
 }

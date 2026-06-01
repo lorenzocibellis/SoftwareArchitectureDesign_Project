@@ -41,6 +41,9 @@ public class TrackListController {
     private Button deleteButton;
     @FXML
     private Button closeButton;
+    @FXML
+    private Button goPlaylistButton;
+
 
     private ObservableList<Track> trackListObservable;
     private TrackList trackList;
@@ -72,6 +75,21 @@ public class TrackListController {
             }
         });
 
+    }
+
+    @FXML
+    void goPlaylist(ActionEvent event) throws IOException {
+        Parent playlistParent = FXMLLoader.load(getClass().getResource("PlaylistListView.fxml"));
+
+        // 2. Crea la nuova scena
+        Scene playlistScene = new Scene(playlistParent);
+
+        // 3. Ottieni lo stage (finestra) corrente dall'evento
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        // 4. Cambia la scena
+        window.setScene(playlistScene);
+        window.show();
     }
 
     // Metodo chiamato quando viene cliccato il bottone "i" in una riga
