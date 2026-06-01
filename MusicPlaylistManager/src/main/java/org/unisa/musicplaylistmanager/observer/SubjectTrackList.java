@@ -7,7 +7,10 @@ package org.unisa.musicplaylistmanager.observer;
 public class SubjectTrackList extends BaseSubjectTrackList{
 
     //METODI
-    //Costruttore
+    /**
+     * Costruttore
+     *
+     */
     public SubjectTrackList(){
         super();
     }

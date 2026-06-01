@@ -13,23 +13,41 @@ public abstract class BaseSubjectTrackList {
     private ArrayList<BaseObserverPlaylist> playlistObserver;
 
     //METODI
-    //Costruttore
+    /**
+     * Costruttore
+     *
+     */
     public BaseSubjectTrackList(){
         playlistObserver = new ArrayList<BaseObserverPlaylist>();
     }
 
-    // aggiunta di un osservatore alla lista
+    /**
+     * Metodo usato per aggiungere un observer alla lista di observers.
+     *
+     * @param observer Observer da aggiungere alla lista di osservatori.
+     *
+     */
     public void attach(BaseObserverPlaylist observer){
         if (observer != null) // controllo esistenza dell'osservatore
             playlistObserver.add(observer);
     }
 
-    // staccamento di un osservatore dalla lista
+    /**
+     * Metodo usato per togliere un observer dalla lista di observers.
+     *
+     * @param observer Observer da togliere dalla lista di osservatori.
+     *
+     */
     public void detach(BaseObserverPlaylist observer){
         playlistObserver.remove(observer);
     }
 
-    //metodo per notificare eventi alle playlist (eliminazione traccia)
+    /**
+     * Metodo usato per notificare agli observers dell'eliminazione di una traccia.
+     *
+     * @param track Observer da aggiungere alla lista di osservatori.
+     *
+     */
     public void notifyObserver(Track track){
         for(int i = 0; i < playlistObserver.size(); i++){
             // aggiornamento degli osservatori

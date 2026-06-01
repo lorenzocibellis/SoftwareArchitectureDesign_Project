@@ -9,7 +9,12 @@ import org.unisa.musicplaylistmanager.playlist.Playlist;
 public class ObserverPlaylist extends BaseObserverPlaylist{
 
     //METODI
-    //Costruttore
+    /**
+     * Costruttore
+     *
+     * @param playlist Playlist che fungerà da osservatore.
+     *
+     */
     public ObserverPlaylist(Playlist playlist) {
         super(playlist);
     }

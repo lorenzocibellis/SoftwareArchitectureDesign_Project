@@ -12,12 +12,21 @@ public abstract class BaseObserverPlaylist {
     private Playlist playlist;
 
     //METODI
-    //Costruttore
+    /**
+     * Costruttore
+     *
+     * @param playlist Playlist che osserverà la lista di tracce.
+     *
+     */
     public BaseObserverPlaylist(Playlist playlist){
         this.playlist = playlist;
     }
 
-    //metodo per aggiornare la playlist osservatrice riguardo un evento (eliminazione traccia)
+    /**
+     *
+     * @param track Traccia eliminata da propagare nella playlist.
+     *
+     */
     public void update(Track track){
         playlist.removeTrack(track);
     }
