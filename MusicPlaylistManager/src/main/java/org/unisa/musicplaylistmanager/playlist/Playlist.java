@@ -5,6 +5,7 @@ package org.unisa.musicplaylistmanager.playlist;
  */
 
 import org.unisa.musicplaylistmanager.track.Track;
+import org.unisa.musicplaylistmanager.track.TrackList;
 
 import java.util.ArrayList;
 
@@ -76,8 +77,15 @@ public class Playlist {
         existingTrack.setFavourite(newDataTrack.isFavourite());
         existingTrack.setExplicit(newDataTrack.isExplicitContent());
         existingTrack.setNewRelease(newDataTrack.isNewRelease());
-        
-        // Non serve fare tracks.set(...) perché la lista contiene già il riferimento a existingTrack, con i dati aggiornati
+
+        // permette di modificare la tracklist e la lista osservabile della tracklist quando effettuo una modifica ad
+        // una traccia nella playlist
+        if (TrackList.exists()) {
+            TrackList trackList = TrackList.getTrackListPointer();
+            if (trackList != this) { // Evita la chiamata ricorsiva se stiamo già aggiornando la TrackList
+                trackList.updateTrack(existingTrack, newDataTrack);
+            }
+        }
     }
     // restituisce l'indice di una traccia nella lista
     public int getIndex(Track track){

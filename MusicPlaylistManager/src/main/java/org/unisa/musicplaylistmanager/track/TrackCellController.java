@@ -94,4 +94,12 @@ public class TrackCellController extends ListCell<Track> {
             setGraphic(root);
         }
     }
+
+    // rende il bottone info visibile o nascosto in base al parametro passato, lo nasconde se siamo in AddTracksToPlaylist
+    public void setInfoButtonVisible(boolean visible) {
+        if (infoButton != null) {
+            infoButton.setVisible(visible);
+            infoButton.setManaged(visible);
+        }
+    }
 }

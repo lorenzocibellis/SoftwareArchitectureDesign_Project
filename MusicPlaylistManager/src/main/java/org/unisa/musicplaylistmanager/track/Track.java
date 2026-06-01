@@ -88,7 +88,7 @@ public class Track {
      */
     //verifica se l'anno è stato inserito e se è valido
     private static boolean validateYear(Year y){
-        return !(y != null && y.getValue() > Year.now().getValue());
+        return y != null && y.getValue() <= Year.now().getValue();
     }
 
     /**
@@ -138,7 +138,7 @@ public class Track {
         this.genre = genre;
     }
     public void setYear(Year year) {
-        if (validateYear(year)) throw new IllegalArgumentException("L'anno è obbligatorio e non può essere superiore all'anno corrente.");
+        if (!validateYear(year)) throw new IllegalArgumentException("L'anno è obbligatorio e non può essere superiore all'anno corrente.");
         this.year = year;
     }
     public void setDuration(int duration) {

@@ -6,6 +6,7 @@ import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.stage.Stage;
+import org.unisa.musicplaylistmanager.playlist.Playlist;
 
 import java.io.IOException;
 import java.time.Year;
@@ -51,7 +52,7 @@ public class TrackController {
     // definizione attributi
 
     // lista di tracce su cui lavorare
-    private TrackList trackList;
+    private Playlist trackList;
 
     //struttura dati della UI da aggiornare
     private ObservableList<Track> observableList;
@@ -212,7 +213,7 @@ public class TrackController {
     // Dichiarazione metodi pubblici
 
     // settaggio TrackList a cui aggingere la traccia
-    public void setTrackList(TrackList tl) {
+    public void setTrackList(Playlist tl) {
         trackList = tl;
     }
 

@@ -25,7 +25,9 @@ import org.unisa.musicplaylistmanager.track.TrackList;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class PlaylistController {
 
@@ -125,7 +127,7 @@ public class PlaylistController {
             // se viene modificata una traccia
             controller.setObservable(playlistObservable);
 
-            controller.setTrackList((TrackList)playlist);
+            controller.setTrackList(playlist);
 
             Stage stage = new Stage();
             stage.setTitle("Dettagli Traccia");
@@ -140,7 +142,49 @@ public class PlaylistController {
 
     @FXML
     void addTrack(ActionEvent event) {
+        if (!TrackList.exists()) {
+            return;
+        }
+        // ottengo la lista completa di tutte le tracce presenti nel sistema
+        TrackList allTracksList = TrackList.getTrackListPointer();
+        List<Track> allTracks = allTracksList.getTracks();
+        
+        // Filtra le tracce che sono già nella playlist
+        List<Track> availableTracks = allTracks.stream()
+                .filter(t -> !playlist.getTracks().contains(t))
+                .collect(Collectors.toList());
 
+
+        // Carico AddTracksToPlaylistView.fxml ) e gli passo la lista delle tracce filtrata
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/unisa/musicplaylistmanager/AddTracksToPlaylistView.fxml"));
+            Parent root = loader.load();
+
+            AddTracksToPlaylistController controller = loader.getController();
+            controller.setAvailableTracks(availableTracks);
+
+            Stage stage = new Stage();
+            stage.setTitle("Aggiungi Tracce");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+
+            // Quando l'utente seleziona una o più tracce e preme "Conferma" nella nuova finestra, il
+            // metodo estrae le tracce selezionate e le
+            // aggiunge alla playlist e alla lista osservabile della playlist
+
+            if (controller.isConfirmed()) {
+                List<Track> selected = controller.getSelectedTracks();
+                for (Track t : selected) {
+                    playlist.addTrack(t);
+                    playlistObservable.add(t);
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -152,12 +196,25 @@ public class PlaylistController {
             return;
         }
 
-        ArrayList<Track> toRemove = new ArrayList<>(selectedItems);
-        
-        // Rimuovi gli elementi dalla lista osservabile e dalla tracklist
-        playlistObservable.removeAll(toRemove);
-        playlist.getTracks().removeAll(toRemove);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Conferma Eliminazione");
 
+        if (selectedItems.size() == 1) {
+            alert.setHeaderText("Sei sicuro di voler rimuovere la traccia selezionata dalla playlist?");
+            alert.setContentText("La traccia non sarà eliminata dalla libreria principale.");
+        } else {
+            alert.setHeaderText("Sei sicuro di voler rimuovere le " + selectedItems.size() + " tracce selezionate dalla playlist?");
+            alert.setContentText("Le tracce non saranno eliminate dalla libreria principale.");
+        }
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            ArrayList<Track> toRemove = new ArrayList<>(selectedItems);
+            
+            playlistObservable.removeAll(toRemove);
+            playlist.getTracks().removeAll(toRemove);
+        }
     }
 
     @FXML

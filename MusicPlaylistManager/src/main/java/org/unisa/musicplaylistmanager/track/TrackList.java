@@ -40,4 +40,11 @@ public class TrackList extends Playlist {
     public BaseSubjectTrackList getSubjectTrackList(){
         return subjectTrackList;
     }
+
+    @Override
+    public void updateTrack(Track existingTrack, Track newDataTrack) {
+        // chiamo il metodo updateTrack di Playlist per aggiornare la traccia esistente
+        super.updateTrack(existingTrack, newDataTrack);
+
+    }
 }

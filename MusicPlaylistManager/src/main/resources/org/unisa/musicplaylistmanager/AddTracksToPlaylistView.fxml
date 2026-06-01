@@ -6,26 +6,18 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.playlist.PlaylistController">
+<BorderPane prefHeight="500.0" prefWidth="600.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.playlist.AddTracksToPlaylistController">
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="70.0" style="-fx-background-color: #F8F8F8; -fx-border-color: #E0E0E0; -fx-border-width: 0 0 1 0;">
             <children>
-            <Label fx:id="namePlaylist1" prefHeight="29.0" prefWidth="91.0" text="Playlist -">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
-                <Label fx:id="namePlaylist" text="Nome Playlist">
+                <Label text="Aggiungi Tracce">
                     <font>
                         <Font name="System Bold" size="24.0" />
                     </font>
                 </Label>
-            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <Button fx:id="backButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#goBack" prefHeight="35.0" prefWidth="80.0" styleClass="close-button" text="Back" />
             </children>
             <padding>
                 <Insets left="20.0" right="10.0" />
@@ -33,11 +25,11 @@
         </HBox>
     </top>
     <center>
-        <StackPane fx:id="mainStackPane">
+        <StackPane>
             <children>
                 <ListView fx:id="listView">
                     <placeholder>
-                        <Label text="Non sono presenti tracce" textFill="#888888">
+                        <Label text="Nessuna traccia disponibile" textFill="#888888">
                             <font>
                                 <Font size="16.0" />
                             </font>
@@ -50,8 +42,8 @@
     <bottom>
         <HBox alignment="CENTER" prefHeight="70.0" spacing="15.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 1 0 0 0;">
             <children>
-                <Button fx:id="button" mnemonicParsing="false" onAction="#addTrack" prefHeight="35.0" prefWidth="150.0" text="Aggiungi traccia" />
-                <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#removeTrack" prefHeight="35.0" prefWidth="150.0" styleClass="delete-button" text="Rimuovi traccia" />
+                <Button fx:id="confirmButton" mnemonicParsing="false" onAction="#confirmSelection" prefHeight="35.0" prefWidth="120.0" text="Conferma" />
+                <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancel" prefHeight="35.0" prefWidth="120.0" styleClass="close-button" text="Annulla" />
             </children>
         </HBox>
     </bottom>
