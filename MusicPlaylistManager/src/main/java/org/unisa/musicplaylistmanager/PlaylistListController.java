@@ -1,6 +1,7 @@
 package org.unisa.musicplaylistmanager;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -43,12 +44,27 @@ public class PlaylistListController {
     @FXML
     public void initialize(){
         if (!PlaylistList.exists()) playlistList = new PlaylistList();
-        else playlistList = PlaylistList.getPlaylistListPointer();
+         else playlistList = PlaylistList.getPlaylistListPointer();
+
+        playlistListObservable = FXCollections.observableArrayList(playlistList.getPlaylists());
+
+        listView.setItems(playlistListObservable);
     }
 
     @FXML
-    void addNewPlaylist(ActionEvent event) {
+    void addNewPlaylist(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("PlaylistCreationView.fxml"));
+        Parent root = loader.load();
 
+        Stage stage = new Stage();
+        stage.setTitle("Aggiungi Traccia");
+
+        Scene scene = new Scene(root);
+        PlaylistCreationController controller = loader.getController();
+        controller.setPlaylistList(playlistList);
+        controller.setObservable(playlistListObservable);
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML

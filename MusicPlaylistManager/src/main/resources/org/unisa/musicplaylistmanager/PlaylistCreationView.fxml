@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="173.0" prefWidth="506.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.PlaylistCreationController">
+    <children>
+        <VBox alignment="TOP_CENTER" prefHeight="450.0" prefWidth="500.0" spacing="20.0" style="-fx-background-color: #F8F8F8;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+            <children>
+
+                <VBox spacing="10.0">
+                    <children>
+                        <Label text="Nome Playlist" />
+                        <TextField fx:id="nameInput" promptText="Es. My Playlist" />
+                        <HBox alignment="CENTER_LEFT" spacing="5.0" />
+                    </children>
+                </VBox>
+
+
+                <HBox alignment="CENTER_LEFT" spacing="20.0" />
+
+
+                <HBox alignment="CENTER" prefHeight="116.0" prefWidth="460.0" spacing="30.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <Button fx:id="addPlaylistButton" mnemonicParsing="false" onAction="#addPlaylist" text="Conferma" />
+                        <Button fx:id="buttonBack" mnemonicParsing="false" onAction="#goBack" styleClass="cancel-button" text="Annulla" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

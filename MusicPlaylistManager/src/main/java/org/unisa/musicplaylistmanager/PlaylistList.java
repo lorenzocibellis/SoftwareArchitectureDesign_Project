@@ -11,6 +11,15 @@ public class PlaylistList {
     private static PlaylistList pnt;
 
     //METODI
+    //Costruttore
+    public PlaylistList(){
+        playlistList = new ArrayList<Playlist>();
+        pnt = this;
+    }
+    //getter
+    public ArrayList<Playlist> getPlaylists(){
+        return this.playlistList;
+    }
     //metodo per aggiunta playlist
     public void addPlaylist(Playlist p){
         if (p != null && !playlistList.contains(p))
