@@ -1,5 +1,6 @@
 package org.unisa.musicplaylistmanager.track;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -393,6 +394,9 @@ public class TrackController {
         editButton.setVisible(true);
         buttonBack.setVisible(true);
         buttonBack.setText("Chiudi");
+
+        // Rimuove il focus dai TextField così nessun campo è evidenziato
+        Platform.runLater(() -> editButton.requestFocus());
     }
 
     // Imposta i bottoni visibili per la modalità Modifica
@@ -413,6 +417,12 @@ public class TrackController {
         // bottono da lasciare visibili
         saveButton.setVisible(true);
         cancelButton.setVisible(true);
+
+        // Mette il focus sul campo titolo e posiziona il cursore alla fine del testo
+        Platform.runLater(() -> {
+            titleInput.requestFocus();
+            titleInput.positionCaret(titleInput.getText().length());
+        });
     }
 
 }

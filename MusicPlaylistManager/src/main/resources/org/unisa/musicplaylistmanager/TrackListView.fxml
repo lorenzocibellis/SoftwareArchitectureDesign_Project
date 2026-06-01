@@ -34,7 +34,7 @@
     <center>
         <StackPane fx:id="mainStackPane">
             <children>
-                <ListView fx:id="listView" styleClass="playlist-button">
+                <ListView fx:id="listView">
                     <placeholder>
                         <Label text="Nessuna traccia inserita" textFill="#888888">
                             <font>
