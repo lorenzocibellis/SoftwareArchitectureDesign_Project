@@ -27,7 +27,7 @@
             <Button fx:id="closeButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#closeApp" prefHeight="35.0" prefWidth="80.0" styleClass="close-button" text="Chiudi App" />
             </children>
             <padding>
-                <Insets left="20.0" />
+                <Insets left="20.0" right="10.0" />
             </padding>
         </HBox>
     </top>

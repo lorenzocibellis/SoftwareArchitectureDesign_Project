@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.PlaylistlistController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.PlaylistListController">
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="70.0" style="-fx-background-color: #F8F8F8; -fx-border-color: #E0E0E0; -fx-border-width: 0 0 1 0;">
             <children>
@@ -20,13 +20,14 @@
                     </font>
                 </Label>
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <Button fx:id="closeButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#closeApp" prefHeight="35.0" prefWidth="80.0" styleClass="close-button" text="Chiudi App">
+            <Button fx:id="tracksButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#goTrackList" prefHeight="35.0" prefWidth="80.0" styleClass="close-button" text="Tracce">
                <HBox.margin>
                   <Insets right="20.0" />
                </HBox.margin></Button>
+            <Button fx:id="closeButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#closeApp" prefHeight="35.0" prefWidth="80.0" styleClass="close-button" text="Chiudi App" />
             </children>
             <padding>
-                <Insets left="20.0" />
+                <Insets left="20.0" right="10.0" />
             </padding>
         </HBox>
     </top>
