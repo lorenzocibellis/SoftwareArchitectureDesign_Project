@@ -58,7 +58,7 @@ public class PlayerController implements Initializable {
     private AnchorPane playerRoot;
     private boolean isMinimized = false;
 
-    @Override
+    @FXML
     public void initialize(URL url, ResourceBundle rb) {
         // disabilita TEMPORANEAMENTE i tasti di skip
         skipToNextButton.setDisable(true);
