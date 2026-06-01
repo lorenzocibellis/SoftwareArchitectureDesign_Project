@@ -104,7 +104,9 @@ public class TrackListController {
             // Passa anche la lista osservabile per permettere l'aggiornamento della lista nella UI
             // se viene modificata una traccia
             controller.setObservable(trackListObservable);
-
+            
+            controller.setTrackList(trackList);
+            
             Stage stage = new Stage();
             stage.setTitle("Dettagli Traccia");
             stage.initModality(Modality.APPLICATION_MODAL); // Blocca l'interazione con la finestra principale

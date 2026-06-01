@@ -186,6 +186,7 @@ public class TrackController {
         setInfoMode();
     }
 
+    // funzione che salva le modifiche apportate alla traccia
     @FXML
     public void saveChanges(ActionEvent event) {
         List<String> errors = inputValidation();
@@ -197,33 +198,51 @@ public class TrackController {
         }
 
         try {
-            // Aggiorna l'oggetto traccia esistente con i nuovi valori
+            // Calcoliamo i valori dai campi di input
             int minutes = Integer.parseInt(minutesInput.getText());
             int seconds = Integer.parseInt(secondsInput.getText());
             int totalSeconds = (minutes * 60) + seconds;
             Year year = Year.of(Integer.parseInt(yearInput.getText()));
 
-            currentTrack.setTitle(titleInput.getText());
-            currentTrack.setAuthor(authorInput.getText());
-            currentTrack.setYear(year);
-            currentTrack.setGenre(genreInput.getText());
-            currentTrack.setDuration(totalSeconds);
-            currentTrack.setFavourite(favouriteRadio.isSelected());
-            currentTrack.setExplicit(explicitContentRadio.isSelected());
-            currentTrack.setNewRelease(newReleaseRadio.isSelected());
+            // Creiamo un oggetto traccia temporaneo (usato solo per trasportare i nuovi dati)
+            Track updatedData = new Track(
+                    titleInput.getText(),
+                    authorInput.getText(),
+                    year,
+                    genreInput.getText(),
+                    totalSeconds,
+                    favouriteRadio.isSelected(),
+                    explicitContentRadio.isSelected(),
+                    newReleaseRadio.isSelected()
+            );
 
-            // Forza l'aggiornamento della visualizzazione nella ListView (che è legata all'observableList)
-
+            // Troviamo l'indice ESATTO della traccia nella ObservableList usando il riferimento di memoria (==)
+            // Facciamo questo controllo PRIMA della modifica, così l'identificazione è sicura al 100%
+            int index = -1;
             if (observableList != null) {
-                int index = observableList.indexOf(currentTrack);
-                if (index != -1) {
-                    observableList.set(index, currentTrack);
+                for (int i = 0; i < observableList.size(); i++) {
+                    if (observableList.get(i) == currentTrack) {
+                        index = i;
+                        break;
+                    }
                 }
             }
 
-            // Torna alla schermata Info per mostrare le modifiche
+            // Deleghiamo il controllo dei duplicati e l'aggiornamento dei campi alla logica del Modello.
+            // Se i nuovi dati creano un duplicato, Playlist lancerà una IllegalArgumentException
+            trackList.updateTrack(currentTrack, updatedData);
+
+            // 5. Se il modello non ha lanciato eccezioni, aggiorniamo la ListView tramite la ObservableList
+            if (index != -1) {
+                observableList.set(index, currentTrack);
+            }
+
+            // Torna alla schermata Info per mostrare le modifiche salvate
             setInfoMode();
 
+        } catch (IllegalArgumentException e) {
+            // Cattura l'errore di duplicato lanciato dal modello e lo mostra all'utente
+            showError("Modifica non consentita", "Conflitto rilevato tra le tracce", e.getMessage());
         } catch (Exception e) {
             showError("Errore Inaspettato", "Si è verificato un errore durante il salvataggio.", e.getMessage());
         }
