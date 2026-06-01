@@ -17,19 +17,18 @@ import java.util.List;
  */
 public class TrackController {
 
+
+    //DEFINIZIONE OGGETTI JAVAFX
     @FXML
     private Button addTrackButton;
     @FXML
     private Button buttonBack;
-
-
     @FXML
     private Button editButton;
     @FXML
     private Button saveButton;
     @FXML
     private Button cancelButton;
-
     @FXML
     private TextField titleInput;
     @FXML
@@ -49,13 +48,24 @@ public class TrackController {
     @FXML
     private RadioButton explicitContentRadio;
 
+    // definizione attributi
+
+    // lista di tracce su cui lavorare
     private TrackList trackList;
+
+    //struttura dati della UI da aggiornare
     private ObservableList<Track> observableList;
+
+    // flag utilitario per UI dinamica
     private boolean isReadOnly = false;
 
     // Riferimento alla traccia che stiamo visualizzando/modificando
     private Track currentTrack;
 
+    //METODI
+    //METODI FXML
+
+    //Inizializzatore
     @FXML
     public void initialize() {
         // Listener per forzare l'input a essere solo numerico per i minuti
@@ -86,92 +96,6 @@ public class TrackController {
 
         // gestisci la visibilità dei bottoni
         manageButtonVisibility();
-    }
-
-    // Gestisci la visibilità dei bottoni in base alla modalità corrente, se i bottoni non
-    // vengono mostrati, viene tolto anche il loro spazio occupato nel layout
-    private void manageButtonVisibility() {
-        editButton.managedProperty().bind(editButton.visibleProperty());
-        saveButton.managedProperty().bind(saveButton.visibleProperty());
-        cancelButton.managedProperty().bind(cancelButton.visibleProperty());
-        addTrackButton.managedProperty().bind(addTrackButton.visibleProperty());
-        buttonBack.managedProperty().bind(buttonBack.visibleProperty());
-    }
-
-    /**
-     * Metodo chiamato dal TrackListController per mostrare i dettagli in sola lettura.
-     */
-    public void setTrackDetails(Track track) {
-        this.currentTrack = track;
-
-        // Popola i campi con i dati attuali
-        populateFieldsFromTrack(track);
-
-        // Imposta la modalità Info (blocca i campi, mostra Modifica/Chiudi)
-        setInfoMode();
-    }
-
-
-    // ripopola i text input con i dati della traccia di cui si sono visualizzati i dettagli
-    private void populateFieldsFromTrack(Track track) {
-        titleInput.setText(track.getTitle());
-        authorInput.setText(track.getAuthor());
-        yearInput.setText(String.valueOf(track.getYear().getValue()));
-        genreInput.setText(track.getGenre());
-
-        int minutes = track.getDuration() / 60;
-        int seconds = track.getDuration() % 60;
-        minutesInput.setText(String.valueOf(minutes));
-        secondsInput.setText(String.format("%02d", seconds));
-
-        favouriteRadio.setSelected(track.isFavourite());
-        explicitContentRadio.setSelected(track.isExplicitContent());
-        newReleaseRadio.setSelected(track.isNewRelease());
-    }
-
-    private void setFieldsEditable(boolean editable) {
-        this.isReadOnly = !editable;
-
-        titleInput.setEditable(editable);
-        authorInput.setEditable(editable);
-        yearInput.setEditable(editable);
-        genreInput.setEditable(editable);
-        minutesInput.setEditable(editable);
-        secondsInput.setEditable(editable);
-
-        favouriteRadio.setDisable(!editable);
-        explicitContentRadio.setDisable(!editable);
-        newReleaseRadio.setDisable(!editable);
-    }
-
-    // Imposta i bottoni da visualizzare nella modalità Info
-    private void setInfoMode() {
-        setFieldsEditable(false);
-
-
-        addTrackButton.setVisible(false);
-        saveButton.setVisible(false);
-        cancelButton.setVisible(false);
-
-        editButton.setVisible(true);
-        buttonBack.setVisible(true);
-        buttonBack.setText("Chiudi");
-    }
-
-    // Imposta i bottoni visibili per la modalità Modifica
-    private void setEditMode() {
-        setFieldsEditable(true);
-
-        // --- FORZATURA PER IL GRUPPO: Congeliamo la durata durante la modifica ---
-        minutesInput.setEditable(false);
-        secondsInput.setEditable(false);
-
-        addTrackButton.setVisible(false);
-        editButton.setVisible(false);
-        buttonBack.setVisible(false);
-
-        saveButton.setVisible(true);
-        cancelButton.setVisible(true);
     }
 
     @FXML
@@ -248,12 +172,80 @@ public class TrackController {
         }
     }
 
+    // aggiunta traccia alla TrackList
+    @FXML
+    public void addTrack(ActionEvent actionEvent) {
+
+        //lista di errori
+        List<String> errors = inputValidation();
+
+        //se ci sono errori, stampa un messaggio che li indica e termina l'operazione di aggiunta
+        if (!errors.isEmpty()) {
+            String errorContent = String.join("\n", errors);
+            showError("Errore di Validazione", "Per favore, correggi i seguenti errori:", errorContent);
+            return;
+        }
+
+
+        try {
+            // crea la traccia dai dati passati in input
+            Track track = getTrack();
+
+            //aggiungi la traccia alla lista di tracce
+            this.add(track);
+
+            // chiudi il popUp
+            goBack(actionEvent);
+        } catch (Exception e) { //nel caso di errori durante la creazione e l'aggiunta della traccia
+            showError("Errore Inaspettato", "Si è verificato un errore durante la creazione.", e.getMessage());
+        }
+    }
+
+    // metodo per chiudere il popUp attuale
+    @FXML
+    public void goBack(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
+    }
+
+
+    // Dichiarazione metodi pubblici
+
+    // settaggio TrackList a cui aggingere la traccia
+    public void setTrackList(TrackList tl) {
+        trackList = tl;
+    }
+
+    // settaggio struttura dati osservabile in cui mostrare la traccia
+    public void setObservable(ObservableList<Track> ol) {
+        this.observableList = ol;
+    }
+
+
+    /**
+     * Metodo chiamato dal TrackListController per mostrare i dettagli in sola lettura.
+     */
+    public void setTrackDetails(Track track) {
+
+        //ottiene la traccia di cui si stanno visualizzando le informazioni
+        this.currentTrack = track;
+
+        // Popola i campi con i dati attuali
+        populateFieldsFromTrack(track);
+
+        // Imposta la modalità Info (blocca i campi, mostra Modifica/Chiudi)
+        setInfoMode();
+    }
+
     /**
      * Valida tutti i campi di input e restituisce una lista di messaggi di errore.
      */
     public List<String> inputValidation() {
+
+        // dichiara una lista per contenere eventuali errori
         List<String> errors = new ArrayList<>();
 
+        // controlli vari sugli input dei campi di testo e conseguente aggiunta dell'errore alla lista di errori
         if (titleInput.getText() == null || titleInput.getText().trim().isEmpty()) {
             errors.add("Il titolo non può essere vuoto.");
         }
@@ -297,9 +289,13 @@ public class TrackController {
             }
         }
 
+        // ritorna gli errori trovati durante la validazione
         return errors;
     }
 
+    // Metodi utilitari
+
+    // metodo usato per creare un popUp di Alert riguardo degli errori
     private void showError(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -308,50 +304,20 @@ public class TrackController {
         alert.showAndWait();
     }
 
-    public void setTrackList(TrackList tl) {
-        trackList = tl;
-    }
-
-    public void setObservable(ObservableList<Track> ol) {
-        this.observableList = ol;
-    }
-
+    // metodo usato per raggruppare in un metodo solo l'aggiunta di una traccia alla TrackList e alla lista osservabile
     private void add(Track t) {
         trackList.addTrack(t);
         observableList.add(t);
     }
 
-    @FXML
-    public void goBack(ActionEvent event) throws IOException {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
-    }
-
-    @FXML
-    public void addTrack(ActionEvent actionEvent) {
-        List<String> errors = inputValidation();
-
-        if (!errors.isEmpty()) {
-            String errorContent = String.join("\n", errors);
-            showError("Errore di Validazione", "Per favore, correggi i seguenti errori:", errorContent);
-            return;
-        }
-
-        try {
-            Track track = getTrack();
-            this.add(track);
-            goBack(actionEvent);
-        } catch (Exception e) {
-            showError("Errore Inaspettato", "Si è verificato un errore durante la creazione.", e.getMessage());
-        }
-    }
-
+    // metodo usato per creare un oggetto di tipo traccia a partire dagli input delle zone testuali del popUp
     private Track getTrack() {
         int minutes = Integer.parseInt(minutesInput.getText());
         int seconds = Integer.parseInt(secondsInput.getText());
         int totalSeconds = (minutes * 60) + seconds;
         Year year = Year.of(Integer.parseInt(yearInput.getText()));
 
+        // crea e ritorna un oggetto di tipo Track usando gli input delle zone testuali
         return new Track(
                 titleInput.getText(),
                 authorInput.getText(),
@@ -363,4 +329,89 @@ public class TrackController {
                 newReleaseRadio.isSelected()
         );
     }
+
+    // Gestisci la visibilità dei bottoni in base alla modalità corrente, se i bottoni non
+    // vengono mostrati, viene tolto anche il loro spazio occupato nel layout
+    private void manageButtonVisibility() {
+        editButton.managedProperty().bind(editButton.visibleProperty());
+        saveButton.managedProperty().bind(saveButton.visibleProperty());
+        cancelButton.managedProperty().bind(cancelButton.visibleProperty());
+        addTrackButton.managedProperty().bind(addTrackButton.visibleProperty());
+        buttonBack.managedProperty().bind(buttonBack.visibleProperty());
+    }
+
+    // ripopola i text input con i dati della traccia di cui si sono visualizzati i dettagli
+    private void populateFieldsFromTrack(Track track) {
+
+        // setting dei campi della UI con i dati della traccia
+        titleInput.setText(track.getTitle());
+        authorInput.setText(track.getAuthor());
+        yearInput.setText(String.valueOf(track.getYear().getValue()));
+        genreInput.setText(track.getGenre());
+
+        int minutes = track.getDuration() / 60;
+        int seconds = track.getDuration() % 60;
+
+        minutesInput.setText(String.valueOf(minutes));
+        secondsInput.setText(String.format("%02d", seconds));
+
+        favouriteRadio.setSelected(track.isFavourite());
+        explicitContentRadio.setSelected(track.isExplicitContent());
+        newReleaseRadio.setSelected(track.isNewRelease());
+    }
+
+    // setta i campi di input come modificabili o non a seconda del parametro passato
+    // disabilitando i campi si setta la modalità di visualizzazione
+    private void setFieldsEditable(boolean editable) {
+        this.isReadOnly = !editable;
+
+        titleInput.setEditable(editable);
+        authorInput.setEditable(editable);
+        yearInput.setEditable(editable);
+        genreInput.setEditable(editable);
+        minutesInput.setEditable(editable);
+        secondsInput.setEditable(editable);
+
+        favouriteRadio.setDisable(!editable);
+        explicitContentRadio.setDisable(!editable);
+        newReleaseRadio.setDisable(!editable);
+    }
+
+
+    // Imposta i bottoni da visualizzare nella modalità Info
+    private void setInfoMode() {
+        // disabilita i campi di input
+        setFieldsEditable(false);
+
+        // bottoni da rendere invisibili
+        addTrackButton.setVisible(false);
+        saveButton.setVisible(false);
+        cancelButton.setVisible(false);
+
+        // bottoni da lasciare visibili
+        editButton.setVisible(true);
+        buttonBack.setVisible(true);
+        buttonBack.setText("Chiudi");
+    }
+
+    // Imposta i bottoni visibili per la modalità Modifica
+    // I campi riguardanti la durata del brano rimangono non modificabili
+    private void setEditMode() {
+        // abilita i campi di input
+        setFieldsEditable(true);
+
+        // disabilita i campi riguardanti la durata
+        minutesInput.setEditable(false);
+        secondsInput.setEditable(false);
+
+        // bottoni da rendere invisibili
+        addTrackButton.setVisible(false);
+        editButton.setVisible(false);
+        buttonBack.setVisible(false);
+
+        // bottono da lasciare visibili
+        saveButton.setVisible(true);
+        cancelButton.setVisible(true);
+    }
+
 }

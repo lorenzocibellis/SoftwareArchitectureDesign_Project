@@ -16,18 +16,27 @@ import java.util.function.Consumer;
  */
 public class TrackCellController extends ListCell<Track> {
 
+    //DEFINIZIONE OGGETTI JAVAFX
     @FXML
     private Label titleLabel;
-
     @FXML
     private Label detailsLabel;
-
     @FXML
     private Button infoButton;
 
+    // definizione attributi
+
+    // path verso i file View.fxml
     private String resourceRoot = "/org/unisa/musicplaylistmanager/";
+
+    // indica l'oggetto che compone tutta la vista
     private HBox root;
+
+    // utilitaria per operazioni "on-click"
     private final Consumer<Track> onInfoClicked;
+
+
+    // METODI
 
     /**
      * Costruttore.
@@ -44,7 +53,7 @@ public class TrackCellController extends ListCell<Track> {
      */
     private void loadFXML() {
         try {
-
+            // caricamento della View e settaggio del controller
             FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "TrackCellView.fxml"));
             loader.setController(this);
             root = loader.load();
@@ -63,6 +72,7 @@ public class TrackCellController extends ListCell<Track> {
     protected void updateItem(Track track, boolean empty) {
         super.updateItem(track, empty);
 
+        // controllo sull'esistenza dei dati da aggiorare
         if (empty || track == null) {
             setText(null);
             setGraphic(null);

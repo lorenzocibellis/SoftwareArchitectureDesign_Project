@@ -4,10 +4,8 @@ import org.unisa.musicplaylistmanager.observer.BaseSubjectTrackList;
 import org.unisa.musicplaylistmanager.observer.SubjectTrackList;
 import org.unisa.musicplaylistmanager.playlist.Playlist;
 
-/**
- * @author gruppo10
- */
 
+// estensione della classe Playlist così da ereditarne metodi ed attributi
 public class TrackList extends Playlist {
 
     //definizione attributo subject per pattern Observer
@@ -19,8 +17,12 @@ public class TrackList extends Playlist {
     //METODI
     //Costruttore
     public TrackList(){
+
+        // questa classe non ha nome, pertanto la inizializziamo con null
         super(null);
+        // inizializziamo il subject per l'observer
         subjectTrackList = new SubjectTrackList();
+        // inizializziamo il puntatore a questo oggetto per pattern singleton
         pnt = this;
     }
 

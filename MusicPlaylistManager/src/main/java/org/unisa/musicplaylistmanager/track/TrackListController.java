@@ -113,42 +113,7 @@ public class TrackListController {
         window.show();
     }
 
-
-    // Dichiarazioni metodi interni
-
-    // Metodo chiamato quando viene cliccato il bottone "i" in una riga
-    // permette di mostrare le info di una traccia
-    private void showTrackDetails(Track track) {
-        try {
-
-            // caricamento della View
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "TrackView.fxml"));
-            Parent root = loader.load();
-
-            // ottenimento del controller
-            TrackController controller = loader.getController();
-            // Passa la traccia e imposta la modalità di sola lettura
-            controller.setTrackDetails(track);
-            // Passa anche la lista osservabile per permettere l'aggiornamento della lista nella UI
-            // se viene modificata una traccia
-            controller.setObservable(trackListObservable);
-
-            // settaggio della lista di tracce in cui memorizzare effettivamente i dati della traccia
-            controller.setTrackList(trackList);
-
-
-            // caricamento della finestra
-            Stage stage = new Stage();
-            stage.setTitle("Dettagli Traccia");
-            stage.initModality(Modality.APPLICATION_MODAL); // Blocca l'interazione con la finestra principale
-            stage.setScene(new Scene(root));
-            // apertura della finestra
-            stage.showAndWait();
-
-        } catch (IOException e) { //catch di eventuali eccezioni e print dello stack
-            e.printStackTrace();
-        }
-    }
+    // Dichiarazione metodi pubblici
 
     // apertura della finestra di aggiunta di una traccia alla TrackList
     public void addNewTrack(ActionEvent actionEvent) throws IOException {
@@ -246,6 +211,40 @@ public class TrackListController {
             slideUp.play();
 
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Metodo chiamato quando viene cliccato il bottone "i" in una riga
+    // permette di mostrare le info di una traccia
+    private void showTrackDetails(Track track) {
+        try {
+
+            // caricamento della View
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "TrackView.fxml"));
+            Parent root = loader.load();
+
+            // ottenimento del controller
+            TrackController controller = loader.getController();
+            // Passa la traccia e imposta la modalità di sola lettura
+            controller.setTrackDetails(track);
+            // Passa anche la lista osservabile per permettere l'aggiornamento della lista nella UI
+            // se viene modificata una traccia
+            controller.setObservable(trackListObservable);
+
+            // settaggio della lista di tracce in cui memorizzare effettivamente i dati della traccia
+            controller.setTrackList(trackList);
+
+
+            // caricamento della finestra
+            Stage stage = new Stage();
+            stage.setTitle("Dettagli Traccia");
+            stage.initModality(Modality.APPLICATION_MODAL); // Blocca l'interazione con la finestra principale
+            stage.setScene(new Scene(root));
+            // apertura della finestra
+            stage.showAndWait();
+
+        } catch (IOException e) { //catch di eventuali eccezioni e print dello stack
             e.printStackTrace();
         }
     }
