@@ -224,7 +224,7 @@ class TrackListTest {
     // -----------------------------------------------------------------------
     // Metodi che lanciano UnsupportedOperationException (ereditati da Playlist)
     // -----------------------------------------------------------------------
-    
+
 
     @Test
     @DisplayName("getIndex: lancia UnsupportedOperationException")
