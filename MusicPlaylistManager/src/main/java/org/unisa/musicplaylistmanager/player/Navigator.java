@@ -3,8 +3,7 @@ package org.unisa.musicplaylistmanager.player;
 import javafx.scene.Parent;
 
 /**
- * Contratto per il gestore della navigazione tra schermate.
- *
+ * Interfaccia per la gestione della navigazione tra schermate.
  *
  * @author gruppo10
  */

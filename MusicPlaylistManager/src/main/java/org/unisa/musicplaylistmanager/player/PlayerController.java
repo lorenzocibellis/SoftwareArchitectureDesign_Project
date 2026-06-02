@@ -16,6 +16,13 @@ import org.unisa.musicplaylistmanager.track.Track;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Controller JavaFX per la vista del mini-player (MiniPlayerView.fxml).
+ * Gestisce l'aggiornamento dell'interfaccia utente (titolo, autore, timer, barra di progresso)
+ * e riceve gli eventi dell'utente dai pulsanti (play/pausa, skip, chiusura).
+ *
+ * @author gruppo10
+ */
 public class PlayerController implements Initializable {
 
     @FXML
@@ -40,6 +47,13 @@ public class PlayerController implements Initializable {
     private String iconsRoot = "/icons/";
     private Player player;
 
+    /**
+     * Metodo chiamato automaticamente da JavaFX dopo il caricamento del file FXML.
+     * Inizializza i componenti visivi di base.
+     * 
+     * @param url l'URL utilizzato per risolvere percorsi relativi per l'oggetto radice
+     * @param rb le risorse localizzate per l'oggetto radice
+     */
     @FXML
     public void initialize(URL url, ResourceBundle rb) {
         // disabilita TEMPORANEAMENTE i tasti di skip
@@ -51,8 +65,12 @@ public class PlayerController implements Initializable {
     }
 
     /**
-     * Inizializza il player con la traccia e la playlist.
-     * Chiamato dopo il caricamento dell'FXML da ActivePlayerManager.
+     * Inizializza il player logico con la traccia e la playlist specificate.
+     * Questo metodo deve essere chiamato esplicitamente da ActivePlayerManager 
+     * subito dopo aver ottenuto questo controller.
+     * 
+     * @param initialTrack la traccia da riprodurre
+     * @param playlist la playlist o tracklist contenente la traccia
      */
     public void init(Track initialTrack, Playlist playlist) {
         updateTrackUI(initialTrack);
@@ -79,7 +97,10 @@ public class PlayerController implements Initializable {
         player.changeState();
     }
 
-    // listener del tasto centrale di play/pause
+    /**
+     * Gestisce l'azione del pulsante centrale (Play/Pausa).
+     * Invoca il cambio di stato nel player logico.
+     */
     @FXML
     public void handleExecute() {
         if (player != null) {
@@ -87,19 +108,28 @@ public class PlayerController implements Initializable {
         }
     }
 
-    // metodo che gestisce il passaggio alla riproduzione della traccia successiva
+    /**
+     * Gestisce l'azione del pulsante "Successiva".
+     * Attualmente non implementato
+     */
     @FXML
     public void handleNext() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    // metodo che gestisce il passaggio alla riproduzione della traccia precedente
+    /**
+     * Gestisce l'azione del pulsante "Precedente".
+     * Attualmente non implementato
+     */
     @FXML
     public void handlePrevious() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    // metodo che gestisce la chiusura del player
+    /**
+     * Gestisce l'azione del pulsante di chiusura (X) del mini-player.
+     * Termina la riproduzione e richiede la chiusura del player al manager.
+     */
     @FXML
     public void handleClose() {
         if (player != null) {
@@ -108,7 +138,12 @@ public class PlayerController implements Initializable {
         ActivePlayerManager.getInstance().closePlayer();
     }
 
-    // metodo di aggiornamento dell'interfaccia del player in tempo reale
+    /**
+     * Aggiorna gli elementi testuali e grafici della UI (titolo, autore, timer)
+     * basandosi sui dati della traccia specificata.
+     * 
+     * @param track la traccia di cui visualizzare le informazioni
+     */
     private void updateTrackUI(Track track) {
         if (track != null) {
             trackTitle.textProperty().unbind();
@@ -126,7 +161,14 @@ public class PlayerController implements Initializable {
         }
     }
 
-    // metodo che cambia l'icona di un bottone
+    /**
+     * Imposta l'immagine per un pulsante specificato.
+     * 
+     * @param targetButton il bottone a cui applicare l'icona
+     * @param resourcePath il percorso della risorsa immagine
+     * @param width la larghezza desiderata per l'icona
+     * @param height l'altezza desiderata per l'icona
+     */
     public void setButtonImage(Button targetButton, String resourcePath, double width, double height) {
         try {
             ImageView iv = new ImageView(new Image(getClass().getResourceAsStream(resourcePath)));
@@ -138,18 +180,35 @@ public class PlayerController implements Initializable {
         }
     }
 
+    /**
+     * Imposta l'immagine specifica per il pulsante centrale di esecuzione (Play/Pause).
+     * 
+     * @param resourcePath il percorso della risorsa immagine
+     * @param width la larghezza desiderata per l'icona
+     * @param height l'altezza desiderata per l'icona
+     */
     public void setExecuteButtonImage(String resourcePath, double width, double height) {
         setButtonImage(this.executeButton, resourcePath, width, height);
     }
 
-    // metodo di formattazione della durata in secondi
+    /**
+     * Formatta un ammontare totale di secondi in una stringa nel formato "minuti:secondi".
+     * 
+     * @param totalSeconds il numero totale di secondi da formattare
+     * @return la stringa formattata
+     */
     private String formatTime(int totalSeconds) {
         int m = totalSeconds / 60;
         int s = totalSeconds % 60;
         return String.format("%d:%02d", m, s);
     }
 
-    //  METODO AGGIUNTO PER I TEST JUNIT
+    /**
+     * Restituisce l'istanza del player logico associata a questo controller.
+     * Utilizzato principalmente per scopi di testing.
+     * 
+     * @return il {@link Player} corrente
+     */
     public Player getPlayer() {
         return this.player;
     }

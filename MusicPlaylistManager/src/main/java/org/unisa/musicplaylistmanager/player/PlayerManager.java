@@ -4,7 +4,7 @@ import org.unisa.musicplaylistmanager.playlist.Playlist;
 import org.unisa.musicplaylistmanager.track.Track;
 
 /**
- * Contratto per il gestore del ciclo di vita del mini-player.
+ * Interfaccia per il gestore del ciclo di vita del mini-player.
  *
  *
  * @author gruppo10
@@ -30,7 +30,8 @@ public interface PlayerManager {
     Track getCurrentTrack();
 
     /**
-     * Restituisce la playlist attualmente in uso nel player, o null se il player è chiuso.
+     * Restituisce la playlist (o la tracklist principale) attualmente in uso nel player,
+     * ovvero il contesto da cui è stata avviata la traccia.
      *
      */
     Playlist getCurrentPlaylist();

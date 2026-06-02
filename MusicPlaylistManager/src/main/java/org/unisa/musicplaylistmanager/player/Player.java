@@ -1,6 +1,13 @@
 package org.unisa.musicplaylistmanager.player;
 
 /**
+ * Classe centrale per la gestione della riproduzione musicale.
+ *
+ * Questa classe utilizza lo State Pattern per gestire gli stati interni di 
+ * riproduzione (Play e Pause). Implementa un timer per simulare
+ * l'avanzamento della traccia in tempo reale e supporta l'aggiornamento
+ * dell'interfaccia utente tramite l'esecuzione di callback registrate.
+ *
  * @author gruppo10
  */
 
@@ -32,7 +39,13 @@ public class Player {
     private Runnable onPlayUIUpdate;
     private Runnable onPauseUIUpdate;
 
-    // Costruttore: Accetta TEMPORANEAMENTE anche la Track 
+    /**
+     * Costruttore della classe Player.
+     * 
+     * @param defaultState  lo stato iniziale della riproduzione
+     * @param playlist      la playlist (o tracklist) da dove è stata avviata la canzone
+     * @param currentTrack  la traccia attualmente in riproduzione
+     */
     public Player(PlayerState defaultState, Playlist playlist, Track currentTrack) {
         this.defaultState = defaultState;
         this.currentState = defaultState; // Inizializza lo stato corrente con quello di default
@@ -44,35 +57,73 @@ public class Player {
 
     //  Registrazione eventi sulla GUI  in tempo reale
     
+    /**
+     * Imposta il callback per l'aggiornamento in tempo reale del timer.
+     * @param listener il listener da eseguire a ogni tick del timer passando i secondi trascorsi
+     */
     public void setOnTimeTick(IntConsumer listener) { this.onTimeTick = listener; }
+
+    /**
+     * Imposta il callback per l'aggiornamento dell'interfaccia utente (UI) quando il player entra in Play.
+     * @param listener il listener da eseguire per aggiornare la UI in stato di riproduzione
+     */
     public void setOnPlayUIUpdate(Runnable listener) { this.onPlayUIUpdate = listener; }
+
+    /**
+     * Imposta il callback per l'aggiornamento dell'interfaccia utente (UI) quando il player entra in Pausa.
+     * @param listener il listener da eseguire per aggiornare la UI in stato di pausa
+     */
     public void setOnPauseUIUpdate(Runnable listener) { this.onPauseUIUpdate = listener; }
 
     // Metodi di gestione dello State Pattern
     
+    /**
+     * Cambia lo stato corrente chiamando il metodo execute() dello stato attivo.
+     */
     public void changeState() {
         currentState.execute(this);
     }
 
+    /**
+     * Imposta un nuovo stato per il player.
+     * @param state il nuovo stato (es. Play o Pause)
+     */
     public void setState(PlayerState state) {
         this.currentState = state;
     }
 
+    /**
+     * Restituisce la traccia attualmente in riproduzione.
+     * @return la traccia corrente
+     */
     public Track getCurrentTrack() {
         return this.currentTrack;
     }
 
+    /**
+     * Restituisce la playlist attualmente in riproduzione.
+     * @return la playlist corrente
+     */
     public Playlist getCurrentPlaylist() {
         return this.playlist;
     }
 
-    //  METODO AGGIUNTO PER I TEST JUNIT 
+    /**
+     * Restituisce lo stato corrente del player.
+     * 
+     * @return lo stato attualmente attivo
+     */
     public PlayerState getCurrentState() {
         return this.currentState;
     }
 
     // Logica di Riproduzione della Traccia
     
+    /**
+     * Avvia o riprende la riproduzione della traccia.
+     * Crea e avvia il timer interno che aggiorna periodicamente il tempo trascorso
+     * e notifica la GUI dei cambiamenti.
+     */
     public void startPlayback() {
         // pulizia risorse timer
         if (timer != null) timer.cancel();
@@ -96,7 +147,9 @@ public class Player {
         if (onPlayUIUpdate != null) onPlayUIUpdate.run();
     }
 
-    // Funzione per interrompere la riproduzione della traccia
+    /**
+     * Ferma la riproduzione in corso, bloccando l'avanzamento del tempo e aggiornando la GUI.
+     */
     public void stopPlayback() {
         // pulizia risorse timer
         if (timer != null) {
@@ -106,7 +159,10 @@ public class Player {
         if (onPauseUIUpdate != null) onPauseUIUpdate.run();
     }
 
-    // Funzione per interrompere bruscamente la riproduzione (come quando si chiude la finestra del player)
+    /**
+     * Interrompe la riproduzione (ad esempio alla chiusura
+     * del player o al termine della traccia).
+     */
     public void terminate() {
         stopPlayback();
     }

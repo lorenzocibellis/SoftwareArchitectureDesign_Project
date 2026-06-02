@@ -10,12 +10,15 @@ import java.io.IOException;
 /**
  * Singleton responsabile esclusivamente del ciclo di vita del mini-player.
  *
- * Delega a NavigationManager per aggiungere/rimuovere l'overlay del player.
+ * Delega a {@link NavigationManager} il compito di aggiungere o rimuovere l'overlay del player
+ * dall'interfaccia utente.
  *
+ * Funzionalità principali:
  *
- *  - usa NavigationManager per aggiungere/rimuovere il mini-player dallo StackPane radice
- *  - usa PlayerController per inizializzare l'FXML del mini-player
- *  - usa Player (tramite PlayerController) per accedere alla traccia/playlist corrente
+ *  Usa {@code NavigationManager} per aggiungere/rimuovere il mini-player dallo StackPane radice.
+ *  Usa {@link PlayerController} per caricare e inizializzare la vista FXML del mini-player.
+ *  Usa {@link Player} (tramite {@code PlayerController}) per gestire lo stato della riproduzione e accedere alla traccia/playlist corrente.
+ *
  *
  * @author gruppo10
  */
@@ -30,13 +33,21 @@ public class ActivePlayerManager implements PlayerManager {
 
     private ActivePlayerManager() {}
 
+    /**
+     * Restituisce l'istanza singleton di {@code ActivePlayerManager}.
+     * 
+     * @return l'unica istanza di questa classe
+     */
     public static ActivePlayerManager getInstance() {
         return instance;
     }
 
     /**
-     * Carica il mini-player FXML, lo inizializza con la traccia e la playlist,
+     * Carica il mini-player FXML, lo inizializza con la traccia e la playlist (o tracklist),
      * e lo aggiunge come overlay superiore nello StackPane radice.
+     * 
+     * @param track la traccia da avviare
+     * @param playlist la playlist da cui è stata avviata la traccia (o tracklist)
      */
     @Override
     public void openPlayer(Track track, Playlist playlist) {
@@ -82,7 +93,9 @@ public class ActivePlayerManager implements PlayerManager {
     }
 
     /**
-     * Restituisce la traccia attualmente in riproduzione, o null se il player è chiuso.
+     * Restituisce la traccia attualmente in riproduzione.
+     * 
+     * @return la traccia corrente, o {@code null} se il player è chiuso
      */
     @Override
     public Track getCurrentTrack() {
@@ -93,7 +106,9 @@ public class ActivePlayerManager implements PlayerManager {
     }
 
     /**
-     * Restituisce la playlist attualmente in uso nel player, o null se il player è chiuso.
+     * Restituisce la playlist (o la tracklist principale) attualmente in uso nel player.
+     * 
+     * @return la playlist/tracklist corrente, o {@code null} se il player è chiuso
      */
     @Override
     public Playlist getCurrentPlaylist() {
@@ -104,7 +119,9 @@ public class ActivePlayerManager implements PlayerManager {
     }
 
     /**
-     * Indica se il mini-player è aperto e visibile.
+     * Indica se il mini-player è attualmente aperto e visibile sullo schermo.
+     * 
+     * @return {@code true} se il player è attivo, {@code false} altrimenti
      */
     @Override
     public boolean hasActivePlayer() {
