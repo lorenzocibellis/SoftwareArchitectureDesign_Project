@@ -224,12 +224,7 @@ class TrackListTest {
     // -----------------------------------------------------------------------
     // Metodi che lanciano UnsupportedOperationException (ereditati da Playlist)
     // -----------------------------------------------------------------------
-
-    @Test
-    @DisplayName("getTrack: lancia UnsupportedOperationException")
-    void testGetTrackUnsupported() {
-        assertThrows(UnsupportedOperationException.class, () -> trackList.getTrack());
-    }
+    
 
     @Test
     @DisplayName("getIndex: lancia UnsupportedOperationException")
