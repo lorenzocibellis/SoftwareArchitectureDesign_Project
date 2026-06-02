@@ -9,6 +9,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * Controller per la finestra di dialogo di creazione di una nuova playlist.
+ * Gestisce l'input dell'utente e l'aggiunta della nuova playlist al sistema.
+ *
+ * @author gruppo10
+ */
 public class PlaylistCreationController {
 
     //Definizione attributi
@@ -24,16 +30,33 @@ public class PlaylistCreationController {
     private PlaylistList playlistList;
     private ObservableList<Playlist> playlistListObservable;
 
-    //METODI
+    /**
+     * Aggiunge la playlist creata sia al modello dei dati sia alla lista osservabile
+     * della UI per un aggiornamento in tempo reale.
+     * 
+     * @param p la playlist da aggiungere
+     */
     private void add(Playlist p) {
         playlistList.addPlaylist(p);
         playlistListObservable.add(p);
     }
 
+    /**
+     * Crea un nuovo oggetto Playlist estraendo il nome dal campo di testo.
+     * 
+     * @return la nuova {@link Playlist}
+     */
     private Playlist getPlaylist(){
         return new Playlist(nameInput.getText());
     }
 
+    /**
+     * Mostra una finestra di avviso in caso di errore durante la creazione.
+     * 
+     * @param title il titolo della finestra di errore
+     * @param header l'intestazione dell'errore
+     * @param content il dettaglio dell'errore da mostrare
+     */
     private void showError(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -42,14 +65,32 @@ public class PlaylistCreationController {
         alert.showAndWait();
     }
 
+    /**
+     * Imposta il riferimento alla collezione globale delle playlist.
+     * 
+     * @param p l'oggetto {@link PlaylistList}
+     */
     public void setPlaylistList(PlaylistList p){
         this.playlistList = p;
     }
 
+    /**
+     * Imposta la lista osservabile della finestra principale per consentire 
+     * l'aggiornamento automatico della UI quando viene creata una nuova playlist.
+     * 
+     * @param o l'{@link ObservableList} delle playlist
+     */
     public void setObservable(ObservableList<Playlist> o){
         this.playlistListObservable = o;
     }
 
+    /**
+     * Gestisce l'azione del pulsante di conferma ("Aggiungi Playlist").
+     * Crea la playlist, la aggiunge e chiude la finestra. In caso di errore
+     * (es. nome duplicato), mostra un alert.
+     * 
+     * @param actionEvent l'evento generato dal click
+     */
     @FXML
     void addPlaylist(ActionEvent actionEvent){
         try{
@@ -61,6 +102,12 @@ public class PlaylistCreationController {
         }
     }
 
+    /**
+     * Gestisce l'azione del pulsante di annullamento.
+     * Chiude la finestra senza effettuare operazioni.
+     * 
+     * @param actionEvent l'evento generato dal click
+     */
     @FXML
     void goBack(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();

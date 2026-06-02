@@ -9,8 +9,10 @@ import javafx.scene.layout.HBox;
 import java.io.IOException;
 
 /**
- * Controller per una singola cella (riga) nella ListView delle tracce.
- * Estende ListCell per integrarsi con la ListView di JavaFX.
+ * Controller per una singola cella (riga) nella ListView delle playlist.
+ * Estende {@link ListCell} per integrarsi con la ListView di JavaFX.
+ *
+ * @author gruppo10
  */
 public class PlaylistCellController extends ListCell<Playlist> {
 
@@ -47,8 +49,8 @@ public class PlaylistCellController extends ListCell<Playlist> {
     /**
      * Metodo chiamato da JavaFX ogni volta che la cella deve essere aggiornata.
      *
-     * @param playlist L'oggetto Playlist da visualizzare in questa riga.
-     * @param empty true se la riga è vuota, false altrimenti.
+     * @param playlist l'oggetto {@link Playlist} da visualizzare in questa riga
+     * @param empty    {@code true} se la riga è vuota, {@code false} altrimenti
      */
     @Override
     protected void updateItem(Playlist playlist, boolean empty) {

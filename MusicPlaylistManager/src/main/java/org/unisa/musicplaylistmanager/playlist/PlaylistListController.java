@@ -24,6 +24,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
+/**
+ * Controller per la schermata principale di visualizzazione di tutte le playlist.
+ * Gestisce l'elenco delle playlist, l'apertura di una playlist,
+ * l'aggiunta di nuove playlist e l'eliminazione di quelle esistenti.
+ *
+ * @author gruppo10
+ */
 public class PlaylistListController {
 
     //Dichiarazione attributi
@@ -51,6 +58,13 @@ public class PlaylistListController {
 
     //METODI
 
+    /**
+     * Apre la schermata di dettaglio per la playlist specificata.
+     * Naviga verso la vista della playlist utilizzando il {@link NavigationManager}.
+     * 
+     * @param p la playlist da visualizzare
+     * @throws IOException se il caricamento del file FXML fallisce
+     */
     private void openPlaylist(Playlist p) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "PlaylistView.fxml"));
         Parent root = loader.load();
@@ -62,6 +76,11 @@ public class PlaylistListController {
         NavigationManager.getInstance().navigateTo(root);
     }
 
+    /**
+     * Metodo di inizializzazione chiamato automaticamente da JavaFX.
+     * Recupera o inizializza il Singleton delle playlist, imposta la lista 
+     * osservabile e configura le funzionalità della ListView.
+     */
     @FXML
     public void initialize(){
         if (!PlaylistList.exists()) playlistList = new PlaylistList();
@@ -91,6 +110,12 @@ public class PlaylistListController {
         });
     }
 
+    /**
+     * Gestisce l'apertura della finestra per la creazione di una nuova playlist.
+     * 
+     * @param event l'evento generato dal click
+     * @throws IOException se il caricamento del file FXML fallisce
+     */
     @FXML
     void addNewPlaylist(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "PlaylistCreationView.fxml"));
@@ -107,6 +132,13 @@ public class PlaylistListController {
         stage.show();
     }
 
+    /**
+     * Elimina le playlist selezionate dall'utente.
+     * Mostra una finestra di conferma prima di procedere. Se la playlist
+     * attualmente in riproduzione viene eliminata, provvede a chiudere il player.
+     * 
+     * @param event l'evento generato dal click
+     */
     @FXML
     void deletePlaylist(ActionEvent event) {
         ObservableList<Playlist> selectedItems = listView.getSelectionModel().getSelectedItems();
@@ -147,6 +179,12 @@ public class PlaylistListController {
         }
     }
 
+    /**
+     * Naviga alla schermata principale della libreria musicale (TrackListView).
+     * 
+     * @param actionEvent l'evento generato dal click
+     * @throws IOException se il caricamento del file FXML fallisce
+     */
     @FXML
     public void goTrackList(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "TrackListView.fxml"));
@@ -156,6 +194,11 @@ public class PlaylistListController {
         NavigationManager.getInstance().navigateTo(playlistParent);
     }
 
+    /**
+     * Chiude l'applicazione terminando l'interfaccia JavaFX e l'intero processo.
+     * 
+     * @param actionEvent l'evento generato dal click
+     */
     @FXML
     public void closeApp(ActionEvent actionEvent) {
 

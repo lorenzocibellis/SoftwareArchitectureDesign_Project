@@ -2,6 +2,13 @@ package org.unisa.musicplaylistmanager.playlist;
 
 import java.util.ArrayList;
 
+/**
+ * Rappresenta la collezione globale di tutte le playlist dell'applicazione.
+ * Implementa un pattern Singleton per garantire un unico punto di accesso
+ * centralizzato alla lista delle playlist.
+ *
+ * @author gruppo10
+ */
 public class PlaylistList {
 
     //Dichiarazione Attributi
@@ -11,18 +18,30 @@ public class PlaylistList {
     private static PlaylistList pnt;
 
     //METODI
-    //Costruttore
+    /**
+     * Costruisce la collezione vuota di playlist e inizializza il puntatore Singleton.
+     * Viene richiamato una sola volta durante l'avvio dell'applicazione.
+     */
     public PlaylistList(){
         playlistList = new ArrayList<Playlist>();
         pnt = this;
     }
 
-    //getter
+    /**
+     * Restituisce la lista di tutte le playlist salvate.
+     * 
+     * @return un {@link ArrayList} contenente le playlist
+     */
     public ArrayList<Playlist> getPlaylists(){
         return this.playlistList;
     }
 
-    //metodo per aggiunta playlist
+    /**
+     * Aggiunge una nuova playlist alla collezione.
+     * 
+     * @param p la playlist da aggiungere
+     * @throws IllegalArgumentException se la playlist è nulla o è già presente
+     */
     public void addPlaylist(Playlist p){
         if (p != null && !playlistList.contains(p)) {
             playlistList.add(p);
@@ -31,7 +50,12 @@ public class PlaylistList {
         throw new IllegalArgumentException();
     }
 
-    //metodo per eliminazione playlist
+    /**
+     * Elimina una singola playlist dalla collezione.
+     * Prima di rimuoverla, svuota la playlist chiamando il suo metodo {@code deleteAll()}.
+     * 
+     * @param p la playlist da eliminare
+     */
     public void deletePlaylist(Playlist p){
         if (p != null) {
             p.deleteAll();
@@ -39,7 +63,12 @@ public class PlaylistList {
         }
     }
 
-    //Metodo per eliminazione di più playlist in contemporanea
+    /**
+     * Elimina più playlist contemporaneamente dalla collezione.
+     * Svuota ciascuna playlist prima di rimuoverla.
+     * 
+     * @param pl un {@link ArrayList} di playlist da eliminare
+     */
     public void deletePlaylists(ArrayList<Playlist> pl){
         for(int i = 0; i < pl.size(); i++){
             Playlist p = pl.get(i);
@@ -50,12 +79,20 @@ public class PlaylistList {
         }
     }
 
-    //metodo per controllo esistenza di playlistList
+    /**
+     * Verifica se l'istanza Singleton della lista di playlist è stata creata.
+     * 
+     * @return {@code true} se l'istanza esiste, {@code false} altrimenti
+     */
     public static boolean exists(){
         return !(pnt == null);
     }
 
-    //metodo per ottenimento puntatore a istanza di PlaylistList
+    /**
+     * Restituisce il puntatore all'istanza Singleton di {@code PlaylistList}.
+     * 
+     * @return l'istanza di questa classe
+     */
     public static PlaylistList getPlaylistListPointer(){
         return pnt;
     }

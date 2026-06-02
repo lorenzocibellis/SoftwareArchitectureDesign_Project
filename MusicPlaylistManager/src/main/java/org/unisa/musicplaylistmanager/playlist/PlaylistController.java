@@ -31,6 +31,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Controller per la visualizzazione e gestione del contenuto di una singola playlist.
+ * Permette di visualizzare le tracce, aggiungerne di nuove dalla libreria, rimuoverle,
+ * e avviarne la riproduzione.
+ *
+ * @author gruppo10
+ */
 public class PlaylistController {
 
     @FXML
@@ -56,6 +63,11 @@ public class PlaylistController {
     private Playlist playlist;
 
     //METODI
+    /**
+     * Metodo di inizializzazione chiamato automaticamente da JavaFX.
+     * Collega la disabilitazione del bottone di eliminazione alla selezione
+     * degli elementi nella ListView.
+     */
     @FXML
     void initialize(){
         // Lega la proprietà 'disable' del bottone 'deleteButton' allo stato della selezione della lista.
@@ -63,6 +75,13 @@ public class PlaylistController {
         deleteButton.disableProperty().bind(Bindings.isEmpty(listView.getSelectionModel().getSelectedItems()));
     }
 
+    /**
+     * Imposta la playlist corrente da visualizzare nel controller.
+     * Inizializza la lista osservabile, imposta la cella personalizzata per le tracce
+     * e configura gli eventi della ListView (es. avvio riproduzione al doppio click).
+     * 
+     * @param p la playlist da visualizzare
+     */
     public void setPlaylist(Playlist p){
 
         if (p != null) {
@@ -92,10 +111,21 @@ public class PlaylistController {
         }
     }
 
+    /**
+     * Apre il player musicale avviando la traccia selezionata all'interno del
+     * contesto di questa playlist.
+     * 
+     * @param selected la traccia da riprodurre
+     */
     private void openPlayerFor(Track selected) {
         ActivePlayerManager.getInstance().openPlayer(selected, playlist);
     }
 
+    /**
+     * Mostra la finestra di dialogo con i dettagli della traccia selezionata.
+     * 
+     * @param track la traccia di cui mostrare i dettagli
+     */
     private void showTrackDetails(Track track) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "TrackView.fxml"));
@@ -121,6 +151,12 @@ public class PlaylistController {
         }
     }
 
+    /**
+     * Apre una finestra per aggiungere nuove tracce alla playlist.
+     * Mostra solo le tracce della libreria che non sono già presenti nella playlist.
+     * 
+     * @param event l'evento ActionEvent generato dal click
+     */
     @FXML
     void addTrack(ActionEvent event) {
         if (!TrackList.exists()) {
@@ -169,6 +205,13 @@ public class PlaylistController {
     }
 
 
+    /**
+     * Rimuove le tracce selezionate dalla playlist corrente, previa conferma.
+     * Se la traccia attualmente in riproduzione viene rimossa da questa playlist,
+     * il player verrà chiuso automaticamente.
+     * 
+     * @param event l'evento ActionEvent generato dal click
+     */
     @FXML
     void removeTrack(ActionEvent event) {
         ObservableList<Track> selectedItems = listView.getSelectionModel().getSelectedItems();
@@ -205,6 +248,12 @@ public class PlaylistController {
         }
     }
 
+    /**
+     * Torna alla schermata precedente (PlaylistListView).
+     * 
+     * @param actionEvent l'evento ActionEvent generato dal click
+     * @throws IOException se il caricamento del file FXML fallisce
+     */
     @FXML
     void goBack(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "PlaylistListView.fxml"));
