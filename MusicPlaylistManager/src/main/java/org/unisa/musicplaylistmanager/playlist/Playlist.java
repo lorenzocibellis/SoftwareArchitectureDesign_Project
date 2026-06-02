@@ -29,12 +29,7 @@ public class Playlist {
     public String getName() {
         return name;
     }
-
-    public Track getTrack() {
-        throw new UnsupportedOperationException();
-    }
-
-
+    
     // metodi setter
     public void setName(String name) {
         this.name = name;
