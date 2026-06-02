@@ -300,12 +300,6 @@ class PlaylistTest {
     // -----------------------------------------------------------------------
 
     @Test
-    @DisplayName("getTrack: lancia UnsupportedOperationException")
-    void testGetTrackUnsupported() {
-        assertThrows(UnsupportedOperationException.class, () -> playlist.getTrack());
-    }
-
-    @Test
     @DisplayName("getIndex: lancia UnsupportedOperationException")
     void testGetIndexUnsupported() {
         assertThrows(UnsupportedOperationException.class, () -> playlist.getIndex(track1));

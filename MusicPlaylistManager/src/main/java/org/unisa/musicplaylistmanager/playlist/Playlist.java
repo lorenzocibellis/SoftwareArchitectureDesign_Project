@@ -29,7 +29,7 @@ public class Playlist {
     public String getName() {
         return name;
     }
-    
+
     // metodi setter
     public void setName(String name) {
         this.name = name;
