@@ -42,8 +42,8 @@
     <bottom>
         <HBox alignment="CENTER" prefHeight="70.0" spacing="15.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 1 0 0 0;">
             <children>
-                <Button fx:id="confirmButton" mnemonicParsing="false" onAction="#confirmSelection" prefHeight="35.0" prefWidth="120.0" text="Conferma" />
-                <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancel" prefHeight="35.0" prefWidth="120.0" styleClass="close-button" text="Annulla" />
+                <Button fx:id="confirmButton" mnemonicParsing="false" onAction="#confirmSelection" prefHeight="35.0" prefWidth="120.0" text="✓  Conferma" />
+                <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancel" prefHeight="35.0" prefWidth="120.0" styleClass="close-button" text="✕  Annulla" />
             </children>
         </HBox>
     </bottom>

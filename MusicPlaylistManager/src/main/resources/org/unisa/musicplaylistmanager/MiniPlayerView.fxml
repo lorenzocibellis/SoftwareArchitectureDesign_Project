@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" prefHeight="85.0" style="-fx-background-color: #F8F8F8; -fx-border-color: #CCCCCC; -fx-border-width: 1 0 1 0; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, -2);" StackPane.alignment="BOTTOM_CENTER" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.player.PlayerController">
+<BorderPane maxHeight="-Infinity" prefHeight="85.0" style="-fx-background-color: #F8F8F8; -fx-border-color: #CCCCCC; -fx-border-width: 1 0 1 0; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, -2);" StackPane.alignment="BOTTOM_CENTER" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.player.PlayerController">
     <StackPane.margin>
         <Insets bottom="70.0" />
     </StackPane.margin>

@@ -15,6 +15,8 @@
 
 .button:hover {
     -fx-background-color: #0056b3;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
 }
 
 /* Stile per i bottoni di cancellazione/secondari */
@@ -27,6 +29,8 @@
 
 .cancel-button:hover {
     -fx-background-color: #F0F8FF;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
 }
 
 /* Stile per i bottoni di eliminazione */
@@ -37,6 +41,8 @@
 
 .delete-button:hover {
     -fx-background-color: #C70000;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
 }
 
 
@@ -49,7 +55,8 @@
 
 .close-button:hover {
     -fx-background-color: #FF6B6B;
-
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
 }
 
 
@@ -74,6 +81,8 @@
 .info-button:hover {
     -fx-background-color: #D0D0D0;
     -fx-border-color: #666666;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
 }
 
 /* Stile per la ListView e le sue celle */
@@ -126,4 +135,6 @@
 
 .playlist-button:hover {
     -fx-background-color: #F0F8FF;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
 }
