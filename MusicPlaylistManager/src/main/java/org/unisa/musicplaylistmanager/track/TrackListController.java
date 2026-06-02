@@ -31,6 +31,11 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 /**
+ * Controller per la schermata principale della libreria musicale (TrackListView).
+ * Gestisce la visualizzazione di tutte le tracce presenti nel sistema,
+ * permettendone l'apertura nel player, l'aggiunta di nuove tracce, l'eliminazione
+ * e la navigazione verso la schermata delle playlist.
+ *
  * @author gruppo10
  */
 public class TrackListController {
@@ -59,7 +64,13 @@ public class TrackListController {
     //METODI
     //METODI FXML
 
-    //Inizializzatore
+    /**
+     * Metodo chiamato automaticamente da JavaFX dopo il caricamento del file FXML.
+     * Inizializza il Singleton di {@link TrackList} (se non già presente),
+     * configura la {@link ListView} per utilizzare le celle personalizzate,
+     * imposta la selezione multipla e gestisce l'evento di doppio click
+     * per l'apertura del player.
+     */
     @FXML
     public void initialize() {
 
@@ -97,7 +108,12 @@ public class TrackListController {
 
     }
 
-    //passaggio alla lista di Playlist
+    /**
+     * Naviga verso la schermata delle Playlist (PlaylistListView).
+     *
+     * @param event l'evento generato dal click
+     * @throws IOException se il caricamento del file FXML fallisce
+     */
     @FXML
     void goPlaylist(ActionEvent event) throws IOException {
 
@@ -111,7 +127,12 @@ public class TrackListController {
 
     // Dichiarazione metodi pubblici
 
-    // apertura della finestra di aggiunta di una traccia alla TrackList
+    /**
+     * Apre la finestra per l'aggiunta di una nuova traccia alla libreria.
+     *
+     * @param actionEvent l'evento generato dal click
+     * @throws IOException se il caricamento del file FXML fallisce
+     */
     public void addNewTrack(ActionEvent actionEvent) throws IOException {
 
         // caricamento della View e della finestra in cui verranno immessi i dati di input
@@ -133,7 +154,13 @@ public class TrackListController {
         stage.show();
     }
 
-    // eliminazione di una traccia
+    /**
+     * Gestisce l'eliminazione delle tracce selezionate dall'utente.
+     * Mostra un avviso di conferma. Se la traccia attualmente in riproduzione
+     * viene eliminata, provvede a chiudere il player.
+     *
+     * @param actionEvent l'evento generato dal click
+     */
     public void deleteTrack(ActionEvent actionEvent) {
 
         // ottenimento tracce selezionate
@@ -178,7 +205,11 @@ public class TrackListController {
         }
     }
 
-    // chiusura dell'applicazione
+    /**
+     * Chiude l'applicazione terminando l'interfaccia JavaFX e il processo di sistema.
+     *
+     * @param actionEvent l'evento generato dal click
+     */
     public void closeApp(ActionEvent actionEvent) {
 
         // ottiene la finestra in cui è stato clickato il bottone e la chiude
@@ -191,13 +222,22 @@ public class TrackListController {
     }
 
     // Metodi utilitari
-    // apertura del player
+    /**
+     * Apre il player per riprodurre la traccia passata come parametro,
+     * specificando la TrackList principale come contesto di riproduzione.
+     *
+     * @param selected la traccia da riprodurre
+     */
     private void openPlayerFor(Track selected) {
         ActivePlayerManager.getInstance().openPlayer(selected, trackList);
     }
 
-    // Metodo chiamato quando viene cliccato il bottone "i" in una riga
-    // permette di mostrare le info di una traccia
+    /**
+     * Mostra i dettagli della traccia selezionata in una finestra di sola lettura.
+     * Viene chiamato quando l'utente clicca sul bottone "info" (i) nella riga.
+     *
+     * @param track la traccia di cui mostrare i dettagli
+     */
     private void showTrackDetails(Track track) {
         try {
 

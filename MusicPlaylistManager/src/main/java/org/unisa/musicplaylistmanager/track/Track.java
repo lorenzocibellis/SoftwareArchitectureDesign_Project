@@ -1,9 +1,10 @@
 package org.unisa.musicplaylistmanager.track;
 
 /**
+ * Rappresenta una traccia musicale all'interno del sistema.
+ * 
  * @author gruppo10
  */
-
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import java.time.Year;
@@ -24,17 +25,17 @@ public class Track {
     //METODI
 
     /**
-     * Costruttore
+     * Costruisce una nuova traccia musicale verificandone la correttezza dei dati.
      *
-     * @param title Titolo della traccia.
-     * @param author L'autore della traccia.
-     * @param year Anno di pubblicazione.
-     * @param genre Genere della traccia.
-     * @param duration Durata della traccia
-     * @param favourite Flag indicante che la traccia è una tra le preferita
-     * @param explicit Flag indicante la presenza di contenuto esplicito
-     * @param newRelease Flag indicante che la traccia è una nuova uscita
-     *
+     * @param title Titolo della traccia
+     * @param author L'autore della traccia
+     * @param year Anno di pubblicazione
+     * @param genre Genere della traccia
+     * @param duration Durata della traccia in secondi
+     * @param favourite {@code true} se è tra i preferiti, {@code false} altrimenti
+     * @param explicit {@code true} se contiene contenuti espliciti, {@code false} altrimenti
+     * @param newRelease {@code true} se è una nuova uscita, {@code false} altrimenti
+     * @throws IllegalArgumentException se i parametri non superano la validazione
      */
     public Track(String title, String author, Year year, String genre, int duration,
                  boolean favourite, boolean explicit, boolean newRelease) {
@@ -73,9 +74,9 @@ public class Track {
         if (!validateYear(year)) {
             throw new IllegalArgumentException("L'anno non può essere superiore all'anno attuale.");
         }
-        // Validazione aggiuntiva per la durata positiva
+        // Validazione aggiuntiva per la durata strettamente positiva
         if (!validateDuration(duration)) {
-            throw new IllegalArgumentException("La durata non può essere negativa.");
+            throw new IllegalArgumentException("La durata deve essere maggiore di 0.");
         }
     }
 
@@ -97,9 +98,9 @@ public class Track {
      *
      * @param duration Durata da validare.
      *
-     * @return true se la durata è >= 0, false altrimenti
+     * @return true se la durata è > 0, false altrimenti
      */
-    private static boolean validateDuration(int duration){ return duration >= 0;}
+    private static boolean validateDuration(int duration){ return duration > 0;}
 
     /**
      * Metodo di supporto per controllare se una stringa è vuota.
@@ -115,13 +116,22 @@ public class Track {
     // METODI PUBBLICI
 
     // Getters
+
+    /** @return Il titolo della traccia */
     public String getTitle()      { return title.get(); }
+    /** @return L'autore della traccia */
     public String getAuthor()     { return author.get(); }
+    /** @return Il genere musicale della traccia */
     public String getGenre()      { return genre; }
+    /** @return L'anno di pubblicazione della traccia */
     public Year getYear()         { return year; }
+    /** @return La durata della traccia in secondi */
     public int getDuration()      { return duration; }
+    /** @return {@code true} se la traccia è preferita */
     public boolean isFavourite()    { return favourite; }
+    /** @return {@code true} se la traccia ha contenuti espliciti */
     public boolean isExplicitContent() { return explicit; }
+    /** @return {@code true} se la traccia è una nuova uscita */
     public boolean isNewRelease()   { return newRelease; }
 
     // Setters
@@ -142,24 +152,23 @@ public class Track {
         this.year = year;
     }
     public void setDuration(int duration) {
-        if (duration < 0) throw new IllegalArgumentException("La durata non può essere negativa.");
+        if (duration <= 0) throw new IllegalArgumentException("La durata deve essere maggiore di 0.");
         this.duration = duration;
     }
     public void setFavourite(boolean favourite)  { this.favourite = favourite; }
     public void setExplicit(boolean explicit)    { this.explicit = explicit; }
     public void setNewRelease(boolean newRelease){ this.newRelease = newRelease; }
 
-    // --- Metodi Property (Nuovi, necessari per implementare il pattern Observer tramite Binding) ---
     public StringProperty titleProperty() { return title; }
     public StringProperty authorProperty() { return author; }
 
 
     /**
      * Metodo per controllare che l'oggetto chiamante sia uguale all'oggetto passato come parametro.
+     * Due tracce sono considerate uguali se hanno lo stesso titolo, lo stesso autore e lo stesso anno.
      *
      * @param o Oggetto da controllare.
-     *
-     * @return True se i 2 oggetti sono uguali, false altrimenti
+     * @return {@code true} se i due oggetti sono uguali, {@code false} altrimenti
      */
     @Override
     public boolean equals(Object o){
@@ -171,6 +180,7 @@ public class Track {
 
     /**
      * Metodo per la generazione del codice hash dell'oggetto chiamante.
+     * Basato su titolo, autore e anno.
      *
      * @return Codice hash dell'oggetto
      */
@@ -180,9 +190,9 @@ public class Track {
     }
 
     /**
-     * Metodo per la generazione della strina da printare quando l'oggetto chiamante è passato ad una print.
+     * Metodo per la generazione della stringa descrittiva della traccia.
      *
-     * @return stringa che identifica l'oggetto
+     * @return stringa formattata con Titolo | Autore | Anno
      */
     @Override
     public String toString(){

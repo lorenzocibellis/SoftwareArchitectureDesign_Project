@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Controller per la finestra di visualizzazione, modifica e creazione
+ * di una traccia musicale. Gestisce l'input utente, la validazione dei dati
+ * e l'aggiornamento dinamico dell'interfaccia.
+ *
  * @author gruppo10
  */
 public class TrackController {
@@ -64,10 +68,12 @@ public class TrackController {
     // Riferimento alla traccia che stiamo visualizzando/modificando
     private Track currentTrack;
 
-    //METODI
-    //METODI FXML
 
-    //Inizializzatore
+    /**
+     * Metodo chiamato automaticamente da JavaFX.
+     * Configura i listener sui campi di testo per forzare l'input numerico
+     * su minuti, secondi e anno.
+     */
     @FXML
     public void initialize() {
         // Listener per forzare l'input a essere solo numerico per i minuti
@@ -100,11 +106,23 @@ public class TrackController {
         manageButtonVisibility();
     }
 
+    /**
+     * Abilita la modalità di modifica, sbloccando i campi testuali
+     * (tranne quelli della durata) e aggiornando i pulsanti visibili.
+     * 
+     * @param event l'evento generato dal click
+     */
     @FXML
     public void editTrack(ActionEvent event) {
         setEditMode();
     }
 
+    /**
+     * Annulla le modifiche in corso e ripristina i valori originali
+     * della traccia, tornando alla modalità di sola lettura.
+     * 
+     * @param event l'evento generato dal click
+     */
     @FXML
     public void cancelChanges(ActionEvent event) {
         // Ripristina i valori originali e torna in modalità Info
@@ -112,7 +130,13 @@ public class TrackController {
         setInfoMode();
     }
 
-    // funzione che salva le modifiche apportate alla traccia
+    /**
+     * Salva le modifiche apportate alla traccia. Esegue la validazione dell'input,
+     * aggiorna il modello e, se l'operazione ha successo senza creare duplicati,
+     * aggiorna la UI tornando alla modalità informativa.
+     * 
+     * @param event l'evento generato dal click
+     */
     @FXML
     public void saveChanges(ActionEvent event) {
         List<String> errors = inputValidation();
@@ -174,7 +198,12 @@ public class TrackController {
         }
     }
 
-    // aggiunta traccia alla TrackList
+    /**
+     * Aggiunge una nuova traccia alla libreria. Esegue la validazione,
+     * crea la traccia, l'aggiunge al sistema e chiude la finestra.
+     * 
+     * @param actionEvent l'evento generato dal click
+     */
     @FXML
     public void addTrack(ActionEvent actionEvent) {
 
@@ -203,7 +232,12 @@ public class TrackController {
         }
     }
 
-    // metodo per chiudere il popUp attuale
+    /**
+     * Chiude la finestra corrente.
+     * 
+     * @param event l'evento generato dal click
+     * @throws IOException in caso di problemi di chiusura
+     */
     @FXML
     public void goBack(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -213,19 +247,31 @@ public class TrackController {
 
     // Dichiarazione metodi pubblici
 
-    // settaggio TrackList a cui aggingere la traccia
+    /**
+     * Imposta il riferimento alla Playlist (o TrackList) in cui si sta
+     * salvando o modificando la traccia.
+     * 
+     * @param tl l'oggetto Playlist
+     */
     public void setTrackList(Playlist tl) {
         trackList = tl;
     }
 
-    // settaggio struttura dati osservabile in cui mostrare la traccia
+    /**
+     * Imposta la lista osservabile per l'aggiornamento in tempo reale della UI.
+     * 
+     * @param ol la lista osservabile delle tracce
+     */
     public void setObservable(ObservableList<Track> ol) {
         this.observableList = ol;
     }
 
 
     /**
-     * Metodo chiamato dal TrackListController per mostrare i dettagli in sola lettura.
+     * Imposta i dati della traccia da visualizzare e configura la finestra
+     * in modalità di sola lettura (InfoMode).
+     * 
+     * @param track la traccia di cui mostrare i dettagli
      */
     public void setTrackDetails(Track track) {
 
@@ -240,7 +286,9 @@ public class TrackController {
     }
 
     /**
-     * Valida tutti i campi di input e restituisce una lista di messaggi di errore.
+     * Valida tutti i campi di input della finestra.
+     * 
+     * @return una lista di stringhe contenente i messaggi d'errore (vuota se tutto è valido)
      */
     public List<String> inputValidation() {
 
@@ -290,6 +338,18 @@ public class TrackController {
             } catch (NumberFormatException e) {
             }
         }
+        
+        // Verifica che la durata complessiva sia maggiore di 0
+        try {
+            if (minutesText.matches("\\d+") && secondsText.matches("\\d+")) {
+                int m = Integer.parseInt(minutesText);
+                int s = Integer.parseInt(secondsText);
+                if (m == 0 && s == 0) {
+                    errors.add("La durata della traccia deve essere maggiore di 0.");
+                }
+            }
+        } catch (NumberFormatException e) {
+        }
 
         // ritorna gli errori trovati durante la validazione
         return errors;
@@ -297,7 +357,13 @@ public class TrackController {
 
     // Metodi utilitari
 
-    // metodo usato per creare un popUp di Alert riguardo degli errori
+    /**
+     * Mostra una finestra di avviso in caso di errore.
+     * 
+     * @param title il titolo della finestra di errore
+     * @param header l'intestazione dell'errore
+     * @param content il dettaglio dell'errore
+     */
     private void showError(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -306,13 +372,22 @@ public class TrackController {
         alert.showAndWait();
     }
 
-    // metodo usato per raggruppare in un metodo solo l'aggiunta di una traccia alla TrackList e alla lista osservabile
+    /**
+     * Aggiunge una traccia alla libreria e alla sua rappresentazione osservabile.
+     * 
+     * @param t la traccia da aggiungere
+     */
     private void add(Track t) {
         trackList.addTrack(t);
         observableList.add(t);
     }
 
-    // metodo usato per creare un oggetto di tipo traccia a partire dagli input delle zone testuali del popUp
+    /**
+     * Crea un oggetto {@link Track} utilizzando i dati attualmente inseriti 
+     * nei campi di input.
+     * 
+     * @return la nuova traccia generata
+     */
     private Track getTrack() {
         int minutes = Integer.parseInt(minutesInput.getText());
         int seconds = Integer.parseInt(secondsInput.getText());
@@ -332,8 +407,10 @@ public class TrackController {
         );
     }
 
-    // Gestisci la visibilità dei bottoni in base alla modalità corrente, se i bottoni non
-    // vengono mostrati, viene tolto anche il loro spazio occupato nel layout
+    /**
+     * Gestisce dinamicamente lo spazio occupato dai pulsanti. 
+     * Se un pulsante è invisibile, non occuperà spazio nel layout.
+     */
     private void manageButtonVisibility() {
         editButton.managedProperty().bind(editButton.visibleProperty());
         saveButton.managedProperty().bind(saveButton.visibleProperty());
@@ -342,7 +419,11 @@ public class TrackController {
         buttonBack.managedProperty().bind(buttonBack.visibleProperty());
     }
 
-    // ripopola i text input con i dati della traccia di cui si sono visualizzati i dettagli
+    /**
+     * Riempie i campi di testo con i dati di una specifica traccia.
+     * 
+     * @param track la traccia di cui leggere i dati
+     */
     private void populateFieldsFromTrack(Track track) {
 
         // setting dei campi della UI con i dati della traccia
@@ -362,8 +443,12 @@ public class TrackController {
         newReleaseRadio.setSelected(track.isNewRelease());
     }
 
-    // setta i campi di input come modificabili o non a seconda del parametro passato
-    // disabilitando i campi si setta la modalità di visualizzazione
+    /**
+     * Abilita o disabilita la modifica dei campi di testo, impostando
+     * di conseguenza la variabile di stato {@code isReadOnly}.
+     * 
+     * @param editable {@code true} se i campi devono essere modificabili
+     */
     private void setFieldsEditable(boolean editable) {
         this.isReadOnly = !editable;
 
@@ -380,7 +465,10 @@ public class TrackController {
     }
 
 
-    // Imposta i bottoni da visualizzare nella modalità Info
+    /**
+     * Imposta la modalità "Info": campi bloccati (sola lettura), pulsanti di 
+     * salvataggio nascosti e pulsanti di modifica/chiusura visibili.
+     */
     private void setInfoMode() {
         // disabilita i campi di input
         setFieldsEditable(false);
@@ -399,8 +487,10 @@ public class TrackController {
         Platform.runLater(() -> editButton.requestFocus());
     }
 
-    // Imposta i bottoni visibili per la modalità Modifica
-    // I campi riguardanti la durata del brano rimangono non modificabili
+    /**
+     * Imposta la modalità "Modifica": campi abilitati (eccetto la durata), 
+     * pulsanti di salvataggio visibili e focus automatico sul campo titolo.
+     */
     private void setEditMode() {
         // abilita i campi di input
         setFieldsEditable(true);

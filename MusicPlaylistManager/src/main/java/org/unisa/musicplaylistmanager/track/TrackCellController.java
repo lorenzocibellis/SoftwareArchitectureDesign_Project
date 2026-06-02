@@ -12,7 +12,10 @@ import java.util.function.Consumer;
 
 /**
  * Controller per una singola cella (riga) nella ListView delle tracce.
- * Estende ListCell per integrarsi con la ListView di JavaFX.
+ * Estende {@link ListCell} per integrarsi con la ListView di JavaFX e gestire
+ * dinamicamente la visualizzazione e l'interazione per singola traccia.
+ *
+ * @author gruppo10
  */
 public class TrackCellController extends ListCell<Track> {
 
@@ -95,7 +98,13 @@ public class TrackCellController extends ListCell<Track> {
         }
     }
 
-    // rende il bottone info visibile o nascosto in base al parametro passato, lo nasconde se siamo in AddTracksToPlaylist
+    /**
+     * Rende il bottone delle informazioni (i) visibile o nascosto in base
+     * al parametro passato. Utile ad esempio per nasconderlo quando si stanno
+     * semplicemente selezionando tracce da aggiungere a una playlist.
+     * 
+     * @param visible {@code true} per mostrare il bottone, {@code false} per nasconderlo
+     */
     public void setInfoButtonVisible(boolean visible) {
         if (infoButton != null) {
             infoButton.setVisible(visible);
