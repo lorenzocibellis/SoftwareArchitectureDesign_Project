@@ -196,9 +196,10 @@ public class PlaylistController {
             playlistObservable.removeAll(toRemove);
             playlist.getTracks().removeAll(toRemove);
 
-            // Se stiamo rimuovendo la traccia in riproduzione dalla playlist, chiudi il player
+            // Se stiamo rimuovendo la traccia in riproduzione E il player è stato avviato da QUESTA playlist, chiudi il player
             Track playingTrack = ActivePlayerManager.getInstance().getCurrentTrack();
-            if (playingTrack != null && toRemove.contains(playingTrack)) {
+            Playlist playingPlaylist = ActivePlayerManager.getInstance().getCurrentPlaylist();
+            if (playingTrack != null && toRemove.contains(playingTrack) && playlist == playingPlaylist) {
                 ActivePlayerManager.getInstance().closePlayer();
             }
         }
