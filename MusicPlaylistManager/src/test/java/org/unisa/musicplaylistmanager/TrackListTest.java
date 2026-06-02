@@ -242,10 +242,11 @@ class TrackListTest {
     // Ereditarietà
     // -----------------------------------------------------------------------
 
-    @Test
+@Test
     @DisplayName("TrackList è un'istanza di Playlist")
     void testIsInstanceOfPlaylist() {
-        assertInstanceOf(Playlist.class, trackList);
+        // Sostituzione di assertInstanceOf
+        assertTrue(trackList instanceof Playlist, "TrackList dovrebbe essere un'istanza di Playlist");
     }
 }
 

@@ -35,14 +35,13 @@ class PauseTest {
     }
 
     @Test
-    @DisplayName("execute: interrompe la riproduzione e passa allo stato Play")
+    @DisplayName("execute: riprende la riproduzione e passa allo stato Play")
     void testExecuteChangesStateToPlay() {
         // Eseguiamo l'azione di Pause
         pauseState.execute(player);
 
-        // Verifichiamo che la transizione di stato sia avvenuta correttamente.
-        // In JUnit 5, assertInstanceOf verifica che l'oggetto sia esattamente di quella classe.
-        assertInstanceOf(Play.class, player.getCurrentState(),
-                "Dopo aver eseguito Pause, lo stato del player deve diventare Play");
+        // Verifichiamo che la transizione sia avvenuta verso Play
+        assertTrue(player.getCurrentState() instanceof Play, 
+           "Dopo aver eseguito Pause, lo stato del player deve diventare Play");
     }
 }

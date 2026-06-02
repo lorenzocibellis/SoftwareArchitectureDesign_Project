@@ -41,7 +41,6 @@ class PlayTest {
 
         // Verifichiamo che la transizione di stato sia avvenuta correttamente.
         // In JUnit 5, assertInstanceOf verifica che l'oggetto sia esattamente di quella classe.
-       assertInstanceOf(Pause.class, player.getCurrentState(),
-                "Dopo aver eseguito Play, lo stato del player deve diventare Pause");
+       assertTrue(player.getCurrentState() instanceof Pause, "Dopo aver eseguito Play, lo stato del player deve diventare Pause");
     }
 }
