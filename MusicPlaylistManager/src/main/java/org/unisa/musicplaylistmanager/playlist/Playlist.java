@@ -121,13 +121,14 @@ public class Playlist {
         }
     }
     /**
-     * Restituisce l'indice di una traccia all'interno della playlist.
+     * Restituisce l'indice di una traccia all'interno della playlist (non supportato al momento).
      * 
      * @param track la traccia da cercare
-     * @return l'indice della traccia, o -1 se non è presente
+     * @return l'indice della traccia
+     * @throws UnsupportedOperationException sempre
      */
     public int getIndex(Track track){
-        return tracks.indexOf(track);
+        throw new UnsupportedOperationException("L'operazione getIndex non è attualmente supportata.");
     }
 
     /**

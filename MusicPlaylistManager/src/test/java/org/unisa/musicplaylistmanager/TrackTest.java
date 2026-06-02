@@ -50,9 +50,9 @@ class TrackTest {
     }
 
     @Test
-    @DisplayName("Constructor: durata zero è accettata")
+    @DisplayName("Constructor: durata zero non è accettata (lancia IllegalArgumentException)")
     void testConstructorDurationZero() {
-        assertDoesNotThrow(() ->
+        assertThrows(IllegalArgumentException.class, () ->
                 new Track("Silence", "Artist", Year.of(2000), "Ambient", 0, false, false, false));
     }
 
