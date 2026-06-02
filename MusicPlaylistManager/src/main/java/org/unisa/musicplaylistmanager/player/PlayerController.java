@@ -8,11 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
-import javafx.animation.TranslateTransition;
-import javafx.util.Duration;
 import org.unisa.musicplaylistmanager.playlist.Playlist;
 import org.unisa.musicplaylistmanager.state.Play;
 import org.unisa.musicplaylistmanager.track.Track;
@@ -39,24 +35,10 @@ public class PlayerController implements Initializable {
     @FXML
     private Text authorName;
     @FXML
-    private ImageView albumArt;
+    private Button closeButton;
 
-    @FXML
-    private AnchorPane topPane;
-    @FXML
-    private AnchorPane bottomPane;
-    @FXML
-    private Button expandButton;
-    @FXML
-    private Button closeButtonMin;
-    @FXML
-    private Button minimizeButton;
-
-    private String resourceRoot = "/org/unisa/musicplaylistmanager/";
     private String iconsRoot = "/icons/";
     private Player player;
-    private AnchorPane playerRoot;
-    private boolean isMinimized = false;
 
     @FXML
     public void initialize(URL url, ResourceBundle rb) {
@@ -64,50 +46,40 @@ public class PlayerController implements Initializable {
         skipToNextButton.setDisable(true);
         skipToPreviousButton.setDisable(true);
         // Carichiamo le icone per i tasti di skip
-        setButtonImage(skipToNextButton, iconsRoot + "skipNextButton.png", 37, 37);
-        setButtonImage(skipToPreviousButton, iconsRoot + "skipPreviousButton.png", 37, 37);
-
-        // Placeholder per l'eventuale copertina della canzone
-        try {
-            Image image = new Image(getClass().getResourceAsStream(iconsRoot + "musical-note.png"));
-            albumArt.setImage(image);
-        } catch (Exception e) {
-            System.err.println("Immagine di placeholder non trovata: /icons/musical-note.png");
-        }
+        setButtonImage(skipToNextButton, iconsRoot + "skipNextButton.png", 40, 40);
+        setButtonImage(skipToPreviousButton, iconsRoot + "skipPreviousButton.png", 40, 40);
     }
 
-    public void setPlayerRoot(AnchorPane root) {
-        this.playerRoot = root;
-    }
-
-    // metodo che inizializza il contesto di riproduzione per una nuova traccia e termina l'eventuale ruproduzione precedente
-    public void setPlaylistContext(Track initialTrack, Playlist playlist) {
+    /**
+     * Inizializza il player con la traccia e la playlist.
+     * Chiamato dopo il caricamento dell'FXML da ActivePlayerManager.
+     */
+    public void init(Track initialTrack, Playlist playlist) {
         updateTrackUI(initialTrack);
         if (player != null) {
             player.terminate();
         }
         player = new Player(new Play(), playlist, initialTrack);
-        
+
         player.setOnTimeTick(seconds -> {
             Platform.runLater(() -> {
                 songProgress.setValue(seconds);
                 counter.setText(formatTime(seconds));
             });
         });
-        
+
         player.setOnPlayUIUpdate(() -> {
-            Platform.runLater(() -> setExecuteButtonImage(iconsRoot + "pauseButton.png", 37, 37));
+            Platform.runLater(() -> setExecuteButtonImage(iconsRoot + "pauseButton.png", 45, 45));
         });
-        
+
         player.setOnPauseUIUpdate(() -> {
-            Platform.runLater(() -> setExecuteButtonImage(iconsRoot + "playButton.jpg", 24, 24));
+            Platform.runLater(() -> setExecuteButtonImage(iconsRoot + "playButton.jpg", 45, 45));
         });
 
         player.changeState();
     }
 
-    // listener del tasto centrale di play/pause, che esegue una determinata azione in base allo stato di riproduzione della traccia
-
+    // listener del tasto centrale di play/pause
     @FXML
     public void handleExecute() {
         if (player != null) {
@@ -127,51 +99,13 @@ public class PlayerController implements Initializable {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    // funzione che gestisce il toggle della finestra del player, che in base a un tasto può estendersi
-    //occupando tutta la schermata, o rimanere ancorata in basso
-    @FXML
-    public void toggleMinimize() {
-        double distanceToHide = topPane.getHeight();
-        TranslateTransition slideRoot = new TranslateTransition(Duration.seconds(0.4), playerRoot);
-        TranslateTransition slideBottom = new TranslateTransition(Duration.seconds(0.4), bottomPane);
-
-        if (!isMinimized) { // Minimize
-            slideRoot.setToY(distanceToHide);
-            slideBottom.setToY(-distanceToHide);
-            expandButton.setVisible(true);
-            closeButtonMin.setVisible(true);
-            minimizeButton.setVisible(false);
-            isMinimized = true;
-        } else { // Expand
-            slideRoot.setToY(0.0);
-            slideBottom.setToY(0.0);
-            expandButton.setVisible(false);
-            closeButtonMin.setVisible(false);
-            minimizeButton.setVisible(true);
-            isMinimized = false;
-        }
-
-        slideRoot.play();
-        slideBottom.play();
-    }
-
-    // metodo che gestisce la chiusura della finestra del player
+    // metodo che gestisce la chiusura del player
     @FXML
     public void handleClose() {
         if (player != null) {
             player.terminate();
         }
-
-        TranslateTransition slideDown = new TranslateTransition(Duration.seconds(0.4), playerRoot);
-        slideDown.setToY(playerRoot.getScene().getHeight());
-
-        slideDown.setOnFinished(e -> {
-            if (playerRoot.getParent() instanceof StackPane) {
-                ((StackPane) playerRoot.getParent()).getChildren().remove(playerRoot);
-            }
-        });
-
-        slideDown.play();
+        ActivePlayerManager.getInstance().closePlayer();
     }
 
     // metodo di aggiornamento dell'interfaccia del player in tempo reale
@@ -192,7 +126,7 @@ public class PlayerController implements Initializable {
         }
     }
 
-    // metodo che cambia l'icona del tasto centra in base allo stato della traccia
+    // metodo che cambia l'icona di un bottone
     public void setButtonImage(Button targetButton, String resourcePath, double width, double height) {
         try {
             ImageView iv = new ImageView(new Image(getClass().getResourceAsStream(resourcePath)));
@@ -213,5 +147,10 @@ public class PlayerController implements Initializable {
         int m = totalSeconds / 60;
         int s = totalSeconds % 60;
         return String.format("%d:%02d", m, s);
+    }
+
+    //  METODO AGGIUNTO PER I TEST JUNIT
+    public Player getPlayer() {
+        return this.player;
     }
 }

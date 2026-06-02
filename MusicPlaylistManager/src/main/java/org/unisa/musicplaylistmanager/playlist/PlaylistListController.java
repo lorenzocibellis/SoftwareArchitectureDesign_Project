@@ -14,6 +14,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.unisa.musicplaylistmanager.player.ActivePlayerManager;
+import org.unisa.musicplaylistmanager.player.NavigationManager;
 import org.unisa.musicplaylistmanager.app.MusicPlaylistManagerApp;
 import org.unisa.musicplaylistmanager.track.Track;
 import org.unisa.musicplaylistmanager.track.TrackController;
@@ -56,14 +58,8 @@ public class PlaylistListController {
         PlaylistController controller = loader.getController();
         controller.setPlaylist(p);
 
-        Stage stage = new Stage();
-        stage.setTitle("Playlist");
-
-
-        Scene scene = new Scene(root);
-
-        stage.setScene(scene);
-        stage.show();
+        // Naviga usando NavigationManager
+        NavigationManager.getInstance().navigateTo(root);
     }
 
     @FXML
@@ -142,22 +138,22 @@ public class PlaylistListController {
             // Rimuovi gli elementi dalla lista osservabile e dalla tracklist
             playlistListObservable.removeAll(toRemove);
             playlistList.deletePlaylists(toRemove);
+
+            // Se stiamo eliminando la playlist in riproduzione, chiudi il player
+            Playlist playingPlaylist = ActivePlayerManager.getInstance().getCurrentPlaylist();
+            if (playingPlaylist != null && toRemove.contains(playingPlaylist)) {
+                ActivePlayerManager.getInstance().closePlayer();
+            }
         }
     }
 
     @FXML
     public void goTrackList(ActionEvent actionEvent) throws IOException {
-        Parent playlistParent = FXMLLoader.load(getClass().getResource(resourceRoot + "TrackListView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "TrackListView.fxml"));
+        Parent playlistParent = loader.load();
 
-        // 2. Crea la nuova scena
-        Scene playlistScene = new Scene(playlistParent);
-
-        // 3. Ottieni lo stage (finestra) corrente dall'evento
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-
-        // 4. Cambia la scena
-        window.setScene(playlistScene);
-        window.show();
+        // Cambio contenuto mantenendo il player
+        NavigationManager.getInstance().navigateTo(playlistParent);
     }
 
     @FXML

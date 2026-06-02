@@ -22,6 +22,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
+import org.unisa.musicplaylistmanager.player.ActivePlayerManager;
+import org.unisa.musicplaylistmanager.player.NavigationManager;
 import org.unisa.musicplaylistmanager.player.PlayerController;
 
 import java.io.IOException;
@@ -100,17 +102,11 @@ public class TrackListController {
     void goPlaylist(ActionEvent event) throws IOException {
 
         //caricamento della View
-        Parent playlistParent = FXMLLoader.load(getClass().getResource(resourceRoot + "PlaylistListView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "PlaylistListView.fxml"));
+        Parent playlistParent = loader.load();
 
-        // creazione della nuova scena
-        Scene playlistScene = new Scene(playlistParent);
-
-        // ottienimento della finestra corrente dall'evento
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-        // cambio scena
-        window.setScene(playlistScene);
-        window.show();
+        // cambio contenuto mantenendo il player
+        NavigationManager.getInstance().navigateTo(playlistParent);
     }
 
     // Dichiarazione metodi pubblici
@@ -173,6 +169,12 @@ public class TrackListController {
             // Rimuovi gli elementi dalla lista osservabile e dalla tracklist
             trackListObservable.removeAll(toRemove);
             trackList.getTracks().removeAll(toRemove);
+
+            // Se stiamo eliminando la traccia in riproduzione, chiudi il player
+            Track playingTrack = ActivePlayerManager.getInstance().getCurrentTrack();
+            if (playingTrack != null && toRemove.contains(playingTrack)) {
+                ActivePlayerManager.getInstance().closePlayer();
+            }
         }
     }
 
@@ -191,28 +193,7 @@ public class TrackListController {
     // Metodi utilitari
     // apertura del player
     private void openPlayerFor(Track selected) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "PlayerView.fxml"));
-            AnchorPane playerRoot = loader.load();
-            PlayerController ctrl = loader.getController();
-            ctrl.setPlaylistContext(selected, trackList);
-            ctrl.setPlayerRoot(playerRoot);
-
-            if (mainStackPane.getChildren().size() > 1) {
-                mainStackPane.getChildren().remove(1);
-            }
-
-            mainStackPane.getChildren().add(playerRoot);
-            StackPane.setAlignment(playerRoot, Pos.BOTTOM_CENTER);
-            playerRoot.setTranslateY(mainStackPane.getHeight());
-
-            TranslateTransition slideUp = new TranslateTransition(Duration.seconds(0.4), playerRoot);
-            slideUp.setToY(0);
-            slideUp.play();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ActivePlayerManager.getInstance().openPlayer(selected, trackList);
     }
 
     // Metodo chiamato quando viene cliccato il bottone "i" in una riga

@@ -58,6 +58,14 @@ public class Player {
         this.currentState = state;
     }
 
+    public Track getCurrentTrack() {
+        return this.currentTrack;
+    }
+
+    public Playlist getCurrentPlaylist() {
+        return this.playlist;
+    }
+
     //  METODO AGGIUNTO PER I TEST JUNIT 
     public PlayerState getCurrentState() {
         return this.currentState;

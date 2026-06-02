@@ -84,7 +84,7 @@ public class Playlist {
     }
     // restituisce l'indice di una traccia nella lista
     public int getIndex(Track track){
-        throw new UnsupportedOperationException();
+        return tracks.indexOf(track);
     }
 
     // restituisce la dimensione della lista

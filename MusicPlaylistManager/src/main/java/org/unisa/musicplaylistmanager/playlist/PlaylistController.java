@@ -17,6 +17,8 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.unisa.musicplaylistmanager.player.ActivePlayerManager;
+import org.unisa.musicplaylistmanager.player.NavigationManager;
 import org.unisa.musicplaylistmanager.player.PlayerController;
 import org.unisa.musicplaylistmanager.track.Track;
 import org.unisa.musicplaylistmanager.track.TrackCellController;
@@ -91,28 +93,7 @@ public class PlaylistController {
     }
 
     private void openPlayerFor(Track selected) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "PlayerView.fxml"));
-            AnchorPane playerRoot = loader.load();
-            PlayerController ctrl = loader.getController();
-            ctrl.setPlaylistContext(selected, playlist);
-            ctrl.setPlayerRoot(playerRoot);
-
-            if (mainStackPane.getChildren().size() > 1) {
-                mainStackPane.getChildren().remove(1);
-            }
-
-            mainStackPane.getChildren().add(playerRoot);
-            StackPane.setAlignment(playerRoot, Pos.BOTTOM_CENTER);
-            playerRoot.setTranslateY(mainStackPane.getHeight());
-
-            TranslateTransition slideUp = new TranslateTransition(Duration.seconds(0.4), playerRoot);
-            slideUp.setToY(0);
-            slideUp.play();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ActivePlayerManager.getInstance().openPlayer(selected, playlist);
     }
 
     private void showTrackDetails(Track track) {
@@ -214,22 +195,22 @@ public class PlaylistController {
             
             playlistObservable.removeAll(toRemove);
             playlist.getTracks().removeAll(toRemove);
+
+            // Se stiamo rimuovendo la traccia in riproduzione dalla playlist, chiudi il player
+            Track playingTrack = ActivePlayerManager.getInstance().getCurrentTrack();
+            if (playingTrack != null && toRemove.contains(playingTrack)) {
+                ActivePlayerManager.getInstance().closePlayer();
+            }
         }
     }
 
     @FXML
     void goBack(ActionEvent actionEvent) throws IOException {
-        Parent playlistParent = FXMLLoader.load(getClass().getResource(resourceRoot + "PlaylistListView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "PlaylistListView.fxml"));
+        Parent playlistParent = loader.load();
 
-        // 2. Crea la nuova scena
-        Scene playlistScene = new Scene(playlistParent);
-
-        // 3. Ottieni lo stage (finestra) corrente dall'evento
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-
-        // 4. Cambia la scena
-        window.setScene(playlistScene);
-        window.show();
+        // Naviga usando NavigationManager
+        NavigationManager.getInstance().navigateTo(playlistParent);
     }
 
 }
