@@ -18,7 +18,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.unisa.musicplaylistmanager.player.ActivePlayerManager;
+import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 import org.unisa.musicplaylistmanager.service.NavigationManager;
 
 import java.io.IOException;
