@@ -1,4 +1,4 @@
-package org.unisa.musicplaylistmanager.player;
+package org.unisa.musicplaylistmanager.service.player;
 
 import org.unisa.musicplaylistmanager.playlist.Playlist;
 import org.unisa.musicplaylistmanager.track.Track;
