@@ -3,6 +3,7 @@ package org.unisa.musicplaylistmanager.player;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
 import org.unisa.musicplaylistmanager.playlist.Playlist;
+import org.unisa.musicplaylistmanager.service.NavigationManager;
 import org.unisa.musicplaylistmanager.track.Track;
 
 import java.io.IOException;

@@ -11,14 +11,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.unisa.musicplaylistmanager.player.ActivePlayerManager;
-import org.unisa.musicplaylistmanager.player.NavigationManager;
-import org.unisa.musicplaylistmanager.app.MusicPlaylistManagerApp;
-import org.unisa.musicplaylistmanager.track.Track;
-import org.unisa.musicplaylistmanager.track.TrackController;
+import org.unisa.musicplaylistmanager.service.NavigationManager;
 
 import java.io.IOException;
 import java.util.ArrayList;

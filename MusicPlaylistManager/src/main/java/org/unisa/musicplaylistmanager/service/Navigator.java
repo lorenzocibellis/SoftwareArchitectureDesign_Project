@@ -1,4 +1,4 @@
-package org.unisa.musicplaylistmanager.player;
+package org.unisa.musicplaylistmanager.service;
 
 import javafx.scene.Parent;
 

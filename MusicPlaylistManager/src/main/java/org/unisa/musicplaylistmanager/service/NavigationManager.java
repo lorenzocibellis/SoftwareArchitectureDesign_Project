@@ -1,9 +1,10 @@
-package org.unisa.musicplaylistmanager.player;
+package org.unisa.musicplaylistmanager.service;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.unisa.musicplaylistmanager.player.ActivePlayerManager;
 
 /**
  * Singleton responsabile esclusivamente della navigazione tra schermate.

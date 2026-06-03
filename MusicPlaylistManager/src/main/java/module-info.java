@@ -21,4 +21,6 @@ module org.unisa.musicplaylistmanager {
     opens org.unisa.musicplaylistmanager.player to javafx.fxml;
     exports org.unisa.musicplaylistmanager.iterator;
     opens org.unisa.musicplaylistmanager.iterator to javafx.fxml;
+    exports org.unisa.musicplaylistmanager.service;
+    opens org.unisa.musicplaylistmanager.service to javafx.fxml;
 }
