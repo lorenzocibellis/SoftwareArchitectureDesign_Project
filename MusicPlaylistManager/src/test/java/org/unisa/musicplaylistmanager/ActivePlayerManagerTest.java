@@ -1,7 +1,7 @@
 package org.unisa.musicplaylistmanager;
 
 import org.junit.jupiter.api.*;
-import org.unisa.musicplaylistmanager.player.ActivePlayerManager;
+import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 import org.unisa.musicplaylistmanager.playlist.Playlist;
 import org.unisa.musicplaylistmanager.track.Track;
 
