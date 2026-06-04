@@ -62,7 +62,7 @@ public class PlaylistCellController extends ListCell<Playlist> {
         } else {
             // Popola i componenti FXML con i dati della traccia
             nameLabel.setText(playlist.getName());
-            detailsLabel.setText(playlist.getSize() + " Tracce");
+            detailsLabel.setText(playlist.getSize() + (playlist.getSize() == 1 ? " Traccia" : " Tracce"));
 
             // Imposta l'azione per il bottone "info"
 
