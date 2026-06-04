@@ -5,7 +5,7 @@ import javafx.scene.layout.BorderPane;
 import org.unisa.musicplaylistmanager.player.Player;
 import org.unisa.musicplaylistmanager.player.PlayerController;
 import org.unisa.musicplaylistmanager.playlist.Playlist;
-import org.unisa.musicplaylistmanager.service.NavigationManager;
+import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
 import org.unisa.musicplaylistmanager.track.Track;
 
 import java.io.IOException;
