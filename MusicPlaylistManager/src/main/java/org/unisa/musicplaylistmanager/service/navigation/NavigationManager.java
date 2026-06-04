@@ -44,7 +44,7 @@ public class NavigationManager implements Navigator {
         currentContent = initialContent;
         rootLayout.getChildren().add(currentContent);
 
-        Scene scene = new Scene(rootLayout, 800, 600);
+        Scene scene = new Scene(rootLayout, 900, 700);
         stage.setScene(scene);
     }
 

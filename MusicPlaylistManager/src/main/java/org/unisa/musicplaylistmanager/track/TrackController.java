@@ -53,6 +53,12 @@ public class TrackController {
     private RadioButton newReleaseRadio;
     @FXML
     private RadioButton explicitContentRadio;
+    @FXML
+    private Label favouritePreview;
+    @FXML
+    private Label explicitPreview;
+    @FXML
+    private Label newReleasePreview;
 
     // definizione attributi
 
@@ -104,6 +110,28 @@ public class TrackController {
 
         // gestisci la visibilità dei bottoni
         manageButtonVisibility();
+
+        // Listener per mostrare/nascondere l'anteprima dei tag badge
+        bindTagPreview(favouriteRadio, favouritePreview);
+        bindTagPreview(explicitContentRadio, explicitPreview);
+        bindTagPreview(newReleaseRadio, newReleasePreview);
+    }
+
+    /**
+     * Collega un RadioButton alla visibilità del suo tag badge di anteprima.
+     *
+     * @param radio il RadioButton da osservare
+     * @param preview il Label badge da mostrare/nascondere
+     */
+    private void bindTagPreview(RadioButton radio, Label preview) {
+        if (radio != null && preview != null) {
+            preview.setVisible(radio.isSelected());
+            preview.setManaged(radio.isSelected());
+            radio.selectedProperty().addListener((obs, oldVal, newVal) -> {
+                preview.setVisible(newVal);
+                preview.setManaged(newVal);
+            });
+        }
     }
 
     /**

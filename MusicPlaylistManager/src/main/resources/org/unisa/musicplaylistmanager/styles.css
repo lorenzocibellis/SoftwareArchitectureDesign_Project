@@ -180,3 +180,54 @@
     -fx-background-color: linear-gradient(to right, #00D2A0, #00B386);
     -fx-text-fill: white;
 }
+
+
+/* CSS della sezione tag all'interno di info traccia */
+
+.tag-section-title {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #555555;
+}
+
+.tag-toggle-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-color: #DDDDDD;
+    -fx-border-radius: 10;
+    -fx-border-width: 1.5;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 4, 0, 0, 2);
+}
+
+.tag-toggle-card:hover {
+    -fx-border-color: #007AFF;
+    -fx-effect: dropshadow(gaussian, rgba(0,122,255,0.15), 6, 0, 0, 2);
+}
+
+/* Radio button styling dentro le card */
+.tag-toggle-card .radio-button {
+    -fx-font-size: 12px;
+    -fx-text-fill: #333333;
+}
+
+.tag-toggle-card .radio-button .radio {
+    -fx-background-color: white;
+    -fx-border-color: #BBBBBB;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 3 3 3 3;
+    -fx-border-insets: 0;
+    -fx-background-insets: 0;
+}.tag-toggle-card .radio-button:selected .radio {
+    -fx-border-color: #007AFF;
+}
+
+.tag-toggle-card .radio-button:selected .radio .dot {
+    -fx-background-color: #007AFF;
+    -fx-background-radius: 10;
+    -fx-min-width: 8;
+    -fx-min-height: 8;
+    -fx-max-width: 8;
+    -fx-max-height: 8;
+    -fx-background-insets: 0;
+}
