@@ -15,6 +15,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
+import org.unisa.musicplaylistmanager.track.TrackList;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -162,6 +163,15 @@ public class PlaylistListController {
         if (result.isPresent() && result.get() == ButtonType.OK) {
 
             ArrayList<Playlist> toRemove = new ArrayList<>(selectedItems);
+
+            // Pattern Observer: detach observer di ogni playlist prima di eliminarla
+            if (TrackList.exists()) {
+                for (Playlist p : toRemove) {
+                    if (p.getObserver() != null) {
+                        TrackList.getTrackListPointer().getSubjectTrackList().detach(p.getObserver());
+                    }
+                }
+            }
 
             // Rimuovi gli elementi dalla lista osservabile e dalla tracklist
             playlistListObservable.removeAll(toRemove);

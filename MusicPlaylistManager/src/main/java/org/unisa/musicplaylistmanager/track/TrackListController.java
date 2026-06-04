@@ -188,6 +188,11 @@ public class TrackListController {
             // crea la lista di tracce da rimuovere
             ArrayList<Track> toRemove = new ArrayList<>(selectedItems);
 
+            // Pattern Observer: notifica tutte le playlist registrate per rimuovere le tracce
+            for (Track t : toRemove) {
+                trackList.getSubjectTrackList().notifyObserver(t);
+            }
+
             // Rimuovi gli elementi dalla lista osservabile e dalla tracklist
             trackListObservable.removeAll(toRemove);
             trackList.getTracks().removeAll(toRemove);

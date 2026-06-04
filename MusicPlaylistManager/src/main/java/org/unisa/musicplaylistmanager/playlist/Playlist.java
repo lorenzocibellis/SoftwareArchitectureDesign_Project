@@ -9,6 +9,7 @@ package org.unisa.musicplaylistmanager.playlist;
  */
 import org.unisa.musicplaylistmanager.track.Track;
 import org.unisa.musicplaylistmanager.track.TrackList;
+import org.unisa.musicplaylistmanager.observer.BaseObserverPlaylist;
 
 import java.util.ArrayList;
 
@@ -16,6 +17,7 @@ public class Playlist {
 
     private String name;
     private ArrayList<Track> tracks;
+    private BaseObserverPlaylist observer;
 
 
     /**
@@ -54,6 +56,24 @@ public class Playlist {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * Restituisce l'observer associato a questa playlist.
+     * 
+     * @return l'observer, o {@code null} se non è stato impostato
+     */
+    public BaseObserverPlaylist getObserver() {
+        return observer;
+    }
+
+    /**
+     * Imposta l'observer associato a questa playlist.
+     * 
+     * @param observer l'observer da associare
+     */
+    public void setObserver(BaseObserverPlaylist observer) {
+        this.observer = observer;
     }
 
 
