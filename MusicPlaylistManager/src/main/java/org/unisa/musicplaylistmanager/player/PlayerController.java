@@ -63,6 +63,13 @@ public class PlayerController implements Initializable {
         // Carichiamo le icone per i tasti di skip
         setButtonImage(skipToNextButton, iconsRoot + "skipNextButton.png", 40, 40);
         setButtonImage(skipToPreviousButton, iconsRoot + "skipPreviousButton.png", 40, 40);
+
+        // Funzionalità di seek (riposizionamento temporale) tramite la barra di progresso
+        songProgress.setOnMouseReleased(event -> {
+            if (player != null) {
+                player.seekTo((int) songProgress.getValue());
+            }
+        });
     }
 
     /**
@@ -82,7 +89,10 @@ public class PlayerController implements Initializable {
 
         player.setOnTimeTick(seconds -> {
             Platform.runLater(() -> {
-                songProgress.setValue(seconds);
+                // Aggiorna la barra di progresso solo se l'utente non la sta trascinando/premendo
+                if (!songProgress.isPressed()) {
+                    songProgress.setValue(seconds);
+                }
                 counter.setText(formatTime(seconds));
             });
         });

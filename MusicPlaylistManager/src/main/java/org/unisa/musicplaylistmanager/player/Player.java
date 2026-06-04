@@ -160,6 +160,20 @@ public class Player {
     }
 
     /**
+     * Consente di riposizionare la riproduzione al secondo specificato.
+     * 
+     * @param seconds il nuovo secondo a cui spostarsi
+     */
+    public void seekTo(int seconds) {
+        if (currentTrack != null) {
+            this.elapsedSeconds = Math.max(0, Math.min(seconds, currentTrack.getDuration()));
+            if (onTimeTick != null) {
+                onTimeTick.accept(this.elapsedSeconds);
+            }
+        }
+    }
+
+    /**
      * Interrompe la riproduzione (ad esempio alla chiusura
      * del player o al termine della traccia).
      */

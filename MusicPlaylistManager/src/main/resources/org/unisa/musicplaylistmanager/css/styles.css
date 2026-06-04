@@ -235,3 +235,19 @@
     -fx-max-height: 8;
     -fx-background-insets: 0;
 }
+
+/* Slider Hover & Focus Effects */
+.slider:hover .thumb {
+    -fx-scale-x: 1.15;
+    -fx-scale-y: 1.15;
+    -fx-background-color: #007AFF;
+}
+
+.slider:focused .thumb {
+    -fx-background-color: -fx-outer-border, -fx-inner-border, -fx-body-color;
+    -fx-background-insets: 0, 1, 2;
+}
+
+.slider:focused:hover .thumb {
+    -fx-background-color: #007AFF;
+}
