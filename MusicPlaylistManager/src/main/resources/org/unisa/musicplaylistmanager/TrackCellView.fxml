@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import java.lang.String?>
 
 
 <HBox alignment="CENTER_LEFT" prefWidth="580.0" spacing="15.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
@@ -22,13 +23,26 @@
         </VBox>
 
 
-        <VBox HBox.hgrow="ALWAYS">
+        <VBox HBox.hgrow="ALWAYS" spacing="3.0">
             <children>
-                <Label fx:id="titleLabel" text="Titolo Canzone" textFill="#1D1D1F">
-                    <font>
-                        <Font name="System Bold" size="16.0" />
-                    </font>
-                </Label>
+                <HBox alignment="CENTER_LEFT" spacing="6.0">
+                    <children>
+                        <Label fx:id="titleLabel" text="Titolo Canzone" textFill="#1D1D1F">
+                            <font>
+                                <Font name="System Bold" size="16.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="favouriteTag" text="♥" visible="false" managed="false">
+                            <styleClass><String fx:value="tag-badge" /><String fx:value="tag-favourite" /></styleClass>
+                        </Label>
+                        <Label fx:id="explicitTag" text="E" visible="false" managed="false">
+                            <styleClass><String fx:value="tag-badge" /><String fx:value="tag-explicit" /></styleClass>
+                        </Label>
+                        <Label fx:id="newReleaseTag" text="NEW" visible="false" managed="false">
+                            <styleClass><String fx:value="tag-badge" /><String fx:value="tag-new-release" /></styleClass>
+                        </Label>
+                    </children>
+                </HBox>
                 <Label fx:id="detailsLabel" text="Autore - Anno" textFill="#6E6E73">
                     <font>
                         <Font size="13.0" />

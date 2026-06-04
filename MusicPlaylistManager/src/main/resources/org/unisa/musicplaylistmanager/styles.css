@@ -115,6 +115,12 @@
     -fx-text-fill: #1D1D1F;
 }
 
+/* Mantieni il testo bianco nei tag badge anche quando la cella è selezionata */
+.list-cell:filled:selected .tag-badge,
+.list-cell:filled:selected:hover .tag-badge {
+    -fx-text-fill: white;
+}
+
 /* Stile per i TextField */
 .text-field {
     -fx-background-radius: 8;
@@ -145,3 +151,32 @@
     -fx-scale-y: 1.1;
 }
 
+
+/* ─── Tag Badge (base) ─── */
+.tag-badge {
+    -fx-font-size: 9px;
+    -fx-font-weight: bold;
+    -fx-padding: 1 6 1 6;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-label-padding: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 2, 0, 0, 1);
+}
+
+/* tag Favourite */
+.tag-favourite {
+    -fx-background-color: linear-gradient(to right, #FF6B9D, #E91E78);
+    -fx-text-fill: white;
+}
+
+/* tag Explicit */
+.tag-explicit {
+    -fx-background-color: linear-gradient(to right, #FF4444, #CC0000);
+    -fx-text-fill: white;
+}
+
+/* tag NEW */
+.tag-new-release {
+    -fx-background-color: linear-gradient(to right, #00D2A0, #00B386);
+    -fx-text-fill: white;
+}

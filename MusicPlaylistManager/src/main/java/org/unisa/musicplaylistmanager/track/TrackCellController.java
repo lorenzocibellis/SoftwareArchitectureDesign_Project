@@ -26,6 +26,12 @@ public class TrackCellController extends ListCell<Track> {
     private Label detailsLabel;
     @FXML
     private Button infoButton;
+    @FXML
+    private Label favouriteTag;
+    @FXML
+    private Label explicitTag;
+    @FXML
+    private Label newReleaseTag;
 
     // definizione attributi
 
@@ -84,6 +90,11 @@ public class TrackCellController extends ListCell<Track> {
             titleLabel.setText(track.getTitle());
             detailsLabel.setText(track.getAuthor() + " - " + track.getYear().getValue());
 
+            // Mostra/nascondi i tag visivi in base ai flag della traccia
+            setTagVisible(favouriteTag, track.isFavourite());
+            setTagVisible(explicitTag, track.isExplicitContent());
+            setTagVisible(newReleaseTag, track.isNewRelease());
+
             // Imposta l'azione per il bottone "info"
             infoButton.setOnAction(event -> {
                 event.consume(); // Impedisce al click di propagarsi alla cella sottostante
@@ -109,6 +120,19 @@ public class TrackCellController extends ListCell<Track> {
         if (infoButton != null) {
             infoButton.setVisible(visible);
             infoButton.setManaged(visible);
+        }
+    }
+
+    /**
+     * Imposta la visibilità e la gestione di un tag.
+     *
+     * @param tag il Label del tag
+     * @param visible {@code true} per mostrare il tag
+     */
+    private void setTagVisible(Label tag, boolean visible) {
+        if (tag != null) {
+            tag.setVisible(visible);
+            tag.setManaged(visible);
         }
     }
 }
