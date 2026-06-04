@@ -92,7 +92,7 @@ public class PlayerController implements Initializable {
         });
 
         player.setOnPauseUIUpdate(() -> {
-            Platform.runLater(() -> setExecuteButtonImage(iconsRoot + "playButton.jpg", 45, 45));
+            Platform.runLater(() -> setExecuteButtonImage(iconsRoot + "playButton.jpg", 38, 38));
         });
 
         player.changeState();
