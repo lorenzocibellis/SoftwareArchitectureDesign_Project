@@ -49,7 +49,7 @@ public class TrackListController {
 
     //Definizione attributi
     //Path per accedere agli oggetti View.fxml
-    private String resourceRoot = "/org/unisa/musicplaylistmanager/";
+    private String resourceRoot = "/org/unisa/musicplaylistmanager/track/";
 
     //struttura dati per implementare la lista sulla UI
     private ObservableList<Track> trackListObservable;
@@ -113,7 +113,7 @@ public class TrackListController {
     void goPlaylist(ActionEvent event) throws IOException {
 
         //caricamento della View
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "PlaylistListView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/unisa/musicplaylistmanager/playlist/PlaylistListView.fxml"));
         Parent playlistParent = loader.load();
 
         // cambio contenuto mantenendo il player

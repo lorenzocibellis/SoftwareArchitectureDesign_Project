@@ -11,22 +11,21 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.playlist.PlaylistController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.track.TrackListController">
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="70.0" style="-fx-background-color: #F8F8F8; -fx-border-color: #E0E0E0; -fx-border-width: 0 0 1 0;">
             <children>
-            <Label fx:id="namePlaylist1" prefHeight="35.0" prefWidth="100.0" text="Playlist -">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
-                <Label fx:id="namePlaylist" text="Nome Playlist">
+                <Label text="La Mia Libreria">
                     <font>
                         <Font name="System Bold" size="24.0" />
                     </font>
                 </Label>
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <Button fx:id="backButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#goBack" prefHeight="35.0" prefWidth="80.0" styleClass="close-button" text="←  Back" />
+            <Button fx:id="goPlaylistButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#goPlaylist" prefHeight="35.0" prefWidth="100.0" styleClass="playlist-button" text="♫  Playlists">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin></Button>
+            <Button fx:id="closeButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#closeApp" prefHeight="35.0" prefWidth="100.0" styleClass="close-button" text="✕  Chiudi App" />
             </children>
             <padding>
                 <Insets left="20.0" right="10.0" />
@@ -38,7 +37,7 @@
             <children>
                 <ListView fx:id="listView">
                     <placeholder>
-                        <Label text="Non sono presenti tracce" textFill="#888888">
+                        <Label text="Nessuna traccia inserita" textFill="#888888">
                             <font>
                                 <Font size="16.0" />
                             </font>
@@ -51,7 +50,7 @@
     <bottom>
         <HBox alignment="CENTER" prefHeight="70.0" spacing="15.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 1 0 0 0;">
             <children>
-                <Button fx:id="button" graphicTextGap="10" mnemonicParsing="false" onAction="#addTrack" prefHeight="35.0" prefWidth="170.0" text="Aggiungi traccia">
+                <Button fx:id="button1" graphicTextGap="10" mnemonicParsing="false" onAction="#addNewTrack" prefHeight="35.0" prefWidth="170.0" text="Nuova Traccia">
                     <graphic>
                         <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;" text="+">
                      <padding>
@@ -59,7 +58,7 @@
                      </padding></Label>
                     </graphic>
                 </Button>
-                <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#removeTrack" prefHeight="37.0" prefWidth="170.0" styleClass="delete-button" text="Rimuovi traccia">
+                <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteTrack" prefHeight="37.0" prefWidth="170.0" styleClass="delete-button" text="Elimina Selezionata">
                     <graphic>
                         <SVGPath content="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" fill="white" scaleX="0.65" scaleY="0.65" />
                     </graphic>

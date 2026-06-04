@@ -49,7 +49,7 @@ public class PlaylistListController {
     @FXML
     private StackPane mainStackPane;
 
-    private String resourceRoot = "/org/unisa/musicplaylistmanager/";
+    private String resourceRoot = "/org/unisa/musicplaylistmanager/playlist/";
     private ObservableList<Playlist> playlistListObservable;
     private PlaylistList playlistList;
 
@@ -193,7 +193,7 @@ public class PlaylistListController {
      */
     @FXML
     public void goTrackList(ActionEvent actionEvent) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "TrackListView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/unisa/musicplaylistmanager/track/TrackListView.fxml"));
         Parent playlistParent = loader.load();
 
         // Cambio contenuto mantenendo il player

@@ -28,7 +28,7 @@ public class MusicPlaylistManagerApp extends Application {
      */
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MusicPlaylistManagerApp.class.getResource("/org/unisa/musicplaylistmanager/TrackListView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MusicPlaylistManagerApp.class.getResource("/org/unisa/musicplaylistmanager/track/TrackListView.fxml"));
         Parent initialContent = fxmlLoader.load();
 
         // Inizializza il layout radice persistente tramite NavigationManager

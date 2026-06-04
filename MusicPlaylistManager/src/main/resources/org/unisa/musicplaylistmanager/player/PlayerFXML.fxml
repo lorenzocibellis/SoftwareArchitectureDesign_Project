@@ -24,7 +24,7 @@
             <Label fx:id="counter" layoutX="74.0" layoutY="115.0" text="0:00" />
             <ImageView fitHeight="78.0" fitWidth="74.0" layoutX="191.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../icons/pauseButton.png" />
+                  <Image url="@../../../../icons/pauseButton.png" />
                </image>
                <viewport>
                   <Rectangle2D />
@@ -32,14 +32,14 @@
             </ImageView>
             <ImageView fitHeight="67.0" fitWidth="67.0" layoutX="306.0" layoutY="138.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../icons/skipNextButton.png" />
+                  <Image url="@../../../../icons/skipNextButton.png" />
                </image>
             </ImageView>
             <Text fx:id="trackTitle" layoutX="198.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NomeBrano" />
             <Text fx:id="authorName" layoutX="196.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NomeAutore" />
             <ImageView fitHeight="67.0" fitWidth="67.0" layoutX="79.0" layoutY="138.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../icons/skipPreviousButton.png" />
+                  <Image url="@../../../../icons/skipPreviousButton.png" />
                </image>
             </ImageView>
          </children>

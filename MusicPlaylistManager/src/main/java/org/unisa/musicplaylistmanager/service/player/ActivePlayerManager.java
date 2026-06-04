@@ -32,7 +32,7 @@ public class ActivePlayerManager implements PlayerManager {
     private BorderPane miniPlayerBar;
     private PlayerController playerController;
 
-    private final String resourceRoot = "/org/unisa/musicplaylistmanager/";
+    private final String resourceRoot = "/org/unisa/musicplaylistmanager/player/";
 
     private ActivePlayerManager() {}
 

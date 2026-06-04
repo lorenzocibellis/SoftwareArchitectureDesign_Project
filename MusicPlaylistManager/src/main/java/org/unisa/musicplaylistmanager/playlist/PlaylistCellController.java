@@ -22,7 +22,7 @@ public class PlaylistCellController extends ListCell<Playlist> {
     @FXML
     private Label detailsLabel;
 
-    private String resourceRoot = "/org/unisa/musicplaylistmanager/";
+    private String resourceRoot = "/org/unisa/musicplaylistmanager/playlist/";
     private HBox root;
 
     /**

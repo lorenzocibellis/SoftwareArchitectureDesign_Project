@@ -4,7 +4,6 @@ module org.unisa.musicplaylistmanager {
     requires java.base;
 
 
-    opens org.unisa.musicplaylistmanager to javafx.fxml;
     exports org.unisa.musicplaylistmanager.app;
     opens org.unisa.musicplaylistmanager.app to javafx.fxml;
     exports org.unisa.musicplaylistmanager.track;

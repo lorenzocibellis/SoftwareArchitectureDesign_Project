@@ -36,7 +36,7 @@ public class TrackCellController extends ListCell<Track> {
     // definizione attributi
 
     // path verso i file View.fxml
-    private String resourceRoot = "/org/unisa/musicplaylistmanager/";
+    private String resourceRoot = "/org/unisa/musicplaylistmanager/track/";
 
     // indica l'oggetto che compone tutta la vista
     private HBox root;

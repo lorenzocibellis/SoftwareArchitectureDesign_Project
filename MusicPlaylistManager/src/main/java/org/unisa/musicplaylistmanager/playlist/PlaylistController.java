@@ -52,7 +52,7 @@ public class PlaylistController {
     @FXML
     private Label namePlaylist;
 
-    private String resourceRoot = "/org/unisa/musicplaylistmanager/";
+    private String resourceRoot = "/org/unisa/musicplaylistmanager/playlist/";
     private ObservableList<Track> playlistObservable;
     private Playlist playlist;
 
@@ -122,7 +122,7 @@ public class PlaylistController {
      */
     private void showTrackDetails(Track track) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "TrackView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/unisa/musicplaylistmanager/track/TrackView.fxml"));
             Parent root = loader.load();
 
             TrackController controller = loader.getController();
@@ -168,7 +168,7 @@ public class PlaylistController {
 
         // Carico AddTracksToPlaylistView.fxml ) e gli passo la lista delle tracce filtrata
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/unisa/musicplaylistmanager/AddTracksToPlaylistView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "AddTracksToPlaylistView.fxml"));
             Parent root = loader.load();
 
             AddTracksToPlaylistController controller = loader.getController();
