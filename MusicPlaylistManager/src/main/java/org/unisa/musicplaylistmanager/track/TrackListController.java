@@ -81,16 +81,16 @@ public class TrackListController {
 
         commandInvoker = CommandInvoker.getCommandInvokerPointer();
 
-<<<<<<< Updated upstream
+
         // --------------chiamata al metodo di prova per aggiungere delle canzoni all'avvio dell'app --------------- //
         if (trackList.getTracks().isEmpty()) {
             addSampleSongs();
         }
 
-=======
+
         if (trackList.getTracks().isEmpty())
             addSampleSongs();
->>>>>>> Stashed changes
+
         // fa in modo che la list view usi la cella personalizzata
         listView.setCellFactory(param -> new TrackCellController(this::showTrackDetails));
 
@@ -114,10 +114,6 @@ public class TrackListController {
             }
         });
 
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
     }
 
     /**
@@ -205,14 +201,9 @@ public class TrackListController {
             // crea la lista di tracce da rimuovere
             ArrayList<Track> toRemove = new ArrayList<>(selectedItems);
 
-            // Pattern Observer: notifica tutte le playlist registrate per rimuovere le tracce
-            for (Track t : toRemove) {
-                //trackList.notifyObservers(t);
-            }
-
             // Rimuovi gli elementi dalla lista osservabile e dalla tracklist
             trackListObservable.removeAll(toRemove);
-            trackList.getTracks().removeAll(toRemove);
+            trackList.removeAllTracks(toRemove);
 
             // Se stiamo eliminando la traccia in riproduzione, chiudi il player
             Track playingTrack = ActivePlayerManager.getInstance().getCurrentTrack();

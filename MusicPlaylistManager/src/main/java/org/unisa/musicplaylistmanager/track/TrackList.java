@@ -61,6 +61,14 @@ public class TrackList extends TrackCollection implements BaseSubject{
         notifyObservers(track);
     }
 
+    @Override
+    public void removeAllTracks(ArrayList<Track> tracks){
+        super.removeAllTracks(tracks);
+        for(Track t: tracks){
+            notifyObservers(t);
+        }
+    }
+
     /**
      * Aggiorna i dati di una traccia esistente chiamando l'implementazione base di
      * {@link Playlist#updateTrack(Track, Track)}.

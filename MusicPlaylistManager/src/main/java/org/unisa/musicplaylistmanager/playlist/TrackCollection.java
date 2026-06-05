@@ -72,6 +72,10 @@ public abstract class TrackCollection {
         tracks.remove(track);
     }
 
+
+    public void removeAllTracks(ArrayList<Track> tracks){
+        getTracks().removeAll(tracks);
+    }
     /**
      * Restituisce l'indice di una traccia all'interno della playlist (non supportato al momento).
      *
