@@ -40,15 +40,6 @@ public abstract class TrackCollection {
     }
 
     /**
-     * Imposta o modifica il nome della playlist.
-     *
-     * @param name il nuovo nome
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
      * Aggiunge una traccia alla playlist, se non è già presente.
      *
      * @param track la traccia da aggiungere

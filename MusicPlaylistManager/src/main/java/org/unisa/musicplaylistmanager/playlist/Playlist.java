@@ -27,6 +27,16 @@ public class Playlist extends TrackCollection implements BaseObserver {
 
 
     /**
+     * Imposta o modifica il nome della playlist.
+     *
+     * @param name il nuovo nome
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    
+    /**
      * Rimuove una traccia specifica dalla playlist.
      *
      * @param track la traccia da rimuovere
