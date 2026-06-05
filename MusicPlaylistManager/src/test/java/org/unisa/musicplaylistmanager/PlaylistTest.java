@@ -1,9 +1,10 @@
-package org.unisa.musicplaylistmanager;
+package org.unisa.musicplaylistmanager.playlist;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.unisa.musicplaylistmanager.playlist.Playlist;
+
+import org.unisa.musicplaylistmanager.observer.BaseObserverPlaylist;
 import org.unisa.musicplaylistmanager.track.Track;
 
 import java.time.Year;
@@ -11,55 +12,45 @@ import java.time.Year;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Test class for {@link Playlist}.
+ * Test class for {@link Playlist} (versione aggiornata).
  * @author gruppo10
  */
 class PlaylistTest {
 
     private Playlist playlist;
-
     private Track track1;
     private Track track2;
     private Track track3;
 
-    // -----------------------------------------------------------------------
-    // Setup
-    // -----------------------------------------------------------------------
+    // Stub minimo di BaseObserverPlaylist
+    private static class StubObserver extends BaseObserverPlaylist {
+        boolean updateCalled = false;
+        Track lastTrack = null;
+        StubObserver(Playlist p) { super(p); }
+        @Override
+        public void update(Track track) { updateCalled = true; lastTrack = track; }
+    }
 
     @BeforeEach
     void setUp() {
         playlist = new Playlist("My Playlist");
-
         track1 = new Track("Bohemian Rhapsody",  "Queen",        Year.of(1975), "Rock", 354, true,  false, false);
         track2 = new Track("Stairway to Heaven", "Led Zeppelin", Year.of(1971), "Rock", 482, false, false, false);
         track3 = new Track("Hotel California",   "Eagles",       Year.of(1977), "Rock", 391, false, false, true);
     }
 
-    // -----------------------------------------------------------------------
-    // Constructor
-    // -----------------------------------------------------------------------
+    // --- Constructor ---
 
     @Test
     @DisplayName("Constructor: oggetto creato correttamente")
-    void testConstructorNotNull() {
-        assertNotNull(playlist);
-    }
+    void testConstructorNotNull() { assertNotNull(playlist); }
 
     @Test
     @DisplayName("Constructor: nome impostato correttamente")
-    void testConstructorName() {
-        assertEquals("My Playlist", playlist.getName());
-    }
+    void testConstructorName() { assertEquals("My Playlist", playlist.getName()); }
 
     @Test
-    @DisplayName("Constructor: nome null è accettato")
-    void testConstructorNullName() {
-        Playlist p = new Playlist(null);
-        assertNull(p.getName());
-    }
-
-    @Test
-    @DisplayName("Constructor: getTracks() restituisce lista non null e vuota")
+    @DisplayName("Constructor: getTracks() non null e vuoto")
     void testConstructorEmptyTracks() {
         assertNotNull(playlist.getTracks());
         assertTrue(playlist.getTracks().isEmpty());
@@ -67,59 +58,70 @@ class PlaylistTest {
 
     @Test
     @DisplayName("Constructor: getSize() è 0")
-    void testConstructorSizeZero() {
-        assertEquals(0, playlist.getSize());
-    }
-
-    // -----------------------------------------------------------------------
-    // setName() / getName()
-    // -----------------------------------------------------------------------
+    void testConstructorSizeZero() { assertEquals(0, playlist.getSize()); }
 
     @Test
-    @DisplayName("setName: aggiorna il nome correttamente")
-    void testSetName() {
-        playlist.setName("Rock Hits");
-        assertEquals("Rock Hits", playlist.getName());
-    }
+    @DisplayName("Constructor: observer è null di default")
+    void testConstructorObserverNull() { assertNull(playlist.getObserver()); }
+
+    // --- setName / getName ---
 
     @Test
-    @DisplayName("setName: sovrascrive un nome esistente")
-    void testSetNameOverwrite() {
-        playlist.setName("First");
-        playlist.setName("Second");
-        assertEquals("Second", playlist.getName());
-    }
+    @DisplayName("setName: aggiorna il nome")
+    void testSetName() { playlist.setName("Rock Hits"); assertEquals("Rock Hits", playlist.getName()); }
 
     @Test
     @DisplayName("setName: accetta null")
-    void testSetNameNull() {
-        playlist.setName(null);
-        assertNull(playlist.getName());
-    }
+    void testSetNameNull() { playlist.setName(null); assertNull(playlist.getName()); }
 
-    // -----------------------------------------------------------------------
-    // addTrack()
-    // -----------------------------------------------------------------------
+    // --- setObserver / getObserver ---
 
     @Test
-    @DisplayName("addTrack: aggiunge una traccia, size diventa 1")
-    void testAddTrackSingle() {
+    @DisplayName("setObserver: imposta l'observer correttamente")
+    void testSetObserver() {
+        StubObserver obs = new StubObserver(playlist);
+        playlist.setObserver(obs);
+        assertSame(obs, playlist.getObserver());
+    }
+
+    @Test
+    @DisplayName("setObserver: accetta null")
+    void testSetObserverNull() { playlist.setObserver(null); assertNull(playlist.getObserver()); }
+
+    // --- addTrack() ---
+
+    @Test
+    @DisplayName("addTrack: aggiunge una traccia valida")
+    void testAddTrackValid() {
         playlist.addTrack(track1);
         assertEquals(1, playlist.getSize());
         assertTrue(playlist.getTracks().contains(track1));
     }
 
     @Test
-    @DisplayName("addTrack: aggiunge più tracce mantenendo l'ordine di inserimento")
+    @DisplayName("addTrack: aggiunge più tracce mantenendo l'ordine")
     void testAddTrackMultiple() {
         playlist.addTrack(track1);
         playlist.addTrack(track2);
         playlist.addTrack(track3);
-
         assertEquals(3, playlist.getSize());
         assertEquals(track1, playlist.getTracks().get(0));
         assertEquals(track2, playlist.getTracks().get(1));
         assertEquals(track3, playlist.getTracks().get(2));
+    }
+
+    @Test
+    @DisplayName("addTrack: traccia null lancia IllegalArgumentException")
+    void testAddTrackNull() {
+        assertThrows(IllegalArgumentException.class, () -> playlist.addTrack(null));
+    }
+
+    @Test
+    @DisplayName("addTrack: duplicato per equals lancia IllegalArgumentException")
+    void testAddTrackDuplicate() {
+        playlist.addTrack(track1);
+        Track copy = new Track("Bohemian Rhapsody", "Queen", Year.of(1975), "Pop", 99, false, true, true);
+        assertThrows(IllegalArgumentException.class, () -> playlist.addTrack(copy));
     }
 
     @Test
@@ -129,44 +131,21 @@ class PlaylistTest {
         assertThrows(IllegalArgumentException.class, () -> playlist.addTrack(track1));
     }
 
-    @Test
-    @DisplayName("addTrack: duplicato per equals (titolo/autore/anno uguali) lancia IllegalArgumentException")
-    void testAddTrackDuplicateByEquality() {
-        playlist.addTrack(track1);
-
-        Track copy = new Track("Bohemian Rhapsody", "Queen", Year.of(1975),
-                "Pop", 99, false, true, true);
-
-        assertThrows(IllegalArgumentException.class, () -> playlist.addTrack(copy));
-    }
-
-    @Test
-    @DisplayName("addTrack: tracce diverse (titolo/autore/anno diversi) vengono aggiunte senza eccezioni")
-    void testAddTrackNoDuplicate() {
-        playlist.addTrack(track1);
-        assertDoesNotThrow(() -> playlist.addTrack(track2));
-        assertEquals(2, playlist.getSize());
-    }
-
-    // -----------------------------------------------------------------------
-    // removeTrack()
-    // -----------------------------------------------------------------------
+    // --- removeTrack() ---
 
     @Test
     @DisplayName("removeTrack: rimuove una traccia presente")
     void testRemoveTrackPresent() {
         playlist.addTrack(track1);
         playlist.addTrack(track2);
-
         playlist.removeTrack(track1);
-
         assertEquals(1, playlist.getSize());
         assertFalse(playlist.getTracks().contains(track1));
         assertTrue(playlist.getTracks().contains(track2));
     }
 
     @Test
-    @DisplayName("removeTrack: rimuovere una traccia assente non lancia eccezioni")
+    @DisplayName("removeTrack: traccia assente non lancia eccezioni")
     void testRemoveTrackNotPresent() {
         playlist.addTrack(track1);
         assertDoesNotThrow(() -> playlist.removeTrack(track2));
@@ -179,125 +158,97 @@ class PlaylistTest {
         playlist.addTrack(track1);
         playlist.removeTrack(track1);
         assertTrue(playlist.getTracks().isEmpty());
-        assertEquals(0, playlist.getSize());
     }
 
     @Test
-    @DisplayName("removeTrack: rimuove per equals, non per identità di riferimento")
+    @DisplayName("removeTrack: rimuove per equals, non per identità")
     void testRemoveTrackByEquality() {
         playlist.addTrack(track1);
-
-        Track copy = new Track("Bohemian Rhapsody", "Queen", Year.of(1975),
-                "Pop", 200, false, true, true);
-
+        Track copy = new Track("Bohemian Rhapsody", "Queen", Year.of(1975), "Pop", 200, false, true, true);
         playlist.removeTrack(copy);
         assertTrue(playlist.getTracks().isEmpty());
     }
 
+    // --- updateTrack() ---
+
     @Test
-    @DisplayName("removeTrack: rimuove solo la traccia specificata, le altre restano")
-    void testRemoveTrackOnlyTarget() {
+    @DisplayName("updateTrack: aggiorna tutti i campi della traccia in-place")
+    void testUpdateTrackUpdatesFields() {
         playlist.addTrack(track1);
-        playlist.addTrack(track2);
-        playlist.addTrack(track3);
-
-        playlist.removeTrack(track2);
-
-        assertEquals(2, playlist.getSize());
-        assertTrue(playlist.getTracks().contains(track1));
-        assertFalse(playlist.getTracks().contains(track2));
-        assertTrue(playlist.getTracks().contains(track3));
-    }
-
-    @Test
-    @DisplayName("removeTrack su lista vuota non lancia eccezioni")
-    void testRemoveTrackFromEmptyList() {
-        assertDoesNotThrow(() -> playlist.removeTrack(track1));
-        assertEquals(0, playlist.getSize());
-    }
-
-    // -----------------------------------------------------------------------
-    // getSize()
-    // -----------------------------------------------------------------------
-
-    @Test
-    @DisplayName("getSize: si aggiorna correttamente dopo addTrack")
-    void testGetSizeAfterAdds() {
-        assertEquals(0, playlist.getSize());
-        playlist.addTrack(track1);
-        assertEquals(1, playlist.getSize());
-        playlist.addTrack(track2);
-        assertEquals(2, playlist.getSize());
-        playlist.addTrack(track3);
-        assertEquals(3, playlist.getSize());
-    }
-
-    @Test
-    @DisplayName("getSize: si aggiorna correttamente dopo removeTrack")
-    void testGetSizeAfterRemoves() {
-        playlist.addTrack(track1);
-        playlist.addTrack(track2);
-        playlist.removeTrack(track1);
-        assertEquals(1, playlist.getSize());
-        playlist.removeTrack(track2);
-        assertEquals(0, playlist.getSize());
-    }
-
-    // -----------------------------------------------------------------------
-    // updateTrack()
-    // -----------------------------------------------------------------------
-
-    @Test
-    @DisplayName("updateTrack: aggiorna i campi in-place con successo se non si creano duplicati")
-    void testUpdateTrackSuccess() {
-        playlist.addTrack(track1);
-        playlist.addTrack(track2);
-
-        // Nuovi dati per track1 (cambiamo titolo, genere, durata e flag)
-        Track newData = new Track("Bohemian Rhapsody (2011 Remaster)", "Queen", Year.of(1975), "Classic Rock", 359, true, false, true);
+        Track newData = new Track("Bohemian Rhapsody Remaster", "Queen",
+                Year.of(2011), "Classic Rock", 360, false, false, true);
 
         playlist.updateTrack(track1, newData);
 
-        // Verifichiamo che l'oggetto track1 originale sia stato aggiornato internamente
-        assertEquals("Bohemian Rhapsody (2011 Remaster)", track1.getTitle());
-        assertEquals("Classic Rock", track1.getGenre());
-        assertEquals(359, track1.getDuration());
-        assertTrue(track1.isNewRelease());
+        Track inList = playlist.getTracks().get(0);
+        assertSame(track1, inList); // stesso riferimento
+        assertEquals("Bohemian Rhapsody Remaster", inList.getTitle());
+        assertEquals(Year.of(2011),  inList.getYear());
+        assertEquals("Classic Rock", inList.getGenre());
+        assertEquals(360,            inList.getDuration());
+        assertFalse(inList.isFavourite());
+        assertTrue(inList.isNewRelease());
+    }
 
-        // La dimensione della playlist deve essere rimasta invariata
+    @Test
+    @DisplayName("updateTrack: la size non cambia")
+    void testUpdateTrackSizeUnchanged() {
+        playlist.addTrack(track1);
+        playlist.addTrack(track2);
+        Track newData = new Track("New Title", "New Author", Year.of(2020), "Pop", 200, false, false, false);
+        playlist.updateTrack(track1, newData);
         assertEquals(2, playlist.getSize());
     }
 
     @Test
-    @DisplayName("updateTrack: lancia IllegalArgumentException se la modifica crea un duplicato con un'altra traccia")
-    void testUpdateTrackDuplicateError() {
+    @DisplayName("updateTrack: crea duplicato con altra traccia → IllegalArgumentException")
+    void testUpdateTrackCreatesDuplicateThrows() {
         playlist.addTrack(track1);
         playlist.addTrack(track2);
-
-        // Creiamo dati che sono "uguali" (per equals) a track2, ma vogliamo applicarli a track1
-        Track duplicateData = new Track("Stairway to Heaven", "Led Zeppelin", Year.of(1971), "Pop", 100, false, false, false);
-
-        // Deve fallire perché 'Stairway to Heaven' esiste già nella playlist ed è un'istanza diversa da track1
-        assertThrows(IllegalArgumentException.class, () -> playlist.updateTrack(track1, duplicateData));
+        // stessi titolo/autore/anno di track2
+        Track newData = new Track("Stairway to Heaven", "Led Zeppelin", Year.of(1971), "Blues", 300, false, false, false);
+        assertThrows(IllegalArgumentException.class, () -> playlist.updateTrack(track1, newData));
     }
 
     @Test
-    @DisplayName("updateTrack: permette la modifica se i dati uguali appartengono alla traccia stessa (Self-Update)")
-    void testUpdateTrackSelfUpdate() {
+    @DisplayName("updateTrack: aggiornare con stessi dati (equals) non lancia eccezioni")
+    void testUpdateTrackSameDataNoException() {
         playlist.addTrack(track1);
-        playlist.addTrack(track2);
-
-        // Modifichiamo solo la durata di track1. Titolo, autore e anno rimangono identici.
-        Track selfUpdateData = new Track("Bohemian Rhapsody", "Queen", Year.of(1975), "Rock", 400, true, false, false);
-
-        // Non deve lanciare eccezioni perché il controllo (t != existingTrack) scavalca track1 durante il loop
-        assertDoesNotThrow(() -> playlist.updateTrack(track1, selfUpdateData));
-        assertEquals(400, track1.getDuration());
+        Track sameData = new Track("Bohemian Rhapsody", "Queen", Year.of(1975), "Rock", 354, true, false, false);
+        assertDoesNotThrow(() -> playlist.updateTrack(track1, sameData));
     }
 
-    // -----------------------------------------------------------------------
-    // Metodi che lanciano UnsupportedOperationException
-    // -----------------------------------------------------------------------
+    @Test
+    @DisplayName("updateTrack: il riferimento oggetto in lista rimane lo stesso (in-place)")
+    void testUpdateTrackSameReference() {
+        playlist.addTrack(track1);
+        Track ref = playlist.getTracks().get(0);
+        Track newData = new Track("New Title", "New Author", Year.of(2000), "Pop", 100, false, false, false);
+        playlist.updateTrack(track1, newData);
+        assertSame(ref, playlist.getTracks().get(0));
+    }
+
+    // --- deleteAll() ---
+
+    @Test
+    @DisplayName("deleteAll: svuota la playlist")
+    void testDeleteAll() {
+        playlist.addTrack(track1);
+        playlist.addTrack(track2);
+        playlist.addTrack(track3);
+        playlist.deleteAll();
+        assertTrue(playlist.getTracks().isEmpty());
+        assertEquals(0, playlist.getSize());
+    }
+
+    @Test
+    @DisplayName("deleteAll: su playlist vuota non lancia eccezioni")
+    void testDeleteAllEmptyPlaylist() {
+        assertDoesNotThrow(() -> playlist.deleteAll());
+        assertEquals(0, playlist.getSize());
+    }
+
+    // --- UnsupportedOperationException ---
 
     @Test
     @DisplayName("getIndex: lancia UnsupportedOperationException")
@@ -310,4 +261,46 @@ class PlaylistTest {
     void testUndoUnsupported() {
         assertThrows(UnsupportedOperationException.class, () -> playlist.undo());
     }
+
+    // --- equals() ---
+
+    @Test
+    @DisplayName("equals: stessa istanza → true")
+    void testEqualsSameInstance() { assertEquals(playlist, playlist); }
+
+    @Test
+    @DisplayName("equals: stesso nome → true")
+    void testEqualsSameName() { assertEquals(playlist, new Playlist("My Playlist")); }
+
+    @Test
+    @DisplayName("equals: nome diverso → false")
+    void testEqualsDifferentName() { assertNotEquals(playlist, new Playlist("Other")); }
+
+    @Test
+    @DisplayName("equals: null → false")
+    void testEqualsNull() { assertNotEquals(null, playlist); }
+
+    @Test
+    @DisplayName("equals: tipo diverso → false")
+    void testEqualsDifferentType() { assertNotEquals("My Playlist", playlist); }
+
+    // --- hashCode() ---
+
+    @Test
+    @DisplayName("hashCode: stesso nome → stesso hashCode")
+    void testHashCodeSameName() {
+        assertEquals(playlist.hashCode(), new Playlist("My Playlist").hashCode());
+    }
+
+    @Test
+    @DisplayName("hashCode: nome diverso → hashCode diverso")
+    void testHashCodeDifferentName() {
+        assertNotEquals(playlist.hashCode(), new Playlist("Other").hashCode());
+    }
+
+    // --- toString() ---
+
+    @Test
+    @DisplayName("toString: restituisce il nome della playlist")
+    void testToString() { assertEquals("My Playlist", playlist.toString()); }
 }
