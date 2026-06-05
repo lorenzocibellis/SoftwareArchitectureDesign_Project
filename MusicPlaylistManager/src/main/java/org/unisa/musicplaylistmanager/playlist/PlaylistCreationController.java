@@ -8,6 +8,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.unisa.musicplaylistmanager.command.AddPlaylistCommand;
+import org.unisa.musicplaylistmanager.command.CommandInvoker;
 import org.unisa.musicplaylistmanager.observer.ObserverPlaylist;
 import org.unisa.musicplaylistmanager.track.TrackList;
 
@@ -39,15 +41,22 @@ public class PlaylistCreationController {
      * @param p la playlist da aggiungere
      */
     private void add(Playlist p) {
-        playlistList.addPlaylist(p);
-        playlistListObservable.add(p);
+
+        AddPlaylistCommand command = new AddPlaylistCommand(p, playlistList, playlistListObservable);
+        //CommandInvoker.getCommandInvokerPointer().setCommand(command);
+        command.execute();
+        //playlistList.addPlaylist(p);
+        //playlistListObservable.add(p);
 
         // Pattern Observer: crea observer per la playlist e lo registra sul subject della TrackList
+        /*
         if (TrackList.exists()) {
             ObserverPlaylist observer = new ObserverPlaylist(p);
             p.setObserver(observer);
             TrackList.getTrackListPointer().getSubjectTrackList().attach(observer);
         }
+
+         */
     }
 
     /**
