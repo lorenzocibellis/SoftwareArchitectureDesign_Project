@@ -12,6 +12,7 @@ package org.unisa.musicplaylistmanager.player;
  */
 
 import org.unisa.musicplaylistmanager.playlist.Playlist;
+import org.unisa.musicplaylistmanager.playlist.TrackCollection;
 import org.unisa.musicplaylistmanager.state.PlayerState;
 import org.unisa.musicplaylistmanager.track.Track;
 
@@ -43,10 +44,10 @@ public class Player {
      * Costruttore della classe Player.
      * 
      * @param defaultState  lo stato iniziale della riproduzione
-     * @param playlist      la playlist (o tracklist) da dove è stata avviata la canzone
+     * @param trackCollection   la playlist (o tracklist) da dove è stata avviata la canzone
      * @param currentTrack  la traccia attualmente in riproduzione
      */
-    public Player(PlayerState defaultState, Playlist playlist, Track currentTrack) {
+    public Player(PlayerState defaultState, TrackCollection trackCollection, Track currentTrack) {
         this.defaultState = defaultState;
         this.currentState = defaultState; // Inizializza lo stato corrente con quello di default
         

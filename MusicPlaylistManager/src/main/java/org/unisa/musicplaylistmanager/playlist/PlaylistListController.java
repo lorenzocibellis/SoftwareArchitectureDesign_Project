@@ -171,9 +171,8 @@ public class PlaylistListController {
             // Pattern Observer: detach observer di ogni playlist prima di eliminarla
             if (TrackList.exists()) {
                 for (Playlist p : toRemove) {
-                    if (p.getObserver() != null) {
-                        TrackList.getTrackListPointer().getSubjectTrackList().detach(p.getObserver());
-                    }
+                    p.detach();
+
                 }
             }
 

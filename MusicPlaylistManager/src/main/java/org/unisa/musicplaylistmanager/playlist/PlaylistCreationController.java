@@ -10,8 +10,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.unisa.musicplaylistmanager.command.AddPlaylistCommand;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;
-import org.unisa.musicplaylistmanager.observer.ObserverPlaylist;
-import org.unisa.musicplaylistmanager.track.TrackList;
 
 /**
  * Controller per la finestra di dialogo di creazione di una nuova playlist.

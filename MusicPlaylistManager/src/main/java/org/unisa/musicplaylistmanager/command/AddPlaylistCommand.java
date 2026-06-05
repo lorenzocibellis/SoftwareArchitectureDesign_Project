@@ -1,10 +1,8 @@
 package org.unisa.musicplaylistmanager.command;
 
 import javafx.collections.ObservableList;
-import org.unisa.musicplaylistmanager.observer.ObserverPlaylist;
 import org.unisa.musicplaylistmanager.playlist.Playlist;
 import org.unisa.musicplaylistmanager.playlist.PlaylistList;
-import org.unisa.musicplaylistmanager.track.TrackList;
 
 /**
  *
@@ -40,10 +38,5 @@ public class AddPlaylistCommand extends BasePlaylistCommands{
         Playlist p = getPlaylist();
         getPlaylistList().addPlaylist(p);
         getObservableList().add(p);
-        if (TrackList.exists()) {
-            ObserverPlaylist observer = new ObserverPlaylist(p);
-            p.setObserver(observer);
-            TrackList.getTrackListPointer().getSubjectTrackList().attach(observer);
-        }
     }
 }

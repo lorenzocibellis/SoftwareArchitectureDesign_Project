@@ -60,6 +60,7 @@ public class PlaylistList {
         if (p != null) {
             p.deleteAll();
             playlistList.remove(p);
+            p.detach();
         }
     }
 
