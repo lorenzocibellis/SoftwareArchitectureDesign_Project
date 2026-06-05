@@ -21,24 +21,19 @@ public class CommandInvoker {
     //Double-Ended queue per gestire in modo ottimale l'aggiunta e rimozione di comandi
     private ArrayDeque<AbstractCommand> commands;
     //Attributo final che gestisce la dimensione massima della lista
-    private final int SIZE_LIMIT;
+    private final int SIZE_LIMIT = 10;
     //Attributo che permette
     private static CommandInvoker pnt = null;
 
-    //MEOTODI
+    //METODI
 
     /**
      * Costruttore
      *
-     * @param size_limit Indica la dimensione massima della lista di comandi
-     *
      */
-    public CommandInvoker(int size_limit){
-        if(pnt == null) throw new IllegalStateException("Istanza di classe già creata");
+    private CommandInvoker(){
+        commands = new ArrayDeque<>();
         pnt = this;
-        if(size_limit > 0)
-            SIZE_LIMIT = size_limit;
-        else SIZE_LIMIT = 1;
     }
 
     /**
@@ -79,11 +74,12 @@ public class CommandInvoker {
      *
      * Funzione che permette l'ottenimento del puntatore all'istanza esistente di questa classe.
      *
-     * @return Ritorna il puntatore all'istanza di questa classe se esiste, altrimenti ritorna null
+     * @return Ritorna il puntatore all'istanza di questa classe se esiste, altrimenti crea un'istanza e ne ritorna il puntatore
      *
      */
     public static CommandInvoker getCommandInvokerPointer(){
-        return pnt;
+        if (exists()) return pnt;
+        return new CommandInvoker();
     }
 
     public static boolean exists(){

@@ -73,9 +73,8 @@ public class TrackListController {
 
         //Controlla se la TrackList non è stata già inizializzata
         //Se è la prima volra la inizializza
-        if (!TrackList.exists()) trackList = new TrackList();
+        trackList = TrackList.getTrackListPointer();
         //altrimenti ottiene il puntatore alla TrackList già creata
-        else trackList = TrackList.getTrackListPointer();
 
         //inizializzazione della struttura dati osservabile
         trackListObservable = FXCollections.observableArrayList(trackList.getTracks());

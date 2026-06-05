@@ -27,7 +27,7 @@ class TrackListTest {
 
     @BeforeEach
     void setUp() {
-        trackList = new TrackList();
+        trackList = TrackList.getTrackListPointer();
         track1 = new Track("Bohemian Rhapsody",  "Queen",        Year.of(1975), "Rock", 354, true,  false, false);
         track2 = new Track("Stairway to Heaven", "Led Zeppelin", Year.of(1971), "Rock", 482, false, false, false);
         track3 = new Track("Hotel California",   "Eagles",       Year.of(1977), "Rock", 391, false, false, true);
@@ -63,7 +63,7 @@ class TrackListTest {
 
     @Test @DisplayName("Singleton: new TrackList() sovrascrive il puntatore")
     void testSingletonPointerOverwritten() {
-        TrackList second = new TrackList();
+        TrackList second = TrackList.getTrackListPointer();
         assertSame(second, TrackList.getTrackListPointer());
         assertNotSame(trackList, TrackList.getTrackListPointer());
     }

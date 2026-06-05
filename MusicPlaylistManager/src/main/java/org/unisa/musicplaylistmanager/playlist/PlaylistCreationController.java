@@ -33,6 +33,7 @@ public class PlaylistCreationController {
 
     private PlaylistList playlistList;
     private ObservableList<Playlist> playlistListObservable;
+    private CommandInvoker commandInvoker;
 
     /**
      * Aggiunge la playlist creata sia al modello dei dati sia alla lista osservabile
@@ -41,10 +42,9 @@ public class PlaylistCreationController {
      * @param p la playlist da aggiungere
      */
     private void add(Playlist p) {
-
         AddPlaylistCommand command = new AddPlaylistCommand(p, playlistList, playlistListObservable);
-        //CommandInvoker.getCommandInvokerPointer().setCommand(command);
-        command.execute();
+        CommandInvoker.getCommandInvokerPointer().setCommand(command);
+        //command.execute();
         //playlistList.addPlaylist(p);
         //playlistListObservable.add(p);
 

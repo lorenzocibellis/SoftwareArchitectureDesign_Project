@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.unisa.musicplaylistmanager.command.CommandInvoker;
 import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
 import org.unisa.musicplaylistmanager.track.TrackList;
@@ -52,6 +53,7 @@ public class PlaylistListController {
     private String resourceRoot = "/org/unisa/musicplaylistmanager/playlist/";
     private ObservableList<Playlist> playlistListObservable;
     private PlaylistList playlistList;
+    private CommandInvoker commandInvoker;
 
     //METODI
 
@@ -80,8 +82,9 @@ public class PlaylistListController {
      */
     @FXML
     public void initialize(){
-        if (!PlaylistList.exists()) playlistList = new PlaylistList();
-         else playlistList = PlaylistList.getPlaylistListPointer();
+         playlistList = PlaylistList.getPlaylistListPointer();
+         commandInvoker = CommandInvoker.getCommandInvokerPointer();
+
 
         playlistListObservable = FXCollections.observableArrayList(playlistList.getPlaylists());
 

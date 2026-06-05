@@ -27,7 +27,7 @@ public class TrackList extends Playlist {
      * Costruisce l'unica istanza della libreria principale.
      * Inizializza il subject per il pattern Observer e imposta il puntatore Singleton.
      */
-    public TrackList(){
+    private TrackList(){
         super(null); // La TrackList principale non ha un nome specifico come le playlist utente
         subjectTrackList = new SubjectTrackList();
         pnt = this;
@@ -45,10 +45,11 @@ public class TrackList extends Playlist {
     /**
      * Restituisce il puntatore all'istanza Singleton di {@code TrackList}.
      * 
-     * @return l'istanza globale della TrackList
+     * @return l'istanza globale della TrackList se esiste, altrimenti crea un'istanza e la restituisce
      */
     public static TrackList getTrackListPointer(){
-        return pnt;
+        if (exists()) return pnt;
+        return new TrackList();
     }
 
     /**

@@ -22,7 +22,7 @@ public class PlaylistList {
      * Costruisce la collezione vuota di playlist e inizializza il puntatore Singleton.
      * Viene richiamato una sola volta durante l'avvio dell'applicazione.
      */
-    public PlaylistList(){
+    private PlaylistList(){
         playlistList = new ArrayList<Playlist>();
         pnt = this;
     }
@@ -91,9 +91,10 @@ public class PlaylistList {
     /**
      * Restituisce il puntatore all'istanza Singleton di {@code PlaylistList}.
      * 
-     * @return l'istanza di questa classe
+     * @return l'istanza di questa classe se esiste, altrimenti la crea e la restituisce.
      */
     public static PlaylistList getPlaylistListPointer(){
-        return pnt;
+        if (exists()) return pnt;
+        return new PlaylistList();
     }
 }
