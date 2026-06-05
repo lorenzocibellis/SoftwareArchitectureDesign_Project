@@ -26,16 +26,6 @@ public class Playlist extends TrackCollection implements BaseObserver {
     }
 
 
-
-    /**
-     * Rimuove una traccia specifica dalla playlist.
-     *
-     * @param track la traccia da rimuovere
-     */
-    public void removeTrack(Track track) {
-        getTracks().remove(track);
-    }
-
     /**
      * Annulla l'ultima operazione (non supportato al momento).
      * 
