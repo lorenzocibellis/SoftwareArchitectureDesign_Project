@@ -22,7 +22,9 @@ import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
 
 import java.io.IOException;
+import java.time.Year;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 /**
@@ -100,6 +102,10 @@ public class TrackListController {
                 openPlayerFor(selected);
             }
         });
+
+        // chiamata al metodo di prova per aggiungere delle canzoni all'avvio dell'app
+        addSampleSongs();
+
 
     }
 
@@ -269,5 +275,33 @@ public class TrackListController {
             e.printStackTrace();
         }
     }
+
+
+    // metodo di prova per aggiungere delle canzoni all'avvio dell'app
+    public void addSampleSongs(){
+
+        Track track1 = new Track("La canzone del sole", "Lucio Battisti", Year.of(1971), "Pop", 210, false, false, false);
+        Track track2 = new Track("Bohemian Rhapsody", "Queen", Year.of(1975), "Rock", 354, true, false, false);
+        Track track3 = new Track("Shape of You", "Ed Sheeran", Year.of(2017), "Pop", 233, false, false, true);
+        Track track4 = new Track("Smells Like Teen Spirit", "Nirvana", Year.of(1991), "Grunge", 301, true, true, false);
+        Track track5 = new Track("Billie Jean", "Michael Jackson", Year.of(1982), "Pop", 294, true, false, false);
+        Track track6 = new Track("Shape of my heart", "Sting", Year.of(1993), "Pop", 258, false, false, false);
+        Track track7 = new Track("Demons", "Imagine Dragons", Year.of(2012), "Alternative Rock", 177, true, false, true);
+        Track track8 = new Track("Master of puppets", "Metallica", Year.of(1986), "Metal", 515, false, true, false);
+        Track track9 = new Track("Cinque giorni", "Michele Zarrillo", Year.of(1990), "Pop", 240, true, false, false);
+        Track track10 = new Track("Losing my religion", "R.E.M.", Year.of(1991), "Alternative Rock", 269, false, true, false);
+
+
+        trackList.getTracks().addAll(Arrays.asList(track1, track2, track3, track4, track5, track6, track7, track8, track9, track10));
+        trackListObservable.addAll(trackList.getTracks());
+    }
+
+
+
+
+
+
+
+
 
 }

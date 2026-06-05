@@ -108,23 +108,24 @@ public class PlaylistListController {
     }
 
     /**
-     * Gestisce l'apertura della finestra per la creazione di una nuova playlist.
+     * Gestisce l'apertura della finestra per la scelta sulla creazione automatica o manuale di una nuova playlist.
      * 
      * @param event l'evento generato dal click
      * @throws IOException se il caricamento del file FXML fallisce
      */
     @FXML
     void addNewPlaylist(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "PlaylistCreationView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "PlaylistChooseView.fxml"));
         Parent root = loader.load();
 
-        Stage stage = new Stage();
-        stage.setTitle("Aggiungi Playlist");
-
-        Scene scene = new Scene(root);
-        PlaylistCreationController controller = loader.getController();
+        PlaylistChooseController controller = loader.getController();
         controller.setPlaylistList(playlistList);
         controller.setObservable(playlistListObservable);
+
+        Stage stage = new Stage();
+        stage.setTitle("Modalità di creazione playlist");
+
+        Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
