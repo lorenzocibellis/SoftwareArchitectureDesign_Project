@@ -81,6 +81,11 @@ public class TrackListController {
 
         commandInvoker = CommandInvoker.getCommandInvokerPointer();
 
+        // --------------chiamata al metodo di prova per aggiungere delle canzoni all'avvio dell'app --------------- //
+        if (trackList.getTracks().isEmpty()) {
+            addSampleSongs();
+        }
+
         // fa in modo che la list view usi la cella personalizzata
         listView.setCellFactory(param -> new TrackCellController(this::showTrackDetails));
 
@@ -103,9 +108,6 @@ public class TrackListController {
                 openPlayerFor(selected);
             }
         });
-
-        // chiamata al metodo di prova per aggiungere delle canzoni all'avvio dell'app
-        addSampleSongs();
 
 
     }
