@@ -18,6 +18,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.unisa.musicplaylistmanager.command.CommandInvoker;
 import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
 
@@ -58,6 +59,8 @@ public class TrackListController {
     //Struttura dati per memorizzazione tracce
     private TrackList trackList;
 
+    private CommandInvoker commandInvoker;
+
     //METODI
     //METODI FXML
 
@@ -71,13 +74,12 @@ public class TrackListController {
     @FXML
     public void initialize() {
 
-        //Controlla se la TrackList non è stata già inizializzata
-        //Se è la prima volra la inizializza
+        //Ottiene il puntatore all'oggetto trackList
         trackList = TrackList.getTrackListPointer();
-        //altrimenti ottiene il puntatore alla TrackList già creata
-
         //inizializzazione della struttura dati osservabile
         trackListObservable = FXCollections.observableArrayList(trackList.getTracks());
+
+        commandInvoker = CommandInvoker.getCommandInvokerPointer();
 
         // fa in modo che la list view usi la cella personalizzata
         listView.setCellFactory(param -> new TrackCellController(this::showTrackDetails));

@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.unisa.musicplaylistmanager.command.CommandInvoker;
 import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
 import org.unisa.musicplaylistmanager.track.Track;
@@ -56,6 +57,8 @@ public class PlaylistController {
     private ObservableList<Track> playlistObservable;
     private Playlist playlist;
 
+    private CommandInvoker commandInvoker;
+
     //METODI
     /**
      * Metodo di inizializzazione chiamato automaticamente da JavaFX.
@@ -67,6 +70,8 @@ public class PlaylistController {
         // Lega la proprietà 'disable' del bottone 'deleteButton' allo stato della selezione della lista.
         // Se non ci sono elementi selezionati (isEmpty() è true), il bottone sarà disabilitato.
         deleteButton.disableProperty().bind(Bindings.isEmpty(listView.getSelectionModel().getSelectedItems()));
+
+        commandInvoker = CommandInvoker.getCommandInvokerPointer();
     }
 
     /**
