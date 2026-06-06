@@ -76,36 +76,20 @@ public class TrackListController {
      */
     @FXML
     public void initialize() {
-
-        //Controlla se la TrackList non è stata già inizializzata
-        //Se è la prima volra la inizializza
-        if (!TrackList.exists()) trackList = new TrackList();
-        //altrimenti ottiene il puntatore alla TrackList già creata
-        else trackList = TrackList.getTrackListPointer();
-        
-//   carichiamo le tracce dal CSV (solo se la lista è vuota, 
-        // per evitare duplicati se esci e rientri in questa schermata)
-        if (trackList.getTracks().isEmpty()) {
-            loadMockTracksFromCSV();
-        }
-
-        //Ottiene il puntatore all'oggetto trackList
+        // Ottieni l'istanza (Singleton) in modo sicuro
         trackList = TrackList.getTrackListPointer();
 
-        //inizializzazione della struttura dati osservabile
-        trackListObservable = FXCollections.observableArrayList(trackList.getTracks());
-
-        commandInvoker = CommandInvoker.getCommandInvokerPointer();
-
-
-        // --------------chiamata al metodo di prova per aggiungere delle canzoni all'avvio dell'app --------------- //
+        // Carichiamo le tracce dal CSV o aggiungiamo esempi se la lista è vuota
         if (trackList.getTracks().isEmpty()) {
-            addSampleSongs();
+            loadMockTracksFromCSV();
+            if (trackList.getTracks().isEmpty()) {
+                addSampleSongs();
+            }
         }
 
-
-        if (trackList.getTracks().isEmpty())
-            addSampleSongs();
+        // Inizializza l'ObservableList con i dati esistenti
+        trackListObservable = FXCollections.observableArrayList(trackList.getTracks());
+        commandInvoker = CommandInvoker.getCommandInvokerPointer();
 
         // fa in modo che la list view usi la cella personalizzata
         listView.setCellFactory(param -> new TrackCellController(this::showTrackDetails));
@@ -129,7 +113,6 @@ public class TrackListController {
                 openPlayerFor(selected);
             }
         });
-
     }
 
     /**
@@ -212,7 +195,6 @@ public class TrackListController {
         Optional<ButtonType> result = alert.showAndWait();
 
         // controlla se l'utente ha cliccato "OK"
-        // controlla se l'utente ha cliccato "OK"
         if (result.isPresent() && result.get() == ButtonType.OK) {
 
             // crea la lista di tracce da rimuovere
@@ -223,10 +205,8 @@ public class TrackListController {
 
             //  Pattern Observer: notifica tutte le playlist registrate per rimuovere le tracce
             for (Track t : toRemove) {
-                trackList.getSubjectTrackList().notifyObserver(t);
+                trackList.notifyObservers(t);
             }
-
-            // Rimuoviamo gli elementi dalla lista osservabile e dalla tracklist
 
             // Rimuoviamo gli elementi dalla lista osservabile e dalla struttura dati interna
             trackListObservable.removeAll(toRemove);
@@ -304,7 +284,8 @@ public class TrackListController {
             e.printStackTrace();
         }
     }
-private void loadMockTracksFromCSV() {
+    
+    private void loadMockTracksFromCSV() {
         String resourcePath = "/data/tracks.csv";
         InputStream is = getClass().getResourceAsStream(resourcePath);
 
@@ -364,20 +345,10 @@ private void loadMockTracksFromCSV() {
         Track track6 = new Track("Shape of my heart", "Sting", Year.of(1993), "Pop", 258, false, false, false);
         Track track7 = new Track("Demons", "Imagine Dragons", Year.of(2012), "Alternative Rock", 177, true, false, true);
         Track track8 = new Track("Master of puppets", "Metallica", Year.of(1986), "Metal", 515, false, true, false);
-        Track track9 = new Track("Cinque giorni", "Michele Zarrillo", Year.of(1990), "Pop", 240, true, false, false);
-        Track track10 = new Track("Losing my religion", "R.E.M.", Year.of(1991), "Alternative Rock", 269, false, true, false);
+        Track track9 = new Track("Losing my religion", "R.E.M.", Year.of(1991), "Alternative Rock", 269, false, true, false);
 
 
-        trackList.getTracks().addAll(Arrays.asList(track1, track2, track3, track4, track5, track6, track7, track8, track9, track10));
+        trackList.getTracks().addAll(Arrays.asList(track1, track2, track3, track4, track5, track6, track7, track8, track9));
         trackListObservable.addAll(trackList.getTracks());
     }
-
-
-
-
-
-
-
-
-
 }

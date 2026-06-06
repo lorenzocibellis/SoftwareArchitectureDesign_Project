@@ -10,6 +10,7 @@ import org.unisa.musicplaylistmanager.track.Track;
 
 import java.time.Year;
 import static org.junit.jupiter.api.Assertions.*;
+import org.unisa.musicplaylistmanager.iterator.Iterator;
 
 /**
  * Test class for {@link Iterator}.
