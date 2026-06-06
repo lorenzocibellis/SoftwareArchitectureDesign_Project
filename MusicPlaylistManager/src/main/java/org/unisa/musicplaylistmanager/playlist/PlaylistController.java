@@ -78,8 +78,7 @@ public class PlaylistController {
      * Imposta la playlist corrente da visualizzare nel controller.
      * Inizializza la lista osservabile, imposta la cella personalizzata per le tracce
      * e configura gli eventi della ListView (es. avvio riproduzione al doppio click).
-     * 
-     * @param p la playlist da visualizzare
+     * * @param p la playlist da visualizzare
      */
     public void setPlaylist(Playlist p){
 
@@ -113,8 +112,7 @@ public class PlaylistController {
     /**
      * Apre il player musicale avviando la traccia selezionata all'interno del
      * contesto di questa playlist.
-     * 
-     * @param selected la traccia da riprodurre
+     * * @param selected la traccia da riprodurre
      */
     private void openPlayerFor(Track selected) {
         ActivePlayerManager.getInstance().openPlayer(selected, playlist);
@@ -122,8 +120,7 @@ public class PlaylistController {
 
     /**
      * Mostra la finestra di dialogo con i dettagli della traccia selezionata.
-     * 
-     * @param track la traccia di cui mostrare i dettagli
+     * * @param track la traccia di cui mostrare i dettagli
      */
     private void showTrackDetails(Track track) {
         try {
@@ -153,8 +150,7 @@ public class PlaylistController {
     /**
      * Apre una finestra per aggiungere nuove tracce alla playlist.
      * Mostra solo le tracce della libreria che non sono già presenti nella playlist.
-     * 
-     * @param event l'evento ActionEvent generato dal click
+     * * @param event l'evento ActionEvent generato dal click
      */
     @FXML
     void addTrack(ActionEvent event) {
@@ -208,8 +204,7 @@ public class PlaylistController {
      * Rimuove le tracce selezionate dalla playlist corrente, previa conferma.
      * Se la traccia attualmente in riproduzione viene rimossa da questa playlist,
      * il player verrà chiuso automaticamente.
-     * 
-     * @param event l'evento ActionEvent generato dal click
+     * * @param event l'evento ActionEvent generato dal click
      */
     @FXML
     void removeTrack(ActionEvent event) {
@@ -240,8 +235,9 @@ public class PlaylistController {
 
             // Se stiamo rimuovendo la traccia in riproduzione E il player è stato avviato da QUESTA playlist, chiudi il player
             Track playingTrack = ActivePlayerManager.getInstance().getCurrentTrack();
-            Playlist playingPlaylist = ActivePlayerManager.getInstance().getCurrentPlaylist();
-            if (playingTrack != null && toRemove.contains(playingTrack) && playlist == playingPlaylist) {
+            TrackCollection playingCollection = ActivePlayerManager.getInstance().getCurrentPlaylist();
+            
+            if (playingTrack != null && toRemove.contains(playingTrack) && playingCollection instanceof Playlist && playlist == (Playlist) playingCollection) {
                 ActivePlayerManager.getInstance().closePlayer();
             }
         }
@@ -249,8 +245,7 @@ public class PlaylistController {
 
     /**
      * Torna alla schermata precedente (PlaylistListView).
-     * 
-     * @param actionEvent l'evento ActionEvent generato dal click
+     * * @param actionEvent l'evento ActionEvent generato dal click
      * @throws IOException se il caricamento del file FXML fallisce
      */
     @FXML
@@ -261,5 +256,4 @@ public class PlaylistController {
         // Naviga usando NavigationManager
         NavigationManager.getInstance().navigateTo(playlistParent);
     }
-
 }

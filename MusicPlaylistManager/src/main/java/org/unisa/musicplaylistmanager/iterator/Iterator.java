@@ -1,6 +1,6 @@
 package org.unisa.musicplaylistmanager.iterator;
 
-import org.unisa.musicplaylistmanager.playlist.Playlist;
+import org.unisa.musicplaylistmanager.playlist.TrackCollection;
 import org.unisa.musicplaylistmanager.strategy.ExecutionStrategy;
 import org.unisa.musicplaylistmanager.strategy.Sequential;
 import org.unisa.musicplaylistmanager.track.Track;
@@ -12,17 +12,17 @@ public class Iterator implements AbstractIterator {
 
     private int currentindext; // Puntatore all'interno dell'array iterationindex
     private int[] iterationindex; // Array che mappa l'ordine di riproduzione
-    private Playlist playlist;
+    private TrackCollection trackCollection;
     
     // Variabile per ricordare la modalità corrente (es. se aggiungo una traccia durante lo shuffle, deve ricalcolare lo shuffle)
     private ExecutionStrategy currentStrategy; 
 
     /**
      * Costruttore
-     * @param playlist L'elenco delle tracce in cui scorrere
+     * @param trackCollection L'elenco delle tracce in cui scorrere
      */
-    public Iterator(Playlist playlist) {
-        this.playlist = playlist;
+    public Iterator(TrackCollection trackCollection) {
+        this.trackCollection = trackCollection;
         this.currentindext = 0;
         
         // Inizializza con la strategia sequenziale di default
@@ -35,7 +35,7 @@ public class Iterator implements AbstractIterator {
      * Se sì, forza il ricalcolo dell'array di iterazione mantenendo la strategia attuale.
      */
     private void syncWithPlaylist() {
-        if (iterationindex != null && playlist != null && iterationindex.length != playlist.getTracks().size()) {
+        if (iterationindex != null && trackCollection != null && iterationindex.length != trackCollection.getTracks().size()) {
             if (currentStrategy != null) {
                 setStrategy(currentStrategy);
             }
@@ -50,11 +50,11 @@ public class Iterator implements AbstractIterator {
     public Track getCurrent() {
         syncWithPlaylist(); // Sincronizza la coda prima di restituire il brano!
         
-        if (iterationindex == null || iterationindex.length == 0 || playlist.getTracks().isEmpty()) {
+        if (iterationindex == null || iterationindex.length == 0 || trackCollection.getTracks().isEmpty()) {
             return null;
         }
         int realIndex = iterationindex[currentindext];
-        return playlist.getTracks().get(realIndex);
+        return trackCollection.getTracks().get(realIndex);
     }
 
     /**
@@ -101,11 +101,11 @@ public class Iterator implements AbstractIterator {
      */
     @Override
     public void setStrategy(ExecutionStrategy es) {
-        if (playlist == null || playlist.getTracks().isEmpty()) return;
+        if (trackCollection == null || trackCollection.getTracks().isEmpty()) return;
         
         this.currentStrategy = es; // Salva la strategia in memoria
         
-        int size = playlist.getTracks().size();
+        int size = trackCollection.getTracks().size();
         
         // Recuperiamo l'indice reale della traccia in corso per non interrompere l'ascolto
         int realCurrentIndex = 0;
@@ -136,7 +136,7 @@ public class Iterator implements AbstractIterator {
      */
     public void moveToTrack(Track track) {
         syncWithPlaylist();
-        int realIndex = playlist.getTracks().indexOf(track);
+        int realIndex = trackCollection.getTracks().indexOf(track);
         if (realIndex != -1 && iterationindex != null) {
             for (int i = 0; i < iterationindex.length; i++) {
                 if (iterationindex[i] == realIndex) {

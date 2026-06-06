@@ -9,9 +9,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-import org.unisa.musicplaylistmanager.playlist.Playlist;
-import org.unisa.musicplaylistmanager.playlist.TrackCollection;
-import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
+import org.unisa.musicplaylistmanager.playlist.TrackCollection; 
 import org.unisa.musicplaylistmanager.state.Play;
 import org.unisa.musicplaylistmanager.track.Track;
 
@@ -61,17 +59,8 @@ public class PlayerController implements Initializable {
     private String iconsRoot = "/icons/";
     private Player player;
 
-    /**
-     * Metodo chiamato automaticamente da JavaFX dopo il caricamento del file FXML.
-     * Inizializza i componenti visivi di base.
-     * @param url l'URL utilizzato per risolvere percorsi relativi per l'oggetto radice
-     * @param rb le risorse localizzate per l'oggetto radice
-     */
     @FXML
     public void initialize(URL url, ResourceBundle rb) {
-        // I tasti skip NON vengono più disabilitati qui, sfruttiamo la coda circolare dell'Iteratore!
-
-        // Funzionalità di seek (riposizionamento temporale) tramite la barra di progresso
         songProgress.setOnMouseReleased(event -> {
             if (player != null) {
                 player.seekTo((int) songProgress.getValue());
@@ -80,9 +69,7 @@ public class PlayerController implements Initializable {
     }
 
     /**
-     * Inizializza il player logico con la traccia e la playlist specificate.
-     * Questo metodo deve essere chiamato esplicitamente da ActivePlayerManager 
-     * subito dopo aver ottenuto questo controller.
+     * Inizializza il player logico con la traccia e la collezione specificate.
      * @param initialTrack la traccia da riprodurre
      * @param trackCollection la playlist o tracklist contenente la traccia
      */
@@ -93,14 +80,12 @@ public class PlayerController implements Initializable {
         }
         player = new Player(new Play(), trackCollection, initialTrack);
 
-        // Sincronizza l'interfaccia utente grafica quando l'iteratore cambia traccia
         player.setOnTrackChanged(() -> {
             Platform.runLater(() -> updateTrackUI(player.getCurrentTrack()));
         });
 
         player.setOnTimeTick(seconds -> {
             Platform.runLater(() -> {
-                // Aggiorna la barra di progresso solo se l'utente non la sta trascinando/premendo
                 if (!songProgress.isPressed()) {
                     songProgress.setValue(seconds);
                 }
@@ -119,10 +104,6 @@ public class PlayerController implements Initializable {
         player.changeState();
     }
 
-    /**
-     * Gestisce l'azione del pulsante centrale (Play/Pausa).
-     * Invoca il cambio di stato nel player logico.
-     */
     @FXML
     public void handleExecute() {
         if (player != null) {
@@ -130,9 +111,6 @@ public class PlayerController implements Initializable {
         }
     }
 
-    /**
-     * Gestisce l'azione del pulsante "Successiva".
-     */
     @FXML
     public void handleNext() {
         if (player != null) {
@@ -140,9 +118,6 @@ public class PlayerController implements Initializable {
         }
     }
 
-    /**
-     * Gestisce l'azione del pulsante "Precedente".
-     */
     @FXML
     public void handlePrevious() {
         if (player != null) {
@@ -150,23 +125,14 @@ public class PlayerController implements Initializable {
         }
     }
 
-    /**
-     * Gestisce l'azione del pulsante di chiusura (X) del mini-player.
-     * Termina la riproduzione e richiede la chiusura del player al manager.
-     */
     @FXML
     public void handleClose() {
         if (player != null) {
             player.terminate();
         }
-        ActivePlayerManager.getInstance().closePlayer();
+        org.unisa.musicplaylistmanager.service.player.ActivePlayerManager.getInstance().closePlayer();
     }
 
-    /**
-     * Aggiorna gli elementi testuali e grafici della UI (titolo, autore, timer)
-     * basandosi sui dati della traccia specificata.
-     * @param track la traccia di cui visualizzare le informazioni
-     */
     private void updateTrackUI(Track track) {
         if (track != null) {
             trackTitle.textProperty().unbind();
@@ -175,7 +141,6 @@ public class PlayerController implements Initializable {
             trackTitle.textProperty().bind(track.titleProperty());
             authorName.textProperty().bind(track.authorProperty());
 
-            // Setup iniziale
             songProgress.setMin(0);
             songProgress.setMax(track.getDuration());
             songProgress.setValue(0);
@@ -184,13 +149,6 @@ public class PlayerController implements Initializable {
         }
     }
 
-    /**
-     * Imposta l'immagine per un pulsante specificato. Usato per alternare Play/Pause.
-     * @param targetButton il bottone a cui applicare l'icona
-     * @param resourcePath il percorso della risorsa immagine
-     * @param width la larghezza desiderata per l'icona
-     * @param height l'altezza desiderata per l'icona
-     */
     public void setButtonImage(Button targetButton, String resourcePath, double width, double height) {
         try {
             ImageView iv = new ImageView(new Image(getClass().getResourceAsStream(resourcePath)));
@@ -202,89 +160,48 @@ public class PlayerController implements Initializable {
         }
     }
 
-    /**
-     * Imposta l'immagine specifica per il pulsante centrale di esecuzione (Play/Pause).
-     * @param resourcePath il percorso della risorsa immagine
-     * @param width la larghezza desiderata per l'icona
-     * @param height l'altezza desiderata per l'icona
-     */
     public void setExecuteButtonImage(String resourcePath, double width, double height) {
         setButtonImage(this.executeButton, resourcePath, width, height);
     }
 
-    /**
-     * Formatta un ammontare totale di secondi in una stringa nel formato "minuti:secondi".
-     * @param totalSeconds il numero totale di secondi da formattare
-     * @return la stringa formattata
-     */
     private String formatTime(int totalSeconds) {
         int m = totalSeconds / 60;
         int s = totalSeconds % 60;
         return String.format("%d:%02d", m, s);
     }
 
-    /**
-     * Restituisce l'istanza del player logico associata a questo controller.
-     * @return il Player corrente
-     */
     public Player getPlayer() {
         return this.player;
     }
 
-    /**
-     * Gestisce l'azione del pulsante Shuffle.
-     */
     @FXML
     public void handleShuffle() {
         if (player == null) return;
-
-        isShuffleActive = !isShuffleActive; // Inverte lo stato (Acceso/Spento)
-
+        isShuffleActive = !isShuffleActive;
         if (isShuffleActive) {
-            isLoopActive = false; // Spegne automaticamente il Loop
+            isLoopActive = false;
             player.getIterator().setStrategy(new org.unisa.musicplaylistmanager.strategy.Shuffle());
         } else {
-            // Se lo spengo, torno alla riproduzione normale
             player.getIterator().setStrategy(new org.unisa.musicplaylistmanager.strategy.Sequential());
         }
-        
         updateStrategyUI();
     }
 
-    /**
-     * Gestisce l'azione del pulsante Loop.
-     */
     @FXML
     public void handleLoop() {
         if (player == null) return;
-
-        isLoopActive = !isLoopActive; // Inverte lo stato (Acceso/Spento)
-
+        isLoopActive = !isLoopActive;
         if (isLoopActive) {
-            isShuffleActive = false; // Spegne automaticamente lo Shuffle
+            isShuffleActive = false;
             player.getIterator().setStrategy(new org.unisa.musicplaylistmanager.strategy.Loop());
         } else {
-            // Se lo spengo, torno alla riproduzione normale
             player.getIterator().setStrategy(new org.unisa.musicplaylistmanager.strategy.Sequential());
         }
-        
         updateStrategyUI();
     }
 
-    /**
-     * Aggiorna visivamente i tasti Shuffle e Loop illuminando quello attivo.
-     */
     private void updateStrategyUI() {
-        if (isShuffleActive) {
-            shuffleButton.setStyle(STYLE_ACTIVE);
-        } else {
-            shuffleButton.setStyle(STYLE_NORMAL);
-        }
-
-        if (isLoopActive) {
-            loopButton.setStyle(STYLE_ACTIVE);
-        } else {
-            loopButton.setStyle(STYLE_NORMAL);
-        }
+        shuffleButton.setStyle(isShuffleActive ? STYLE_ACTIVE : STYLE_NORMAL);
+        loopButton.setStyle(isLoopActive ? STYLE_ACTIVE : STYLE_NORMAL);
     }
 }

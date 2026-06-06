@@ -60,8 +60,7 @@ public class PlaylistListController {
     /**
      * Apre la schermata di dettaglio per la playlist specificata.
      * Naviga verso la vista della playlist utilizzando il {@link NavigationManager}.
-     * 
-     * @param p la playlist da visualizzare
+     * * @param p la playlist da visualizzare
      * @throws IOException se il caricamento del file FXML fallisce
      */
     private void openPlaylist(Playlist p) throws IOException {
@@ -112,8 +111,7 @@ public class PlaylistListController {
 
     /**
      * Gestisce l'apertura della finestra per la scelta sulla creazione automatica o manuale di una nuova playlist.
-     * 
-     * @param event l'evento generato dal click
+     * * @param event l'evento generato dal click
      * @throws IOException se il caricamento del file FXML fallisce
      */
     @FXML
@@ -137,8 +135,7 @@ public class PlaylistListController {
      * Elimina le playlist selezionate dall'utente.
      * Mostra una finestra di conferma prima di procedere. Se la playlist
      * attualmente in riproduzione viene eliminata, provvede a chiudere il player.
-     * 
-     * @param event l'evento generato dal click
+     * * @param event l'evento generato dal click
      */
     @FXML
     void deletePlaylist(ActionEvent event) {
@@ -172,7 +169,6 @@ public class PlaylistListController {
             if (TrackList.exists()) {
                 for (Playlist p : toRemove) {
                     p.detach();
-
                 }
             }
 
@@ -181,8 +177,9 @@ public class PlaylistListController {
             playlistList.deletePlaylists(toRemove);
 
             // Se stiamo eliminando la playlist in riproduzione, chiudi il player
-            Playlist playingPlaylist = ActivePlayerManager.getInstance().getCurrentPlaylist();
-            if (playingPlaylist != null && toRemove.contains(playingPlaylist)) {
+            // Utilizzo TrackCollection per gestire correttamente sia Playlist che TrackList
+            TrackCollection playingCollection = ActivePlayerManager.getInstance().getCurrentPlaylist();
+            if (playingCollection instanceof Playlist && toRemove.contains((Playlist) playingCollection)) {
                 ActivePlayerManager.getInstance().closePlayer();
             }
         }
@@ -190,8 +187,7 @@ public class PlaylistListController {
 
     /**
      * Naviga alla schermata principale della libreria musicale (TrackListView).
-     * 
-     * @param actionEvent l'evento generato dal click
+     * * @param actionEvent l'evento generato dal click
      * @throws IOException se il caricamento del file FXML fallisce
      */
     @FXML
@@ -205,8 +201,7 @@ public class PlaylistListController {
 
     /**
      * Chiude l'applicazione terminando l'interfaccia JavaFX e l'intero processo.
-     * 
-     * @param actionEvent l'evento generato dal click
+     * * @param actionEvent l'evento generato dal click
      */
     @FXML
     public void closeApp(ActionEvent actionEvent) {

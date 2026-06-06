@@ -31,7 +31,7 @@ public class Player {
     private PlayerState defaultState; // Aggiunto per fedeltà all'UML!
     
     // playlist o tracklist in cui scorrere le tracce
-    private Playlist playlist;
+    private TrackCollection trackCollection;
     
     // Iteratore incaricato della gestione dello scorrimento delle tracce
     private Iterator trackIterator;
@@ -48,29 +48,29 @@ public class Player {
 
     /**
      * Costruttore della classe Player.
-     * Costruttore della classe Player.
      * * @param defaultState    lo stato iniziale della riproduzione
      * @param trackCollection la collezione di tracce (o playlist) da cui è stata avviata la canzone
      * @param currentTrack    la traccia attualmente in riproduzione
      */
-public Player(PlayerState defaultState, TrackCollection trackCollection, Track currentTrack) {
-    // Manteniamo il controllo di validità per evitare NullPointerException
-    if (trackCollection == null || currentTrack == null) {
-        throw new IllegalArgumentException("Il player richiede una collezione di tracce e una traccia valide per essere inizializzato.");
-    }
+    public Player(PlayerState defaultState, TrackCollection trackCollection, Track currentTrack) {
+        // Manteniamo il controllo di validità per evitare NullPointerException
+        if (trackCollection == null || currentTrack == null) {
+            throw new IllegalArgumentException("Il player richiede una collezione di tracce e una traccia valide per essere inizializzato.");
+        }
 
-    this.defaultState = defaultState;
-    this.currentState = defaultState;
-    
-    // ATTENZIONE: Assicurati che la variabile 'playlist' sia di tipo TrackCollection 
-    // o casta correttamente se necessario.
-    this.playlist = (Playlist) trackCollection; 
-    this.elapsedSeconds = 0;
-    
-    // Inizializza l'iteratore concreto e lo sposta sulla traccia cliccata dall'utente
-    this.trackIterator = new Iterator(this.playlist);
-    this.trackIterator.moveToTrack(currentTrack);
-}
+        this.defaultState = defaultState;
+        this.currentState = defaultState;
+        
+        // Assegnazione della collezione
+        this.trackCollection = trackCollection; 
+        this.elapsedSeconds = 0;
+        
+        // CORREZIONE: Inizializza l'iteratore passando la collezione base
+        this.trackIterator = new Iterator(this.trackCollection);
+        
+        // Ora trackIterator non è più null
+        this.trackIterator.moveToTrack(currentTrack);
+    }
 
     //  Registrazione eventi sulla GUI  in tempo reale
     
@@ -124,13 +124,12 @@ public Player(PlayerState defaultState, TrackCollection trackCollection, Track c
     }
 
     /**
-     * Restituisce la playlist attualmente in riproduzione.
-     * @return la playlist corrente
-     */
-    public Playlist getCurrentPlaylist() {
-        return this.playlist;
-    }
-
+ * Restituisce la collezione (Playlist o TrackList) attualmente in riproduzione.
+ * @return la collezione corrente (TrackCollection)
+ */
+public TrackCollection getCurrentPlaylist() {
+    return this.trackCollection;
+}
     /**
      * Restituisce lo stato corrente del player.
      * @return lo stato attualmente attivo

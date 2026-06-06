@@ -35,7 +35,7 @@ public interface PlayerManager {
      * ovvero il contesto da cui è stata avviata la traccia.
      *
      */
-    Playlist getCurrentPlaylist();
+    TrackCollection getCurrentPlaylist();
 
     /**
      * Indica se il mini-player è aperto e visibile.
