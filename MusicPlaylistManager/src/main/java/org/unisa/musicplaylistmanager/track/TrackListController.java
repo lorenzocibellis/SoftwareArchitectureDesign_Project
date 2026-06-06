@@ -30,6 +30,7 @@ import java.time.Year;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
+import javafx.geometry.Insets;
 
 /**
  * Controller per la schermata principale della libreria musicale (TrackListView).
@@ -241,8 +242,11 @@ public class TrackListController {
      * @param selected la traccia da riprodurre
      */
     private void openPlayerFor(Track selected) {
-        ActivePlayerManager.getInstance().openPlayer(selected, trackList);
-    }
+
+    ActivePlayerManager.getInstance().openPlayer(selected, trackList);
+
+    updateBottomPadding();
+}
 
     /**
      * Mostra i dettagli della traccia selezionata in una finestra di sola lettura.
@@ -329,5 +333,14 @@ public class TrackListController {
             e.printStackTrace();
         }
     }
+    private void updateBottomPadding() {
+
+    double padding =
+            ActivePlayerManager.getInstance().hasActivePlayer()
+                    ? 130.0
+                    : 0.0;
+
+    listView.setPadding(new Insets(0, 0, padding, 0));
+}
 
 }

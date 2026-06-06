@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javafx.geometry.Insets;
 
 /**
  * Controller per la visualizzazione e gestione del contenuto di una singola playlist.
@@ -72,6 +73,7 @@ public class PlaylistController {
         deleteButton.disableProperty().bind(Bindings.isEmpty(listView.getSelectionModel().getSelectedItems()));
 
         commandInvoker = CommandInvoker.getCommandInvokerPointer();
+        updateBottomPadding();
     }
 
     /**
@@ -107,6 +109,7 @@ public class PlaylistController {
                 }
             });
         }
+        updateBottomPadding();
     }
 
     /**
@@ -116,6 +119,7 @@ public class PlaylistController {
      */
     private void openPlayerFor(Track selected) {
         ActivePlayerManager.getInstance().openPlayer(selected, playlist);
+        updateBottomPadding();
     }
 
     /**
@@ -256,4 +260,13 @@ public class PlaylistController {
         // Naviga usando NavigationManager
         NavigationManager.getInstance().navigateTo(playlistParent);
     }
+        private void updateBottomPadding() {
+
+    double padding =
+            ActivePlayerManager.getInstance().hasActivePlayer()
+                    ? 130.0
+                    : 0.0;
+
+    listView.setPadding(new Insets(0, 0, padding, 0));
+}
 }

@@ -131,4 +131,8 @@ public TrackCollection getCurrentPlaylist() {
     public boolean hasActivePlayer() {
         return miniPlayerBar != null;
     }
+    
+    public double getPlayerHeight() {
+    return hasActivePlayer() ? 130.0 : 0.0;
+}
 }
