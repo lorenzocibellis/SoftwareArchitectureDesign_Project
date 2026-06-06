@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="200.0" prefWidth="420.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.playlist.PlaylistChooseController">
+    <children>
+        <VBox alignment="CENTER" spacing="24.0" style="-fx-background-color: #F8F8F8;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <padding>
+                <Insets bottom="24.0" left="30.0" right="30.0" top="24.0" />
+            </padding>
+            <children>
+                <Label style="-fx-font-weight: bold; -fx-text-fill: #1D1D1F;" text="Scegli come creare la tua playlist:">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </Label>
+
+                <HBox alignment="CENTER" spacing="20.0">
+                    <children>
+                        <Button fx:id="buttonManual" mnemonicParsing="false" onAction="#createManual" prefHeight="40.0" prefWidth="154.0" style="-fx-font-size: 15px;" text="Manuale" />
+                        <Button fx:id="buttonAutomatic" mnemonicParsing="false" onAction="#createAutomatic" prefHeight="40.0" prefWidth="154.0" style="-fx-font-size: 15px;" text="Automatica" />
+                    </children>
+                </HBox>
+
+                <HBox alignment="CENTER">
+                    <children>
+                        <Button fx:id="buttonBack" mnemonicParsing="false" onAction="#goBack" prefHeight="31.0" prefWidth="89.0" styleClass="cancel-button" text="✕  Annulla" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

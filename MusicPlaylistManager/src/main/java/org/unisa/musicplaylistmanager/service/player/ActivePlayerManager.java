@@ -5,6 +5,7 @@ import javafx.scene.layout.BorderPane;
 import org.unisa.musicplaylistmanager.player.Player;
 import org.unisa.musicplaylistmanager.player.PlayerController;
 import org.unisa.musicplaylistmanager.playlist.Playlist;
+import org.unisa.musicplaylistmanager.playlist.TrackCollection;
 import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
 import org.unisa.musicplaylistmanager.track.Track;
 
@@ -50,10 +51,10 @@ public class ActivePlayerManager implements PlayerManager {
      * e lo aggiunge come overlay superiore nello StackPane radice.
      * 
      * @param track la traccia da avviare
-     * @param playlist la playlist da cui è stata avviata la traccia (o tracklist)
+     * @param trackCollection la playlist da cui è stata avviata la traccia (o tracklist)
      */
     @Override
-    public void openPlayer(Track track, Playlist playlist) {
+    public void openPlayer(Track track, TrackCollection trackCollection) {
         // Termina eventuale riproduzione precedente
         if (playerController != null && playerController.getPlayer() != null) {
             playerController.getPlayer().terminate();
@@ -63,7 +64,7 @@ public class ActivePlayerManager implements PlayerManager {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "MiniPlayerView.fxml"));
             javafx.scene.layout.AnchorPane newBar = loader.load();
             playerController = loader.getController();
-            playerController.init(track, playlist);
+            playerController.init(track, trackCollection);
 
             // Rimuove il vecchio mini-player dallo StackPane (se presente)
             if (miniPlayerBar != null) {

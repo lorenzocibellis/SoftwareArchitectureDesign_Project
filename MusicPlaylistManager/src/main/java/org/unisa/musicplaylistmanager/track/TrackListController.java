@@ -19,13 +19,16 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.unisa.musicplaylistmanager.command.CommandInvoker;
 import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.time.Year;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 /**
@@ -59,6 +62,8 @@ public class TrackListController {
     //Struttura dati per memorizzazione tracce
     private TrackList trackList;
 
+    private CommandInvoker commandInvoker;
+
     //METODI
     //METODI FXML
 
@@ -83,8 +88,24 @@ public class TrackListController {
         if (trackList.getTracks().isEmpty()) {
             loadMockTracksFromCSV();
         }
+
+        //Ottiene il puntatore all'oggetto trackList
+        trackList = TrackList.getTrackListPointer();
+
         //inizializzazione della struttura dati osservabile
         trackListObservable = FXCollections.observableArrayList(trackList.getTracks());
+
+        commandInvoker = CommandInvoker.getCommandInvokerPointer();
+
+
+        // --------------chiamata al metodo di prova per aggiungere delle canzoni all'avvio dell'app --------------- //
+        if (trackList.getTracks().isEmpty()) {
+            addSampleSongs();
+        }
+
+
+        if (trackList.getTracks().isEmpty())
+            addSampleSongs();
 
         // fa in modo che la list view usi la cella personalizzata
         listView.setCellFactory(param -> new TrackCellController(this::showTrackDetails));
@@ -206,8 +227,11 @@ public class TrackListController {
             }
 
             // Rimuoviamo gli elementi dalla lista osservabile e dalla tracklist
+
+            // Rimuoviamo gli elementi dalla lista osservabile e dalla struttura dati interna
             trackListObservable.removeAll(toRemove);
-            trackList.getTracks().removeAll(toRemove);
+            trackList.getTracks().removeAll(toRemove); // Rimuove dalla lista interna
+            trackList.removeAllTracks(toRemove);       // Notifica eventuali altri componenti/observer
 
             // 4. Se stavamo eliminando la traccia in riproduzione, chiudiamo il player
             if (playingTrack != null && toRemove.contains(playingTrack)) {
@@ -327,5 +351,33 @@ private void loadMockTracksFromCSV() {
             e.printStackTrace();
         }
     }
+
+
+    // metodo di prova per aggiungere delle canzoni all'avvio dell'app
+    public void addSampleSongs(){
+
+        Track track1 = new Track("La canzone del sole", "Lucio Battisti", Year.of(1971), "Pop", 210, false, false, false);
+        Track track2 = new Track("Bohemian Rhapsody", "Queen", Year.of(1975), "Rock", 354, true, false, false);
+        Track track3 = new Track("Shape of You", "Ed Sheeran", Year.of(2017), "Pop", 233, false, false, true);
+        Track track4 = new Track("Smells Like Teen Spirit", "Nirvana", Year.of(1991), "Grunge", 301, true, true, false);
+        Track track5 = new Track("Billie Jean", "Michael Jackson", Year.of(1982), "Pop", 294, true, false, false);
+        Track track6 = new Track("Shape of my heart", "Sting", Year.of(1993), "Pop", 258, false, false, false);
+        Track track7 = new Track("Demons", "Imagine Dragons", Year.of(2012), "Alternative Rock", 177, true, false, true);
+        Track track8 = new Track("Master of puppets", "Metallica", Year.of(1986), "Metal", 515, false, true, false);
+        Track track9 = new Track("Cinque giorni", "Michele Zarrillo", Year.of(1990), "Pop", 240, true, false, false);
+        Track track10 = new Track("Losing my religion", "R.E.M.", Year.of(1991), "Alternative Rock", 269, false, true, false);
+
+
+        trackList.getTracks().addAll(Arrays.asList(track1, track2, track3, track4, track5, track6, track7, track8, track9, track10));
+        trackListObservable.addAll(trackList.getTracks());
+    }
+
+
+
+
+
+
+
+
 
 }

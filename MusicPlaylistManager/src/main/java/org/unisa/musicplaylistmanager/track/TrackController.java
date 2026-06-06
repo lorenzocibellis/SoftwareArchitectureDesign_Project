@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import org.unisa.musicplaylistmanager.playlist.Playlist;
+import org.unisa.musicplaylistmanager.playlist.TrackCollection;
 
 import java.io.IOException;
 import java.time.Year;
@@ -63,7 +64,7 @@ public class TrackController {
     // definizione attributi
 
     // lista di tracce su cui lavorare
-    private Playlist trackList;
+    private TrackCollection trackList;
 
     //struttura dati della UI da aggiornare
     private ObservableList<Track> observableList;
@@ -279,10 +280,10 @@ public class TrackController {
      * Imposta il riferimento alla Playlist (o TrackList) in cui si sta
      * salvando o modificando la traccia.
      * 
-     * @param tl l'oggetto Playlist
+     * @param tc l'oggetto Playlist
      */
-    public void setTrackList(Playlist tl) {
-        trackList = tl;
+    public void setTrackList(TrackCollection tc) {
+        trackList = tc;
     }
 
     /**

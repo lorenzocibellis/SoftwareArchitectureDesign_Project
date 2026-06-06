@@ -14,7 +14,7 @@ class PlaylistListTest {
     @BeforeEach
     void setUp() {
         // Inizializza la lista prima di ogni test
-        playlistList = new PlaylistList();
+        playlistList = PlaylistList.getPlaylistListPointer();
     }
 
     @Test

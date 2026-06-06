@@ -1,6 +1,7 @@
 package org.unisa.musicplaylistmanager.service.player;
 
 import org.unisa.musicplaylistmanager.playlist.Playlist;
+import org.unisa.musicplaylistmanager.playlist.TrackCollection;
 import org.unisa.musicplaylistmanager.track.Track;
 
 /**
@@ -15,9 +16,9 @@ public interface PlayerManager {
      * Apre il mini-player e avvia la riproduzione della traccia specificata.
      *
      * @param track    la traccia da riprodurre
-     * @param playlist la playlist (o tracklist) di contesto
+     * @param trackCollection la playlist (o tracklist) di contesto
      */
-    void openPlayer(Track track, Playlist playlist);
+    void openPlayer(Track track, TrackCollection trackCollection);
 
     /**
      * Chiude il mini-player e interrompe la riproduzione.

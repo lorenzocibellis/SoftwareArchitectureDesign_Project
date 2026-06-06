@@ -12,6 +12,7 @@ package org.unisa.musicplaylistmanager.player;
  */
 
 import org.unisa.musicplaylistmanager.playlist.Playlist;
+import org.unisa.musicplaylistmanager.playlist.TrackCollection;
 import org.unisa.musicplaylistmanager.state.PlayerState;
 import org.unisa.musicplaylistmanager.track.Track;
 import org.unisa.musicplaylistmanager.iterator.Iterator;
@@ -47,24 +48,29 @@ public class Player {
 
     /**
      * Costruttore della classe Player.
-     * @param defaultState Lo stato iniziale della riproduzione
-     * @param playlist      la playlist (o tracklist) da dove è stata avviata la canzone
-     * @param currentTrack  la traccia attualmente in riproduzione
+     * Costruttore della classe Player.
+     * * @param defaultState    lo stato iniziale della riproduzione
+     * @param trackCollection la collezione di tracce (o playlist) da cui è stata avviata la canzone
+     * @param currentTrack    la traccia attualmente in riproduzione
      */
-    public Player(PlayerState defaultState, Playlist playlist, Track currentTrack) {
-        if (playlist == null || currentTrack == null) {
-    throw new IllegalArgumentException("Il player richiede una playlist e una traccia valide per essere inizializzato.");
-}
-        this.defaultState = defaultState;
-        this.currentState = defaultState; // Inizializza lo stato corrente con quello di default
-        
-        this.playlist = playlist;
-        this.elapsedSeconds = 0;
-        
-        // Inizializza l'iteratore concreto e lo sposta sulla traccia cliccata dall'utente
-        this.trackIterator = new Iterator(playlist);
-        this.trackIterator.moveToTrack(currentTrack);
+public Player(PlayerState defaultState, TrackCollection trackCollection, Track currentTrack) {
+    // Manteniamo il controllo di validità per evitare NullPointerException
+    if (trackCollection == null || currentTrack == null) {
+        throw new IllegalArgumentException("Il player richiede una collezione di tracce e una traccia valide per essere inizializzato.");
     }
+
+    this.defaultState = defaultState;
+    this.currentState = defaultState;
+    
+    // ATTENZIONE: Assicurati che la variabile 'playlist' sia di tipo TrackCollection 
+    // o casta correttamente se necessario.
+    this.playlist = (Playlist) trackCollection; 
+    this.elapsedSeconds = 0;
+    
+    // Inizializza l'iteratore concreto e lo sposta sulla traccia cliccata dall'utente
+    this.trackIterator = new Iterator(this.playlist);
+    this.trackIterator.moveToTrack(currentTrack);
+}
 
     //  Registrazione eventi sulla GUI  in tempo reale
     

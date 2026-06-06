@@ -1,9 +1,9 @@
 package org.unisa.musicplaylistmanager;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-// Importazione specifica delle classi
-import org.unisa.musicplaylistmanager.iterator.Iterator; 
+
 import org.unisa.musicplaylistmanager.playlist.Playlist;
 import org.unisa.musicplaylistmanager.strategy.ExecutionStrategy;
 import org.unisa.musicplaylistmanager.track.Track;
@@ -11,38 +11,40 @@ import org.unisa.musicplaylistmanager.track.Track;
 import java.time.Year;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class for {@link Iterator}.
+ * @author gruppo10
+ */
 class IteratorTest {
-
+    
     private Playlist playlist;
     private Iterator iterator;
     private Track track1, track2, track3;
 
     @BeforeEach
     void setUp() {
-        // 1. Correzione: Inserito parametro richiesto ("NomePlaylist")
-        playlist = new Playlist("La Mia Playlist");
-        
-        // 2. Correzione: Inseriti gli 8 parametri richiesti dal costruttore di Track
-        // Adatta questi valori ai tuoi dati reali
-        track1 = new Track("Titolo1", "Artista1", Year.of(2026), "Album1", 180, false, false, false);
-        track2 = new Track("Titolo2", "Artista2", Year.of(2026), "Album2", 200, false, false, false);
-        track3 = new Track("Titolo3", "Artista3", Year.of(2026), "Album3", 220, false, false, false);
+        playlist = new Playlist("Test Playlist");
 
-        // Aggiunta alla playlist (assumendo il metodo add o che getTracks sia accessibile)
-        playlist.getTracks().add(track1);
-        playlist.getTracks().add(track2);
-        playlist.getTracks().add(track3);
+        track1 = new Track("Bohemian Rhapsody",  "Queen",        Year.of(1975), "Rock", 354, true,  false, false);
+        track2 = new Track("Stairway to Heaven", "Led Zeppelin", Year.of(1971), "Rock", 482, false, false, false);
+        track3 = new Track("Hotel California",   "Eagles",       Year.of(1977), "Rock", 391, false, false, true);
+
+        playlist.addTrack(track1);
+        playlist.addTrack(track2);
+        playlist.addTrack(track3);
 
         iterator = new Iterator(playlist);
     }
 
     @Test
+    @DisplayName("GetCurrent: dovrebbe restituire la traccia corretta")
     void testGetCurrent() {
         assertNotNull(iterator.getCurrent());
         assertEquals(track1, iterator.getCurrent());
     }
 
     @Test
+    @DisplayName("GetNext: test comportamento circolare")
     void testGetNext_CircularBehavior() {
         assertEquals(track2, iterator.getNext());
         assertEquals(track3, iterator.getNext());
@@ -50,6 +52,7 @@ class IteratorTest {
     }
 
     @Test
+    @DisplayName("GetPrevious: test comportamento circolare")
     void testGetPrevious_CircularBehavior() {
         assertEquals(track3, iterator.getPrevious());
         assertEquals(track2, iterator.getPrevious());
@@ -57,18 +60,25 @@ class IteratorTest {
     }
 
     @Test
+    @DisplayName("EmptyPlaylist: gestisce playlist vuota")
     void testEmptyPlaylist() {
         Playlist emptyPlaylist = new Playlist("Vuota");
         Iterator emptyIterator = new Iterator(emptyPlaylist);
-
         assertNull(emptyIterator.getCurrent());
     }
 
     @Test
+    @DisplayName("SetStrategy: applica correttamente una strategia")
     void testSetStrategy() {
         ExecutionStrategy reverseStrategy = (size, currentIndex) -> new int[]{2, 1, 0};
-
         iterator.setStrategy(reverseStrategy);
+        // Dopo il cambio strategia, la traccia corrente deve essere preservata (track1)
         assertEquals(track1, iterator.getCurrent());
+    }
+
+    @Test
+    @DisplayName("Constructor: oggetto non nullo")
+    void testConstructorNotNull() {
+        assertNotNull(iterator);
     }
 }

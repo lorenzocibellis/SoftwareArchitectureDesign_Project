@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import org.unisa.musicplaylistmanager.playlist.Playlist;
+import org.unisa.musicplaylistmanager.playlist.TrackCollection;
 import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 import org.unisa.musicplaylistmanager.state.Play;
 import org.unisa.musicplaylistmanager.track.Track;
@@ -83,14 +84,14 @@ public class PlayerController implements Initializable {
      * Questo metodo deve essere chiamato esplicitamente da ActivePlayerManager 
      * subito dopo aver ottenuto questo controller.
      * @param initialTrack la traccia da riprodurre
-     * @param playlist la playlist o tracklist contenente la traccia
+     * @param trackCollection la playlist o tracklist contenente la traccia
      */
-    public void init(Track initialTrack, Playlist playlist) {
+    public void init(Track initialTrack, TrackCollection trackCollection) {
         updateTrackUI(initialTrack);
         if (player != null) {
             player.terminate();
         }
-        player = new Player(new Play(), playlist, initialTrack);
+        player = new Player(new Play(), trackCollection, initialTrack);
 
         // Sincronizza l'interfaccia utente grafica quando l'iteratore cambia traccia
         player.setOnTrackChanged(() -> {

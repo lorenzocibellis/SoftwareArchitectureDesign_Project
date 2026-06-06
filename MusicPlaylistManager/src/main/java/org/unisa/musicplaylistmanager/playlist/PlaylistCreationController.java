@@ -8,8 +8,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.unisa.musicplaylistmanager.observer.ObserverPlaylist;
-import org.unisa.musicplaylistmanager.track.TrackList;
+import org.unisa.musicplaylistmanager.command.AddPlaylistCommand;
+import org.unisa.musicplaylistmanager.command.CommandInvoker;
 
 /**
  * Controller per la finestra di dialogo di creazione di una nuova playlist.
@@ -31,6 +31,7 @@ public class PlaylistCreationController {
 
     private PlaylistList playlistList;
     private ObservableList<Playlist> playlistListObservable;
+    private CommandInvoker commandInvoker;
 
     /**
      * Aggiunge la playlist creata sia al modello dei dati sia alla lista osservabile
@@ -39,15 +40,21 @@ public class PlaylistCreationController {
      * @param p la playlist da aggiungere
      */
     private void add(Playlist p) {
-        playlistList.addPlaylist(p);
-        playlistListObservable.add(p);
+        AddPlaylistCommand command = new AddPlaylistCommand(p, playlistList, playlistListObservable);
+        CommandInvoker.getCommandInvokerPointer().setCommand(command);
+        //command.execute();
+        //playlistList.addPlaylist(p);
+        //playlistListObservable.add(p);
 
         // Pattern Observer: crea observer per la playlist e lo registra sul subject della TrackList
+        /*
         if (TrackList.exists()) {
             ObserverPlaylist observer = new ObserverPlaylist(p);
             p.setObserver(observer);
             TrackList.getTrackListPointer().getSubjectTrackList().attach(observer);
         }
+
+         */
     }
 
     /**
@@ -56,18 +63,19 @@ public class PlaylistCreationController {
      * @return la nuova {@link Playlist}
      */
     private Playlist getPlaylist(){
-        return new Playlist(nameInput.getText());
+        return new Playlist(nameInput.getText().trim());
     }
 
     /**
-     * Mostra una finestra di avviso in caso di errore durante la creazione.
+     * Mostra un alert all'utente.
      * 
-     * @param title il titolo della finestra di errore
-     * @param header l'intestazione dell'errore
-     * @param content il dettaglio dell'errore da mostrare
+     * @param type il tipo di alert
+     * @param title il titolo della finestra
+     * @param header l'intestazione dell'alert
+     * @param content il dettaglio da mostrare
      */
-    private void showError(String title, String header, String content) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+    private void showAlert(Alert.AlertType type, String title, String header, String content) {
+        Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
@@ -94,6 +102,30 @@ public class PlaylistCreationController {
     }
 
     /**
+     * Valida i dati inseriti dall'utente.
+     * Mostra un alert in caso di errore o omissione.
+     *
+     * @param playlistName il nome inserito per la playlist
+     * @return {@code true} se i controlli sono superati
+     */
+    private boolean isInputValid(String playlistName) {
+        if (playlistList == null || playlistListObservable == null) {
+            showAlert(Alert.AlertType.ERROR, "Errore interno", "Dati mancanti.", "Impossibile creare la playlist. Riprova dalla schermata principale.");
+            return false;
+        }
+
+        if (playlistName.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING,
+                    "Nome mancante",
+                    "Inserisci un nome per la playlist.",
+                    "Il nome della playlist è obbligatorio e non può essere vuoto.");
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Gestisce l'azione del pulsante di conferma ("Aggiungi Playlist").
      * Crea la playlist, la aggiunge e chiude la finestra. In caso di errore
      * (es. nome duplicato), mostra un alert.
@@ -102,12 +134,19 @@ public class PlaylistCreationController {
      */
     @FXML
     void addPlaylist(ActionEvent actionEvent){
+        String playlistName = nameInput.getText().trim();
+
+        // Validazione dei dati inseriti
+        if (!isInputValid(playlistName)) {
+            return;
+        }
+
         try{
             Playlist p = this.getPlaylist();
             this.add(p);
             this.goBack(actionEvent);
         } catch (Exception e) {
-            showError("Errore", "Si è verificato un errore durante la creazione.", e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Errore", "Si è verificato un errore durante la creazione.", e.getMessage());
         }
     }
 
