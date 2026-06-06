@@ -2,50 +2,148 @@ package org.unisa.musicplaylistmanager.iterator;
 
 import org.unisa.musicplaylistmanager.playlist.Playlist;
 import org.unisa.musicplaylistmanager.strategy.ExecutionStrategy;
+import org.unisa.musicplaylistmanager.strategy.Sequential;
 import org.unisa.musicplaylistmanager.track.Track;
 
 /**
- *
  * @author gruppo10
  */
-
 public class Iterator implements AbstractIterator {
 
-    // variabili di istanza della classe Iterator
-    private int currentindext;
-    private int[] iterationindex;
+    private int currentindext; // Puntatore all'interno dell'array iterationindex
+    private int[] iterationindex; // Array che mappa l'ordine di riproduzione
     private Playlist playlist;
+    
+    // Variabile per ricordare la modalità corrente (es. se aggiungo una traccia durante lo shuffle, deve ricalcolare lo shuffle)
+    private ExecutionStrategy currentStrategy; 
 
-    // costruttore della classe Iterator
+    /**
+     * Costruttore
+     * @param playlist L'elenco delle tracce in cui scorrere
+     */
     public Iterator(Playlist playlist) {
         this.playlist = playlist;
+        this.currentindext = 0;
+        
+        // Inizializza con la strategia sequenziale di default
+        setStrategy(new Sequential());
     }
 
-    // implementazione del metodo per ottenere la traccia corrente in esecuzione
+    /**
+     * Metodo di sincronizzazione dinamica.
+     * Controlla se la dimensione della playlist è cambiata (tracce aggiunte o rimosse in tempo reale).
+     * Se sì, forza il ricalcolo dell'array di iterazione mantenendo la strategia attuale.
+     */
+    private void syncWithPlaylist() {
+        if (iterationindex != null && playlist != null && iterationindex.length != playlist.getTracks().size()) {
+            if (currentStrategy != null) {
+                setStrategy(currentStrategy);
+            }
+        }
+    }
+
+    /**
+     * Metodo per ottenere la traccia corrente
+     * @return Track la traccia corrente
+     */
     @Override
     public Track getCurrent() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        syncWithPlaylist(); // Sincronizza la coda prima di restituire il brano!
+        
+        if (iterationindex == null || iterationindex.length == 0 || playlist.getTracks().isEmpty()) {
+            return null;
+        }
+        int realIndex = iterationindex[currentindext];
+        return playlist.getTracks().get(realIndex);
     }
 
-    // implementazione del metodo per ottenere la traccia successiva
+    /**
+     * Metodo per ottenere la traccia successiva secondo un meccanismmo di coda circolare
+     * @return Track la traccia successiva
+     */
     @Override
     public Track getNext() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        syncWithPlaylist(); // Sincronizza la coda prima di fare skip!
+        
+        if (iterationindex == null || iterationindex.length == 0) return null;
+        
+        // Se siamo arrivati alla fine, ricomincia da capo (comportamento circolare)
+        if (currentindext < iterationindex.length - 1) {
+            currentindext++;
+        } else {
+            currentindext = 0; 
+        }
+        return getCurrent();
     }
 
-    // implementazione del metodo per ottenere la traccia precedente
+    /**
+     * Metodo per ottenere la traccia precedente secondo un meccanismmo di coda circolare
+     * @return Track la traccia precedente
+     */
     @Override
     public Track getPrevious() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        syncWithPlaylist(); // Sincronizza la coda prima di fare back!
+        
+        if (iterationindex == null || iterationindex.length == 0) return null;
+        
+        // Se siamo all'inizio, va all'ultimo elemento (comportamento circolare)
+        if (currentindext > 0) {
+            currentindext--;
+        } else {
+            currentindext = iterationindex.length - 1;
+        }
+        return getCurrent();
     }
 
-    // implementazione del metodo per definire la modalità di riproduzione
+    /**
+     * Metodo che imposta dinamicamente la strategia di riproduzione e genera il nuovo array di navigazione delle tracce
+     * @param es La strategia di riproduzione
+     */
     @Override
     public void setStrategy(ExecutionStrategy es) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (playlist == null || playlist.getTracks().isEmpty()) return;
+        
+        this.currentStrategy = es; // Salva la strategia in memoria
+        
+        int size = playlist.getTracks().size();
+        
+        // Recuperiamo l'indice reale della traccia in corso per non interrompere l'ascolto
+        int realCurrentIndex = 0;
+        if (iterationindex != null && iterationindex.length > 0 && currentindext < iterationindex.length) {
+            int oldIndex = iterationindex[currentindext];
+            // Sicurezza: se la traccia non è stata eliminata, la teniamo come riferimento
+            if (oldIndex < size) {
+                realCurrentIndex = oldIndex;
+            }
+        }
+        
+        // Genera il nuovo ordine di riproduzione dinamico
+        this.iterationindex = es.execute(size, realCurrentIndex);
+        
+        // Riposiziona il puntatore per far combaciare la riproduzione attuale col nuovo array
+        this.currentindext = 0;
+        for (int i = 0; i < this.iterationindex.length; i++) {
+            if (this.iterationindex[i] == realCurrentIndex) {
+                this.currentindext = i;
+                break;
+            }
+        }
     }
 
-    public AbstractIterator createIterator() {
-        return null;
+    /**
+     * Metodo di utilità per forzare l'iteratore su una specifica traccia iniziale.
+     * @param track La traccia da cui iniziare
+     */
+    public void moveToTrack(Track track) {
+        syncWithPlaylist();
+        int realIndex = playlist.getTracks().indexOf(track);
+        if (realIndex != -1 && iterationindex != null) {
+            for (int i = 0; i < iterationindex.length; i++) {
+                if (iterationindex[i] == realIndex) {
+                    this.currentindext = i;
+                    break;
+                }
+            }
+        }
     }
 }

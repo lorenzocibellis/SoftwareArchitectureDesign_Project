@@ -29,7 +29,7 @@ public class ActivePlayerManager implements PlayerManager {
 
     private static final ActivePlayerManager instance = new ActivePlayerManager();
 
-    private BorderPane miniPlayerBar;
+    private javafx.scene.layout.AnchorPane miniPlayerBar;
     private PlayerController playerController;
 
     private final String resourceRoot = "/org/unisa/musicplaylistmanager/player/";
@@ -61,7 +61,7 @@ public class ActivePlayerManager implements PlayerManager {
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "MiniPlayerView.fxml"));
-            BorderPane newBar = loader.load();
+            javafx.scene.layout.AnchorPane newBar = loader.load();
             playerController = loader.getController();
             playerController.init(track, playlist);
 

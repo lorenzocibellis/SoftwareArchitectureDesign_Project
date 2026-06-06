@@ -48,5 +48,10 @@ class ActivePlayerManagerTest {
         assertNull(manager.getCurrentTrack());
         assertNull(manager.getCurrentPlaylist());
     }
-
+    @Test
+    @DisplayName("Singleton: getInstance deve ritornare sempre la stessa istanza")
+    void testSingletonIdentity() {
+        ActivePlayerManager anotherManager = ActivePlayerManager.getInstance();
+        assertSame(manager, anotherManager, "Le istanze dovrebbero essere identiche");
+    }
 }

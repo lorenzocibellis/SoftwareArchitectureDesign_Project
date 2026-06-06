@@ -14,11 +14,16 @@ package org.unisa.musicplaylistmanager.player;
 import org.unisa.musicplaylistmanager.playlist.Playlist;
 import org.unisa.musicplaylistmanager.state.PlayerState;
 import org.unisa.musicplaylistmanager.track.Track;
+import org.unisa.musicplaylistmanager.iterator.Iterator;
 
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.IntConsumer;
 
+/**
+ *
+ * @author filom
+ */
 public class Player {
     // variabili dello State Pattern  
     private PlayerState currentState;
@@ -27,8 +32,8 @@ public class Player {
     // playlist o tracklist in cui scorrere le tracce
     private Playlist playlist;
     
-    //  Dati della singola traccia in riproduzione 
-    private Track currentTrack;
+    // Iteratore incaricato della gestione dello scorrimento delle tracce
+    private Iterator trackIterator;
     
     //  Variabili interne per la riproduzione 
     private int elapsedSeconds;
@@ -38,21 +43,27 @@ public class Player {
     private IntConsumer onTimeTick;
     private Runnable onPlayUIUpdate;
     private Runnable onPauseUIUpdate;
+    private Runnable onTrackChanged;
 
     /**
      * Costruttore della classe Player.
-     * 
-     * @param defaultState  lo stato iniziale della riproduzione
+     * @param defaultState Lo stato iniziale della riproduzione
      * @param playlist      la playlist (o tracklist) da dove è stata avviata la canzone
      * @param currentTrack  la traccia attualmente in riproduzione
      */
     public Player(PlayerState defaultState, Playlist playlist, Track currentTrack) {
+        if (playlist == null || currentTrack == null) {
+    throw new IllegalArgumentException("Il player richiede una playlist e una traccia valide per essere inizializzato.");
+}
         this.defaultState = defaultState;
         this.currentState = defaultState; // Inizializza lo stato corrente con quello di default
         
         this.playlist = playlist;
-        this.currentTrack = currentTrack;
         this.elapsedSeconds = 0;
+        
+        // Inizializza l'iteratore concreto e lo sposta sulla traccia cliccata dall'utente
+        this.trackIterator = new Iterator(playlist);
+        this.trackIterator.moveToTrack(currentTrack);
     }
 
     //  Registrazione eventi sulla GUI  in tempo reale
@@ -74,6 +85,12 @@ public class Player {
      * @param listener il listener da eseguire per aggiornare la UI in stato di pausa
      */
     public void setOnPauseUIUpdate(Runnable listener) { this.onPauseUIUpdate = listener; }
+
+    /**
+     * Imposta il callback per notificare la UI quando viene cambiata la traccia corrente.
+     * @param listener il listener da eseguire al cambio della traccia
+     */
+    public void setOnTrackChanged(Runnable listener) { this.onTrackChanged = listener; }
 
     // Metodi di gestione dello State Pattern
     
@@ -97,7 +114,7 @@ public class Player {
      * @return la traccia corrente
      */
     public Track getCurrentTrack() {
-        return this.currentTrack;
+        return this.trackIterator.getCurrent();
     }
 
     /**
@@ -110,11 +127,18 @@ public class Player {
 
     /**
      * Restituisce lo stato corrente del player.
-     * 
      * @return lo stato attualmente attivo
      */
     public PlayerState getCurrentState() {
         return this.currentState;
+    }
+
+    /**
+     * Restituisce l'iteratore associato al player per consentire il cambio di Strategy.
+     * @return l'iteratore corrente
+     */
+    public Iterator getIterator() {
+        return this.trackIterator;
     }
 
     // Logica di Riproduzione della Traccia
@@ -134,12 +158,13 @@ public class Player {
             // Thread per la riproduzione 
             @Override
             public void run() {
-                if (currentTrack != null && elapsedSeconds < currentTrack.getDuration()) {
+                Track current = getCurrentTrack();
+                if (current != null && elapsedSeconds < current.getDuration()) {
                     elapsedSeconds++;
                     if (onTimeTick != null) onTimeTick.accept(elapsedSeconds);
                 } else {
-                    // La canzone è finita
-                    stopPlayback(); 
+                    // La canzone è finita: passa automaticamente alla successiva in JavaFX Thread
+                    javafx.application.Platform.runLater(() -> nextTrack());
                 }
             }
         }, 1000, 1000);
@@ -160,13 +185,36 @@ public class Player {
     }
 
     /**
+     * Avanza alla traccia successiva definita dall'iteratore e ne avvia la riproduzione.
+     */
+    public void nextTrack() {
+        stopPlayback();
+        this.elapsedSeconds = 0;
+        this.trackIterator.getNext();
+        if (onTrackChanged != null) onTrackChanged.run();
+        startPlayback();
+    }
+
+    /**
+     * Regredisce alla traccia precedente definita dall'iteratore e ne avvia la riproduzione.
+     */
+    public void previousTrack() {
+        stopPlayback();
+        this.elapsedSeconds = 0;
+        this.trackIterator.getPrevious();
+        if (onTrackChanged != null) onTrackChanged.run();
+        startPlayback();
+    }
+
+    /**
      * Consente di riposizionare la riproduzione al secondo specificato.
-     * 
-     * @param seconds il nuovo secondo a cui spostarsi
+     * * @param seconds il nuovo secondo a cui spostarsi
+     * @param seconds
      */
     public void seekTo(int seconds) {
-        if (currentTrack != null) {
-            this.elapsedSeconds = Math.max(0, Math.min(seconds, currentTrack.getDuration()));
+        Track current = getCurrentTrack();
+        if (current != null) {
+            this.elapsedSeconds = Math.max(0, Math.min(seconds, current.getDuration()));
             if (onTimeTick != null) {
                 onTimeTick.accept(this.elapsedSeconds);
             }

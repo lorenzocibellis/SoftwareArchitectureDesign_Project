@@ -4,84 +4,132 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" prefHeight="85.0" style="-fx-background-color: #F8F8F8; -fx-border-color: #CCCCCC; -fx-border-width: 1 0 1 0; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, -2);" stylesheets="@../css/styles.css" StackPane.alignment="BOTTOM_CENTER" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.player.PlayerController">
+<AnchorPane id="AnchorPane" StackPane.alignment="BOTTOM_CENTER" prefHeight="130.0" prefWidth="600.0" maxHeight="130.0" pickOnBounds="false" style="-fx-background-color: transparent;" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.player.PlayerController">
+    
     <StackPane.margin>
         <Insets bottom="70.0" />
     </StackPane.margin>
-    <padding>
-        <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
-    </padding>
-
-
-    <left>
-        <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="15.0" BorderPane.alignment="CENTER">
+    
+    <children>
+        <AnchorPane fx:id="topPane" visible="false" managed="false" style="-fx-background-color: #f4f4f4; -fx-border-color: #cccccc; -fx-border-width: 2 0 0 0;" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <VBox alignment="CENTER" maxHeight="56.0" maxWidth="56.0" minHeight="56.0" minWidth="56.0" prefHeight="56.0" prefWidth="56.0" style="-fx-background-color: #EAEAEA; -fx-background-radius: 5;">
+                <VBox alignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
                     <children>
-                        <Label text="♫" textFill="#888888">
-                            <font>
-                                <Font size="27.0" />
-                            </font>
-                        </Label>
-                    </children>
-                </VBox>
-                <VBox alignment="CENTER_LEFT" spacing="2.0">
-                    <children>
-                        <Text fx:id="trackTitle" strokeType="OUTSIDE" strokeWidth="0.0" text="Brano">
-                            <font><Font name="System Bold" size="16.0" /></font>
-                        </Text>
-                        <Text fx:id="authorName" fill="#666666" strokeType="OUTSIDE" strokeWidth="0.0" text="Autore">
-                            <font><Font size="12.0" /></font>
-                        </Text>
+                        <ImageView fx:id="albumArt" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                            </image>
+                        </ImageView>
                     </children>
                 </VBox>
             </children>
-        </HBox>
-    </left>
+        </AnchorPane>
 
-
-    <center>
-        <VBox alignment="CENTER" spacing="2.0" BorderPane.alignment="CENTER">
+        <AnchorPane fx:id="bottomPane" prefHeight="130.0" style="-fx-background-color: #f4f4f4; -fx-border-color: #cccccc; -fx-border-width: 1 0 0 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <children>
 
-                <HBox alignment="CENTER" spacing="20.0">
+                <StackPane AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="35.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-color: #e2e8f0; -fx-background-radius: 8;">
                     <children>
-                        <Button fx:id="skipToPreviousButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent; -fx-cursor: hand;" styleClass="player-action-button" />
-                        <Button fx:id="executeButton" mnemonicParsing="false" onAction="#handleExecute" prefHeight="45.0" prefWidth="45.0" style="-fx-background-color: transparent; -fx-cursor: hand;" styleClass="player-action-button" />
-                        <Button fx:id="skipToNextButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent; -fx-cursor: hand;" styleClass="player-action-button" />
+                        <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../../icons/musical-note.png" />
+                            </image>
+                        </ImageView>
+                    </children>
+                </StackPane>
+
+                <HBox alignment="CENTER" spacing="40.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="10.0">
+                    <children>
+                        <Button fx:id="shuffleButton" mnemonicParsing="false" onAction="#handleShuffle" style="-fx-background-color: transparent; -fx-cursor: hand;" styleClass="player-action-button">
+                            <graphic>
+                                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../../../../icons/shuffleIcon.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+
+                        <VBox alignment="CENTER" mouseTransparent="true">
+                            <children>
+                                <Text fx:id="trackTitle" strokeType="OUTSIDE" strokeWidth="0.0" text="NomeBrano">
+                                    <font>
+                                        <Font name="System Bold" size="16.0" />
+                                    </font>
+                                </Text>
+                                <Text fx:id="authorName" fill="#666666" strokeType="OUTSIDE" strokeWidth="0.0" text="NomeAutore">
+                                    <font>
+                                        <Font size="13.0" />
+                                    </font>
+                                </Text>
+                            </children>
+                        </VBox>
+
+                        <Button fx:id="loopButton" mnemonicParsing="false" onAction="#handleLoop" style="-fx-background-color: transparent; -fx-cursor: hand;" styleClass="player-action-button">
+                            <graphic>
+                                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../../../../icons/loopIcon.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
                     </children>
                 </HBox>
 
-                <HBox alignment="CENTER" spacing="10.0">
+                <Slider fx:id="songProgress" style="-fx-cursor: hand;" AnchorPane.leftAnchor="144.0" AnchorPane.rightAnchor="144.0" AnchorPane.topAnchor="60.0" />
+                <Label fx:id="counter" text="0:00" AnchorPane.leftAnchor="144.0" AnchorPane.topAnchor="75.0" />
+                <Label fx:id="duration" text="3:00" AnchorPane.rightAnchor="144.0" AnchorPane.topAnchor="75.0" />
+
+                <HBox alignment="CENTER" spacing="20.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                     <children>
-                        <Label fx:id="counter" alignment="CENTER_RIGHT" minWidth="35.0" text="0:00">
-                            <font><Font size="11.0" /></font>
-                        </Label>
-                        <Slider fx:id="songProgress" prefWidth="450.0" style="-fx-cursor: hand;" />
-                        <Label fx:id="duration" alignment="CENTER_LEFT" minWidth="35.0" text="0:00">
-                            <font><Font size="11.0" /></font>
-                        </Label>
+                        <Button fx:id="skipToPreviousButton" mnemonicParsing="false" onAction="#handlePrevious" style="-fx-background-color: transparent; -fx-cursor: hand;" styleClass="player-action-button">
+                            <graphic>
+                                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../../../../icons/skipPreviousButton.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+
+                        <Button fx:id="executeButton" mnemonicParsing="false" onAction="#handleExecute" style="-fx-background-color: transparent; -fx-cursor: hand;" styleClass="player-action-button">
+                            <graphic>
+                                <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../../../../icons/pauseButton.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+
+                        <Button fx:id="skipToNextButton" mnemonicParsing="false" onAction="#handleNext" style="-fx-background-color: transparent; -fx-cursor: hand;" styleClass="player-action-button">
+                            <graphic>
+                                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../../../../icons/skipNextButton.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
                     </children>
                 </HBox>
-            </children>
-        </VBox>
-    </center>
 
-
-    <right>
-        <HBox alignment="CENTER_RIGHT" prefWidth="100.0" BorderPane.alignment="CENTER">
-            <children>
-                <Button fx:id="closeButton" mnemonicParsing="false" onAction="#handleClose" prefHeight="26.0" prefWidth="26.0" style="-fx-background-color: #ff4c4c; -fx-text-fill: white; -fx-background-radius: 13; -fx-cursor: hand;" text="X" styleClass="player-action-button">
-                    <font><Font name="System Bold" size="11.0" /></font>
+                <Button fx:id="closeButton" mnemonicParsing="false" onAction="#handleClose" prefHeight="25.0" prefWidth="25.0" style="-fx-background-color: #ff4c4c; -fx-text-fill: white; -fx-background-radius: 15; -fx-cursor: hand;" text="X" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0" styleClass="player-action-button">
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
                 </Button>
+
             </children>
-        </HBox>
-    </right>
-</BorderPane>
+        </AnchorPane>
+    </children>
+</AnchorPane>

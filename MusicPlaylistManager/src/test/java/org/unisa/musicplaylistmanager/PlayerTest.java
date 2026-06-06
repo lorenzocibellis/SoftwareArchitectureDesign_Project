@@ -68,19 +68,23 @@ class PlayerTest {
     @Test
     @DisplayName("Constructor: accetta defaultState null senza eccezioni")
     void testConstructorNullState() {
+        // Poiché il controllo sulle eccezioni gestisce solo playlist e track,
+        // questo test rimane orientato a verificare la tolleranza verso lo stato nullo.
         assertDoesNotThrow(() -> new Player(null, playlist, track));
     }
 
     @Test
-    @DisplayName("Constructor: accetta playlist null senza eccezioni")
+    @DisplayName("Constructor: lancia eccezione se la playlist è null")
     void testConstructorNullPlaylist() {
-        assertDoesNotThrow(() -> new Player(new StubState(), null, track));
+        // Cambiato da assertDoesNotThrow a assertThrows per verificare il rispetto del contratto
+        assertThrows(IllegalArgumentException.class, () -> new Player(new StubState(), null, track));
     }
 
     @Test
-    @DisplayName("Constructor: accetta currentTrack null senza eccezioni")
+    @DisplayName("Constructor: lancia eccezione se la currentTrack è null")
     void testConstructorNullTrack() {
-        assertDoesNotThrow(() -> new Player(new StubState(), playlist, null));
+        // Cambiato da assertDoesNotThrow a assertThrows per verificare il rispetto del contratto
+        assertThrows(IllegalArgumentException.class, () -> new Player(new StubState(), playlist, null));
     }
 
     // -----------------------------------------------------------------------
@@ -166,14 +170,6 @@ class PlayerTest {
     @DisplayName("startPlayback: non lancia eccezioni con currentTrack valida")
     void testStartPlaybackNoException() {
         assertDoesNotThrow(() -> player.startPlayback());
-    }
-
-    @Test
-    @DisplayName("startPlayback: non lancia eccezioni con currentTrack null")
-    void testStartPlaybackNullTrack() {
-        Player p = new Player(new StubState(), playlist, null);
-        assertDoesNotThrow(() -> p.startPlayback());
-        p.terminate();
     }
 
     @Test
