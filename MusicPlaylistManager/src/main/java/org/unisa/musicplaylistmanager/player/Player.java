@@ -65,10 +65,8 @@ public class Player {
         this.trackCollection = trackCollection; 
         this.elapsedSeconds = 0;
         
-        // CORREZIONE: Inizializza l'iteratore passando la collezione base
+        // Inizializza l'iteratore passando la collezione base
         this.trackIterator = new Iterator(this.trackCollection);
-        
-        // Ora trackIterator non è più null
         this.trackIterator.moveToTrack(currentTrack);
     }
 

@@ -45,6 +45,9 @@ public class PlaylistAutomaticController {
 
     @FXML
     private TextField genreInput;
+    
+    @FXML
+    private TextField authorInput;
 
     @FXML
     private TextField yearInput;
@@ -134,6 +137,7 @@ public class PlaylistAutomaticController {
         boolean filterExplicit = explicitRadio.isSelected();
         boolean filterNewRelease = newReleaseRadio.isSelected();
         String genreFilter = genreInput.getText().trim();
+        String authorFilter = (authorInput != null) ? authorInput.getText().trim() : "";
         String yearFilter = yearInput.getText().trim();
 
         Year yearValue = null;
@@ -164,6 +168,11 @@ public class PlaylistAutomaticController {
                 matches = false;
             }
 
+            // Filtro autore (case-insensitive)
+            if (!authorFilter.isEmpty() && !track.getAuthor().equalsIgnoreCase(authorFilter)) {
+                matches = false;
+            }
+
             // Filtro anno
             if (yearValue != null && !track.getYear().equals(yearValue)) {
                 matches = false;
@@ -187,6 +196,7 @@ public class PlaylistAutomaticController {
                 || explicitRadio.isSelected()
                 || newReleaseRadio.isSelected()
                 || !genreInput.getText().trim().isEmpty()
+                || !authorInput.getText().trim().isEmpty()
                 || !yearInput.getText().trim().isEmpty();
     }
 
@@ -213,7 +223,7 @@ public class PlaylistAutomaticController {
             showAlert(Alert.AlertType.WARNING,
                     "Nessun filtro selezionato",
                     "Seleziona almeno un filtro.",
-                    "Devi selezionare almeno un tag, oppure inserire un genere o un anno.");
+                    "Devi selezionare almeno un tag, oppure inserire un genere, un autore o un anno.");
             return false;
         }
 
