@@ -12,9 +12,9 @@
 <HBox alignment="CENTER_LEFT" prefWidth="580.0" spacing="15.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     <children>
 
-        <VBox alignment="CENTER" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #EAEAEA; -fx-background-radius: 5;">
+        <VBox fx:id="iconContainer" alignment="CENTER" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #EAEAEA; -fx-background-radius: 5;">
             <children>
-                <Label text="♫" textFill="#888888">
+                <Label fx:id="iconLabel" text="♫" textFill="#888888">
                     <font>
                         <Font size="20.0" />
                     </font>

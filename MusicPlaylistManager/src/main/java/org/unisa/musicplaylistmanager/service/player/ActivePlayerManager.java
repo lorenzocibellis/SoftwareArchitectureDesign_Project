@@ -10,6 +10,13 @@ import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
 import org.unisa.musicplaylistmanager.track.Track;
 
 import java.io.IOException;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * Singleton responsabile esclusivamente del ciclo di vita del mini-player.
@@ -30,11 +37,14 @@ public class ActivePlayerManager implements PlayerManager {
 
     private static final ActivePlayerManager instance = new ActivePlayerManager();
 
-    private javafx.scene.layout.AnchorPane miniPlayerBar;
+    private AnchorPane miniPlayerBar;
     private PlayerController playerController;
     
     // Proprietà osservabile che indica se il mini-player è attualmente attivo/visibile
-    private final javafx.beans.property.BooleanProperty playerActive = new javafx.beans.property.SimpleBooleanProperty(false);
+    private final BooleanProperty playerActive = new SimpleBooleanProperty(false);
+
+    // Proprietà osservabile che contiene la traccia attualmente in riproduzione nel player
+    private final ObjectProperty<Track> currentTrack = new SimpleObjectProperty<>(null);
 
     private final String resourceRoot = "/org/unisa/musicplaylistmanager/player/";
 
@@ -78,6 +88,7 @@ public class ActivePlayerManager implements PlayerManager {
             // Aggiunge il mini-player sopra il contenuto corrente
             NavigationManager.getInstance().getRootLayout().getChildren().add(miniPlayerBar);
             playerActive.set(true);
+            currentTrack.set(track);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -99,6 +110,7 @@ public class ActivePlayerManager implements PlayerManager {
             miniPlayerBar = null;
         }
         playerActive.set(false);
+        currentTrack.set(null);
     }
 
     /**
@@ -147,7 +159,28 @@ public TrackCollection getCurrentPlaylist() {
      * 
      * @return la proprietà osservabile dello stato del player
      */
-    public javafx.beans.property.ReadOnlyBooleanProperty playerActiveProperty() {
+    public ReadOnlyBooleanProperty playerActiveProperty() {
         return playerActive;
+    }
+
+    /**
+     * Imposta la traccia corrente attualmente in riproduzione nel player.
+     * Questo metodo viene chiamato dal PlayerController ad ogni cambio traccia o avvio.
+     * 
+     * @param track la traccia attualmente attiva
+     */
+    public void setCurrentTrack(Track track) {
+        this.currentTrack.set(track);
+    }
+
+    /**
+     * Ritorna la proprietà osservabile in sola lettura contenente la traccia attualmente riprodotta.
+     * I controller della lista si collegano a questa proprietà per aggiornare la grafica della canzone e mostrarla
+     * attualmente in riproduzione
+     * 
+     * @return la proprietà della traccia corrente
+     */
+    public ReadOnlyObjectProperty<Track> currentTrackProperty() {
+        return currentTrack;
     }
 }

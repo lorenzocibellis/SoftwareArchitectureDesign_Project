@@ -6,9 +6,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.function.Consumer;
+import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 
 /**
  * Controller per una singola cella (riga) nella ListView delle tracce.
@@ -32,6 +34,10 @@ public class TrackCellController extends ListCell<Track> {
     private Label explicitTag;
     @FXML
     private Label newReleaseTag;
+    @FXML
+    private VBox iconContainer;
+    @FXML
+    private Label iconLabel;
 
     // definizione attributi
 
@@ -102,6 +108,27 @@ public class TrackCellController extends ListCell<Track> {
                     onInfoClicked.accept(track);
                 }
             });
+
+            // Gestione dell'aspetto grafico in base al fatto che la traccia sia in riproduzione o meno.
+
+            // Recupera la traccia attualmente attiva da ActivePlayerManager.
+            Track playingTrack = ActivePlayerManager.getInstance().currentTrackProperty().get();
+            boolean isPlaying = (playingTrack != null && playingTrack.equals(track));
+
+            if (isPlaying) {
+                // Se la canzone è attualmente in riproduzione,
+                // applica uno stile CSS inline per evidenziare il titolo in blu.
+                titleLabel.setStyle("-fx-text-fill: #007AFF;"); 
+                iconContainer.setStyle("-fx-background-color: #D5E5F5; -fx-background-radius: 5;");
+                iconLabel.setText("ılılı");
+                iconLabel.setStyle("-fx-text-fill: #007AFF;");
+            } else {
+                // Se la canzone NON è in riproduzione, ripristina lo stile predefinito:
+                titleLabel.setStyle("-fx-text-fill: #1D1D1F;");
+                iconContainer.setStyle("-fx-background-color: #EAEAEA; -fx-background-radius: 5;");
+                iconLabel.setText("♫");
+                iconLabel.setStyle("-fx-text-fill: #888888;"); 
+            }
 
             // Imposta il layout FXML caricato come grafica della cella
             setText(null);

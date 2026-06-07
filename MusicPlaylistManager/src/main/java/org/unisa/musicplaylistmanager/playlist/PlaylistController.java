@@ -19,6 +19,8 @@ import org.unisa.musicplaylistmanager.track.Track;
 import org.unisa.musicplaylistmanager.track.TrackCellController;
 import org.unisa.musicplaylistmanager.track.TrackController;
 import org.unisa.musicplaylistmanager.track.TrackList;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.WeakChangeListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,6 +60,10 @@ public class PlaylistController {
     private ObservableList<Track> playlistObservable;
     private Playlist playlist;
 
+
+    private ChangeListener<Boolean> playerActiveListener;
+    private ChangeListener<Track> currentTrackListener;
+
     private CommandInvoker commandInvoker;
 
     //METODI
@@ -74,11 +80,19 @@ public class PlaylistController {
 
         commandInvoker = CommandInvoker.getCommandInvokerPointer();
         
-        // Ascolta le variazioni dello stato del player (apertura/chiusura) per aggiornare dinamicamente il padding inferiore della ListView
-        ActivePlayerManager.getInstance().playerActiveProperty().addListener((obs, oldVal, newVal) -> {
-            updateBottomPadding();
-        });
+        // Ascolta le variazioni dello stato del player (apertura/chiusura) per aggiornare dinamicamente il padding inferiore della ListView.
+        // Utilizziamo un WeakChangeListener associato a un riferimento forte di istanza per evitare memory leak del controller.
+        playerActiveListener = (obs, oldVal, newVal) -> updateBottomPadding();
+        ActivePlayerManager.getInstance().playerActiveProperty().addListener(
+                new WeakChangeListener<>(playerActiveListener)
+        );
         updateBottomPadding();
+
+        // Aggiunge un listener sulla proprietà della traccia corrente dell'ActivePlayerManager.
+        currentTrackListener = (obs, oldTrack, newTrack) -> listView.refresh();
+        ActivePlayerManager.getInstance().currentTrackProperty().addListener(
+                new WeakChangeListener<>(currentTrackListener)
+        );
     }
 
     /**
@@ -271,12 +285,7 @@ public class PlaylistController {
      * Applica un padding di 130px se il player è attivo, altrimenti lo azzera.
      */
     private void updateBottomPadding() {
-
-    double padding =
-            ActivePlayerManager.getInstance().hasActivePlayer()
-                    ? 130.0
-                    : 0.0;
-
-    listView.setPadding(new Insets(0, 0, padding, 0));
-}
+        double padding = ActivePlayerManager.getInstance().getPlayerHeight();
+        listView.setPadding(new Insets(0, 0, padding, 0));
+    }
 }

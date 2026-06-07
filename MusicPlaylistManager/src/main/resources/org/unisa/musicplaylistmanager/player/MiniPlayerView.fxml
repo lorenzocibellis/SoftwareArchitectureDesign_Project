@@ -104,7 +104,7 @@
                             </graphic>
                         </Button>
 
-                        <Button fx:id="executeButton" mnemonicParsing="false" onAction="#handleExecute" style="-fx-background-color: transparent; -fx-cursor: hand;" styleClass="player-action-button">
+                        <Button fx:id="executeButton" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#handleExecute" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: transparent; -fx-cursor: hand;" styleClass="player-action-button">
                             <graphic>
                                 <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                                     <image>

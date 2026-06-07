@@ -12,6 +12,7 @@ import javafx.scene.text.Text;
 import org.unisa.musicplaylistmanager.playlist.TrackCollection; 
 import org.unisa.musicplaylistmanager.state.Play;
 import org.unisa.musicplaylistmanager.track.Track;
+import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -81,7 +82,16 @@ public class PlayerController implements Initializable {
         player = new Player(new Play(), trackCollection, initialTrack);
 
         player.setOnTrackChanged(() -> {
-            Platform.runLater(() -> updateTrackUI(player.getCurrentTrack()));
+
+            Platform.runLater(() -> {
+                // Aggiorna l'interfaccia grafica del mini-player
+                updateTrackUI(player.getCurrentTrack());
+                
+                // Aggiorna la proprietà globale in ActivePlayerManager con la nuova traccia.
+                // Questo scatena il listener sulle ListView di traccia e playlist, per evidenziare la traccia
+                // in ascolto
+                ActivePlayerManager.getInstance().setCurrentTrack(player.getCurrentTrack());
+            });
         });
 
         player.setOnTimeTick(seconds -> {
@@ -130,7 +140,7 @@ public class PlayerController implements Initializable {
         if (player != null) {
             player.terminate();
         }
-        org.unisa.musicplaylistmanager.service.player.ActivePlayerManager.getInstance().closePlayer();
+        ActivePlayerManager.getInstance().closePlayer();
     }
 
     private void updateTrackUI(Track track) {
