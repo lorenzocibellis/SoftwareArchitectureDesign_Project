@@ -140,11 +140,12 @@ public class ActivePlayerManager implements PlayerManager {
     }
 
     /**
-     * Ritorna il controller del player corrente.
-     * @return il PlayerController attivo, o null se chiuso
+     * Attiva o disattiva la modalità casuale (shuffle) sul player corrente.
      */
-    public PlayerController getPlayerController() {
-        return playerController;
+    public void toggleShuffle() {
+        if (playerController != null) {
+            playerController.handleShuffle();
+        }
     }
 
     /**

@@ -222,15 +222,10 @@ public class TrackListController {
             // Memorizziamo lo stato del player PRIMA di distruggere i dati
             Track playingTrack = ActivePlayerManager.getInstance().getCurrentTrack();
 
-            //  Pattern Observer: notifica tutte le playlist registrate per rimuovere le tracce
-            for (Track t : toRemove) {
-                trackList.notifyObservers(t);
-            }
-
-            // Rimuoviamo gli elementi dalla lista osservabile e dalla struttura dati interna
+            // Aggiorniamo l'interfaccia visiva
             trackListObservable.removeAll(toRemove);
-            trackList.getTracks().removeAll(toRemove); // Rimuove dalla lista interna
-            trackList.removeAllTracks(toRemove);       // Notifica eventuali altri componenti/observer
+            // La TrackList si occuperà in automatico di rimuovere i dati e avvisare gli observer
+            trackList.removeAllTracks(toRemove);
 
             // 4. Se stavamo eliminando la traccia in riproduzione, chiudiamo il player
             if (playingTrack != null && toRemove.contains(playingTrack)) {

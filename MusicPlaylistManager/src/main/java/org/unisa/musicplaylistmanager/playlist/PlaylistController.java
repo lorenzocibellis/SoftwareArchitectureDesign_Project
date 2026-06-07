@@ -266,7 +266,7 @@ public class PlaylistController {
             TrackCollection playingCollection = ActivePlayerManager.getInstance().getCurrentPlaylist();
 
             playlistObservable.removeAll(toRemove);
-            playlist.getTracks().removeAll(toRemove);
+            playlist.removeAllTracks(toRemove);
 
             if (playingTrack != null && toRemove.contains(playingTrack) && playingCollection instanceof Playlist && playlist.equals(playingCollection)) {
                 ActivePlayerManager.getInstance().closePlayer();
@@ -315,10 +315,7 @@ public class PlaylistController {
         int randomIndex = (int) (Math.random() * playlist.getTracks().size());
         openPlayerFor(playlist.getTracks().get(randomIndex));
         
-        // Attiva lo shuffle sul player appena aperto
-        PlayerController pc = ActivePlayerManager.getInstance().getPlayerController();
-        if (pc != null) {
-            pc.handleShuffle();
-        }
+        // Attiva lo shuffle sul player appena aperto tramite il Manager
+        ActivePlayerManager.getInstance().toggleShuffle();
     }
 }
