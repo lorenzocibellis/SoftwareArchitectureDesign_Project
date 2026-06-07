@@ -265,7 +265,12 @@ public class PlaylistController {
         // Naviga usando NavigationManager
         NavigationManager.getInstance().navigateTo(playlistParent);
     }
-        private void updateBottomPadding() {
+    /**
+     * Aggiorna il padding inferiore della ListView per evitare che gli ultimi brani 
+     * in lista vengano coperti visivamente dalla barra sovrapposta del mini-player.
+     * Applica un padding di 130px se il player è attivo, altrimenti lo azzera.
+     */
+    private void updateBottomPadding() {
 
     double padding =
             ActivePlayerManager.getInstance().hasActivePlayer()

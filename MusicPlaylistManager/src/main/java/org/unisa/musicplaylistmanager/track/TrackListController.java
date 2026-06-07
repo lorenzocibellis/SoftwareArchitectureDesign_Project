@@ -80,7 +80,7 @@ public class TrackListController {
         // Ottieni l'istanza (Singleton) in modo sicuro
         trackList = TrackList.getTrackListPointer();
 
-        // Carichiamo le tracce dal CSV o aggiungiamo esempi se la lista è vuota
+        // Carichiamo le tracce dal CSV se la lista è vuota
         if (trackList.getTracks().isEmpty()) {
             loadMockTracksFromCSV();
         }
@@ -339,6 +339,13 @@ public class TrackListController {
             e.printStackTrace();
         }
     }
+
+
+    /**
+     * Aggiorna il padding inferiore della ListView per evitare che gli ultimi brani 
+     * in lista vengano coperti visivamente dalla barra sovrapposta del mini-player.
+     * Applica un padding di 130px se il player è attivo, altrimenti lo azzera.
+     */
     private void updateBottomPadding() {
 
     double padding =
