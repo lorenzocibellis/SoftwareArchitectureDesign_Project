@@ -111,6 +111,12 @@ public class TrackListController {
                 openPlayerFor(selected);
             }
         });
+
+        // Ascolta le variazioni dello stato del player (apertura/chiusura) per aggiornare dinamicamente il padding inferiore della ListView
+        ActivePlayerManager.getInstance().playerActiveProperty().addListener((obs, oldVal, newVal) -> {
+            updateBottomPadding();
+        });
+        updateBottomPadding();
     }
 
     /**

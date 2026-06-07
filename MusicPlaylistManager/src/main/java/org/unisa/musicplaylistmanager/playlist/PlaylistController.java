@@ -73,6 +73,11 @@ public class PlaylistController {
         deleteButton.disableProperty().bind(Bindings.isEmpty(listView.getSelectionModel().getSelectedItems()));
 
         commandInvoker = CommandInvoker.getCommandInvokerPointer();
+        
+        // Ascolta le variazioni dello stato del player (apertura/chiusura) per aggiornare dinamicamente il padding inferiore della ListView
+        ActivePlayerManager.getInstance().playerActiveProperty().addListener((obs, oldVal, newVal) -> {
+            updateBottomPadding();
+        });
         updateBottomPadding();
     }
 

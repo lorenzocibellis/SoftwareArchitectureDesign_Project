@@ -32,6 +32,9 @@ public class ActivePlayerManager implements PlayerManager {
 
     private javafx.scene.layout.AnchorPane miniPlayerBar;
     private PlayerController playerController;
+    
+    // Proprietà osservabile che indica se il mini-player è attualmente attivo/visibile
+    private final javafx.beans.property.BooleanProperty playerActive = new javafx.beans.property.SimpleBooleanProperty(false);
 
     private final String resourceRoot = "/org/unisa/musicplaylistmanager/player/";
 
@@ -74,6 +77,7 @@ public class ActivePlayerManager implements PlayerManager {
             miniPlayerBar = newBar;
             // Aggiunge il mini-player sopra il contenuto corrente
             NavigationManager.getInstance().getRootLayout().getChildren().add(miniPlayerBar);
+            playerActive.set(true);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -94,6 +98,7 @@ public class ActivePlayerManager implements PlayerManager {
             NavigationManager.getInstance().getRootLayout().getChildren().remove(miniPlayerBar);
             miniPlayerBar = null;
         }
+        playerActive.set(false);
     }
 
     /**
@@ -135,4 +140,14 @@ public TrackCollection getCurrentPlaylist() {
     public double getPlayerHeight() {
     return hasActivePlayer() ? 130.0 : 0.0;
 }
+
+    /**
+     * Ritorna la proprietà di sola lettura per osservare lo stato di attivazione/visibilità del player.
+     * I controller delle liste usano questa proprietà per aggiornare dinamicamente il padding inferiore delle ListView.
+     * 
+     * @return la proprietà osservabile dello stato del player
+     */
+    public javafx.beans.property.ReadOnlyBooleanProperty playerActiveProperty() {
+        return playerActive;
+    }
 }
