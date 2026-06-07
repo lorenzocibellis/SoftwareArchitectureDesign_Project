@@ -47,7 +47,7 @@ public class PlaylistList {
             playlistList.add(p);
             return;
         }
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("Esiste già una playlist con questo nome!");
     }
 
     /**
