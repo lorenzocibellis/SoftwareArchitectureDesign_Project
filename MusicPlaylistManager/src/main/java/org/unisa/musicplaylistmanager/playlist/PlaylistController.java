@@ -18,6 +18,7 @@ import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
 import org.unisa.musicplaylistmanager.track.Track;
 import org.unisa.musicplaylistmanager.track.TrackCellController;
 import org.unisa.musicplaylistmanager.track.TrackController;
+import org.unisa.musicplaylistmanager.player.PlayerController;
 import org.unisa.musicplaylistmanager.track.TrackList;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.WeakChangeListener;
@@ -40,6 +41,12 @@ public class PlaylistController {
 
     @FXML
     private Button backButton;
+
+    @FXML
+    private Button playAllButton;
+
+    @FXML
+    private Button shuffleAllButton;
 
     @FXML
     private Button button;
@@ -253,14 +260,15 @@ public class PlaylistController {
         if (result.isPresent() && result.get() == ButtonType.OK) {
             ArrayList<Track> toRemove = new ArrayList<>(selectedItems);
             
+            // Memorizza lo stato del player PRIMA di rimuovere i dati, 
+
+            Track playingTrack = ActivePlayerManager.getInstance().getCurrentTrack();
+            TrackCollection playingCollection = ActivePlayerManager.getInstance().getCurrentPlaylist();
+
             playlistObservable.removeAll(toRemove);
             playlist.getTracks().removeAll(toRemove);
 
-            // Se stiamo rimuovendo la traccia in riproduzione E il player è stato avviato da QUESTA playlist, chiudi il player
-            Track playingTrack = ActivePlayerManager.getInstance().getCurrentTrack();
-            TrackCollection playingCollection = ActivePlayerManager.getInstance().getCurrentPlaylist();
-            
-            if (playingTrack != null && toRemove.contains(playingTrack) && playingCollection instanceof Playlist && playlist == (Playlist) playingCollection) {
+            if (playingTrack != null && toRemove.contains(playingTrack) && playingCollection instanceof Playlist && playlist.equals(playingCollection)) {
                 ActivePlayerManager.getInstance().closePlayer();
             }
         }
@@ -287,5 +295,30 @@ public class PlaylistController {
     private void updateBottomPadding() {
         double padding = ActivePlayerManager.getInstance().getPlayerHeight();
         listView.setPadding(new Insets(0, 0, padding, 0));
+    }
+
+    @FXML
+    public void handlePlayAll() {
+        if (playlist == null || playlist.getTracks().isEmpty()) {
+            return;
+        }
+        // Avvia la prima traccia
+        openPlayerFor(playlist.getTracks().get(0));
+    }
+
+    @FXML
+    public void handleShuffleAll() {
+        if (playlist == null || playlist.getTracks().isEmpty()) {
+            return;
+        }
+        // Scegliamo una traccia casuale per iniziare
+        int randomIndex = (int) (Math.random() * playlist.getTracks().size());
+        openPlayerFor(playlist.getTracks().get(randomIndex));
+        
+        // Attiva lo shuffle sul player appena aperto
+        PlayerController pc = ActivePlayerManager.getInstance().getPlayerController();
+        if (pc != null) {
+            pc.handleShuffle();
+        }
     }
 }

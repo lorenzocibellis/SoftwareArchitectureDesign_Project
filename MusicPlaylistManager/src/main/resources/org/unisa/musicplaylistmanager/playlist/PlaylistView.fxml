@@ -26,6 +26,19 @@
                     </font>
                 </Label>
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER" spacing="15.0">
+                <HBox.margin>
+                    <Insets right="30.0" />
+                </HBox.margin>
+                <children>
+                    <Button fx:id="playAllButton" mnemonicParsing="false" onAction="#handlePlayAll" prefHeight="35.0" prefWidth="40.0" styleClass="playlist-play-button" text="▶" />
+                    <Button fx:id="shuffleAllButton" mnemonicParsing="false" onAction="#handleShuffleAll" prefHeight="35.0" prefWidth="40.0" styleClass="playlist-shuffle-button" text="⤮">
+                        <padding>
+                            <Insets bottom="4.0" />
+                        </padding>
+                    </Button>
+                </children>
+            </HBox>
             <Button fx:id="backButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#goBack" prefHeight="35.0" prefWidth="80.0" styleClass="close-button" text="←  Back" />
             </children>
             <padding>

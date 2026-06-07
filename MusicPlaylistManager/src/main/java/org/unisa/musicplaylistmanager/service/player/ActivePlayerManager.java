@@ -127,17 +127,25 @@ public class ActivePlayerManager implements PlayerManager {
     }
 
     /**
- * Restituisce la collezione (Playlist o TrackList) attualmente in uso nel player.
- * * @return la collezione corrente, o {@code null} se il player è chiuso
-     * @return 
- */
+    * Restituisce la collezione (Playlist o TrackList) attualmente in uso nel player.
+    *
+     * @return la collezione corrente, o {@code null} se il player è chiuso
+    */
     @Override
-public TrackCollection getCurrentPlaylist() {
-    if (playerController != null && playerController.getPlayer() != null) {
-        return playerController.getPlayer().getCurrentPlaylist();
+    public TrackCollection getCurrentPlaylist() {
+        if (playerController != null && playerController.getPlayer() != null) {
+            return playerController.getPlayer().getCurrentPlaylist();
+        }
+        return null;
     }
-    return null;
-}
+
+    /**
+     * Ritorna il controller del player corrente.
+     * @return il PlayerController attivo, o null se chiuso
+     */
+    public PlayerController getPlayerController() {
+        return playerController;
+    }
 
     /**
      * Indica se il mini-player è attualmente aperto e visibile sullo schermo.

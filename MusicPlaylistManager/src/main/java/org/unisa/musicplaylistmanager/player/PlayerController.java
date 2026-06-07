@@ -43,6 +43,8 @@ public class PlayerController implements Initializable {
     @FXML
     private Text authorName;
     @FXML
+    private Text contextLabel;
+    @FXML
     private Button closeButton;
     @FXML 
     private Button shuffleButton;
@@ -75,6 +77,9 @@ public class PlayerController implements Initializable {
      * @param trackCollection la playlist o tracklist contenente la traccia
      */
     public void init(Track initialTrack, TrackCollection trackCollection) {
+        if (contextLabel != null && trackCollection != null) {
+            contextLabel.setText("Riproducendo da: " + trackCollection.getName());
+        }
         updateTrackUI(initialTrack);
         if (player != null) {
             player.terminate();
@@ -123,9 +128,8 @@ public class PlayerController implements Initializable {
 
     @FXML
     public void handleNext() {
-        if (player != null) {
-            player.nextTrack();
-        }
+        if (player == null) return;
+        player.nextTrack();
     }
 
     @FXML

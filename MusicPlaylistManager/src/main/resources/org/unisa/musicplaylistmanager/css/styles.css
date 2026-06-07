@@ -59,8 +59,51 @@
     -fx-scale-y: 1.05;
 }
 
+/* Stile per il bottone Play nella playlist */
+.playlist-play-button {
+    -fx-background-color: #007AFF;
+    -fx-text-fill: white;
+    -fx-background-radius: 50;
+    -fx-border-radius: 50;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-max-width: 40px;
+    -fx-max-height: 40px;
+    -fx-cursor: hand;
+    -fx-padding: 0;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+}
 
+.playlist-play-button:hover {
+    -fx-background-color: #0056b3;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
 
+/* Stile per il bottone Shuffle nella playlist */
+.playlist-shuffle-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #007AFF;
+    -fx-border-color: #007AFF;
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-max-width: 40px;
+    -fx-max-height: 40px;
+    -fx-cursor: hand;
+    -fx-padding: 0;
+    -fx-font-weight: bold;
+    -fx-font-size: 28px;
+    -fx-border-width: 2;
+}
+
+.playlist-shuffle-button:hover {
+    -fx-background-color: #E8F2FF;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
 
 /* Stile per il bottone "info" nella cella */
 .info-button {
