@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  *
- * Classe che implementa il comando di rimozione di una playlist, e le eventuali operazioni per permettere
+ * Classe che implementa il comando di rimozione di una o più playlist, e le eventuali operazioni per permettere
  * l'annullamento di tale operazione.
  *
  */
@@ -21,8 +21,8 @@ public class DeletePlaylistCommand extends BasePlaylistCommands{
      *
      * Costruttore
      *
-     * @param ps Lista di Playlist da rimuovere dalla lista di Playlist.
-     * @param pl Lista di playlist da cui elimianare le playlist.
+     * @param ps Insieme di Playlist da rimuovere dalla lista di Playlist.
+     * @param pl Lista di playlist da cui eliminanare le playlist.
      * @param o Lista osservabile di playlist da aggiornare.
      *
      */
@@ -74,10 +74,10 @@ public class DeletePlaylistCommand extends BasePlaylistCommands{
 
     /**
      *
-     * Metodo che permette l'eliminazione di una lista di playlist dalla lista delle playlist, aggiornando al contempo la lista
+     * Metodo che permette l'eliminazione di u'insieme di playlist dalla lista delle playlist, aggiornando al contempo la lista
      * visuale di playlist.
      *
-     * @throws IllegalArgumentException nel caso in cui la lista di playlist eliminate non esista.
+     * @throws IllegalArgumentException nel caso in cui la lista di playlist da eliminare non esista.
      *
      */
     @Override

@@ -219,12 +219,13 @@ public class PlaylistListController {
     /**
      * Annulla l'ultima operazione effettuata.
      *
-     * @param event l'evento generato dal click
+     * @param event l'evento generato dal click.
      */
     @FXML
     public void undo(ActionEvent event){
-        CommandInvoker.getCommandInvokerPointer().undoCommand();
+        commandInvoker.undoCommand();
         playlistListObservable.setAll(playlistList.getPlaylists());
+        // ricarico gli elementi visuali
         listView.refresh();
     }
 

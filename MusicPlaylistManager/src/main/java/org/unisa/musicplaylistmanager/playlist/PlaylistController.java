@@ -329,16 +329,19 @@ public class PlaylistController {
 
     /**
      * Annulla l'ultima operazione effettuata.
+     * Se mi trovo all'interno di un playlist la cui creazione è annullata, esco dalla vista.
      *
-     * @param event l'evento generato dal click
+     * @param event l'evento generato dal click.
      */
     @FXML
     public void undo(ActionEvent event) throws IOException {
-        CommandInvoker.getCommandInvokerPointer().undoCommand();
+        commandInvoker.undoCommand();
         playlistObservable.setAll(playlist.getTracks());
         listView.refresh();
 
+        // controllo che esista il validatore e che coincida con la playlist attuale
         if(playlistValidator != null && !playlistValidator.getAsBoolean()){
+            // se entrambe le condizioni sono vere, esco dalla vista della playlist
             goBack(event);
         }
     }

@@ -158,12 +158,12 @@ public class TrackListController {
     /**
      * Naviga annulla l'ultima operazione effettuata.
      *
-     * @param event l'evento generato dal click
+     * @param event l'evento generato dal click.
      *
      */
     @FXML
     void undo(ActionEvent event){
-        CommandInvoker.getCommandInvokerPointer().undoCommand();
+        commandInvoker.undoCommand();
         trackListObservable.setAll(trackList.getTracks());
         listView.refresh();
     }
