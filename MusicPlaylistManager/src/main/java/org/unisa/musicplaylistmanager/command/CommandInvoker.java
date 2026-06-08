@@ -22,7 +22,7 @@ public class CommandInvoker {
     private ArrayDeque<AbstractCommand> commands;
     //Attributo final che gestisce la dimensione massima della lista
     private final int SIZE_LIMIT = 10;
-    //Attributo che permette
+    //Attributo che permette di implementare il pattern Singleton e l'ottenimento dell'istanza del CommandInvoker
     private static CommandInvoker pnt = null;
 
     //METODI
@@ -45,13 +45,15 @@ public class CommandInvoker {
      */
     public void setCommand(AbstractCommand command){
 
-        if (commands.size() < SIZE_LIMIT){
-            command.execute();
-            commands.addLast(command);
-            return;
+        // controllo che la dimensione della coda di comandi non sia piena
+        if (commands.size() >= SIZE_LIMIT){
+            // se la coda è piena:
+            // rimuovo il comando più "vecchio" della coda
+            commands.removeFirst();
         }
-        commands.removeFirst();
+        // eseguo il comando da inserire
         command.execute();
+        // e lo aggiungo alla fine della coda
         commands.addLast(command);
     }
 
@@ -64,11 +66,15 @@ public class CommandInvoker {
      *
      */
     public void undoCommand(){
-        if (!commands.isEmpty()){
-            commands.removeLast().undo();
-            return;
+
+        // controllo se la coda di comandi è piena
+        if (commands.isEmpty()){
+            // se lo è lancio un'eccezione
+            throw new IndexOutOfBoundsException();
         }
-        throw new ArrayIndexOutOfBoundsException();
+        //altrimenti:
+        //rimuovo il comando più "nuovo" e ne annullo gli effetti
+        commands.removeLast().undo();
     }
 
     /**
@@ -79,10 +85,19 @@ public class CommandInvoker {
      *
      */
     public static CommandInvoker getCommandInvokerPointer(){
+        // se è già stata istanziata un'istanza di questa classe, ne ritorno il puntatore
         if (exists()) return pnt;
+        // altrimenti la istanzio e ne ritorno il puntatore
         return new CommandInvoker();
     }
 
+
+    /**
+     *
+     * Funzione utilitaria che permette di sapere se è già stata istanziata un'istanza dell'oggetto
+     *
+     * @return True se la classe è già stata istanziata, False altrimenti
+     */
     public static boolean exists(){
         return !(pnt == null);
     }

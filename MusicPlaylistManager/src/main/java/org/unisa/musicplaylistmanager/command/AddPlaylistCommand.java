@@ -32,40 +32,69 @@ public class AddPlaylistCommand extends BasePlaylistCommands{
 
     /**
      *
-     * metodo che permette l'annullamento delle operazioni di aggiunta di una playlist
+     * metodo che permette l'annullamento dell'operazione di aggiunta di una playlist
+     *
+     * @throws IllegalArgumentException nel caso la playlist di cui annullare l'aggiunta non esista
      *
      */
     @Override
     public void undo() {
+        // ottengo il riferimento alla lista di playlist
         ArrayList<Playlist> playlists = getPlaylists();
+        // controllo se il riferimento è null
         if(playlists == null)
+            // se lo è lancio un'eccezione
             throw new IllegalArgumentException();
+
+        // ottengo la playlist di cui annullare l'aggiunta
         Playlist playlist = playlists.get(0);
+        // controllo che il riferimento non sia null
         if (playlist == null)
+            // se lo è lancio un'eccezione
             throw new IllegalArgumentException();
 
         // Pattern Observer: detach observer della playlist prima di rimuoverla
         TrackList tl = TrackList.getTrackListPointer();
         tl.detach(playlist);
 
+
+        // ottengo il riferimento alla lista di playlist
         PlaylistList playlistList = getPlaylistList();
+        // se il riferimento alla lista di playlist non è null, rimuovo la playlist dalla lista
         if (playlistList != null)
             getPlaylistList().deletePlaylist(playlist);
 
         ObservableList<Playlist> obsList = getObservableList();
+        // se il riferimento alla lista osservabile non è null, rimuovo la playlist dalla lista
         if (obsList != null)
             getObservableList().remove(playlist);
     }
 
+
+    /**
+     *
+     * Metodo che permette l'aggiunta di una playlist aalla lista delle playlist, aggiornando al contempo la lista
+     * visuale di playlist.
+     *
+     * @throws IllegalArgumentException nel caso in cui la playlist da aggiungere non esista.
+     *
+     */
     @Override
     public void execute() {
 
-        // Controllo esistenza lista di playlist e playlist da aggiungere
+        // Controllo dell'esistenza della lista di playlist da aggiungere
         ArrayList<Playlist> playlists = getPlaylists();
+
+        // controllo che il riferimento non sia null
         if(playlists == null)
+            // se lo è lancio un'eccezione
             throw new IllegalArgumentException();
+
+        // ottengo la playlist da aggiungere
         Playlist playlist = playlists.get(0);
+        // controllo che il riferimento non sia null
         if (playlist == null)
+            // se lo è lancio un'eccezione
             throw new IllegalArgumentException();
 
 
@@ -73,11 +102,15 @@ public class AddPlaylistCommand extends BasePlaylistCommands{
         TrackList tl = TrackList.getTrackListPointer();
         tl.attach(playlist);
 
+        // ottengo il riferimento alla lista di playlist
         PlaylistList playlistList = getPlaylistList();
+        // se il riferimento alla lista di playlist non è null, aggiungo la playlist alla lista
         if (playlistList != null)
             getPlaylistList().addPlaylist(playlist);
 
+        // ottengo il riferimento alla lista osservabile
         ObservableList<Playlist> obsList = getObservableList();
+        // se il riferimento alla lista osservabile non è null, aggiungo la playlist alla lista osservabile
         if (obsList != null)
             getObservableList().add(playlist);
     }
