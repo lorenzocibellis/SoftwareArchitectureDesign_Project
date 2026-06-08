@@ -254,10 +254,9 @@ public class TrackController {
             // crea la traccia dai dati passati in input
             Track track = getTrack();
 
-            //aggiungi la traccia alla lista di tracce
+            //aggiungi la traccia alla lista di tracce usando pattern Command
             BaseTrackCommands command = new AddTrackCommand(track, trackList, observableList);
             CommandInvoker.getCommandInvokerPointer().setCommand(command);
-            //this.add(track);
 
             // chiudi il popUp
             goBack(actionEvent);
@@ -404,16 +403,6 @@ public class TrackController {
         alert.setHeaderText(header);
         alert.setContentText(content);
         alert.showAndWait();
-    }
-
-    /**
-     * Aggiunge una traccia alla libreria e alla sua rappresentazione osservabile.
-     * 
-     * @param t la traccia da aggiungere
-     */
-    private void add(Track t) {
-        trackList.addTrack(t);
-        observableList.add(t);
     }
 
     /**
