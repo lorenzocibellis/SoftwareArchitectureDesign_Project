@@ -12,6 +12,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.unisa.musicplaylistmanager.command.AddTrackCommand;
+import org.unisa.musicplaylistmanager.command.BaseTrackCommands;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;
 import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
@@ -50,6 +52,9 @@ public class PlaylistController {
 
     @FXML
     private Button button;
+
+    @FXML
+    private Button undoButton;
 
     @FXML
     private Button deleteButton;
@@ -217,11 +222,11 @@ public class PlaylistController {
             // aggiunge alla playlist e alla lista osservabile della playlist
 
             if (controller.isConfirmed()) {
-                List<Track> selected = controller.getSelectedTracks();
-                for (Track t : selected) {
-                    playlist.addTrack(t);
-                    playlistObservable.add(t);
-                }
+                ArrayList<Track> selected = controller.getSelectedTracks();
+
+                // Pattern command
+                BaseTrackCommands command = new AddTrackCommand(selected, playlist ,playlistObservable);
+                CommandInvoker.getCommandInvokerPointer().setCommand(command);
             }
 
         } catch (IOException e) {
@@ -318,4 +323,15 @@ public class PlaylistController {
         // Attiva lo shuffle sul player appena aperto tramite il Manager
         ActivePlayerManager.getInstance().toggleShuffle();
     }
+
+    /**
+     * Annulla l'ultima operazione effettuata.
+     *
+     * @param event l'evento generato dal click
+     */
+    @FXML
+    public void undo(ActionEvent event){
+        CommandInvoker.getCommandInvokerPointer().undoCommand();
+    }
+
 }

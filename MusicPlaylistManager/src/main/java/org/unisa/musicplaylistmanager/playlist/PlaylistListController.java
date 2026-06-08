@@ -20,6 +20,7 @@ import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
 import org.unisa.musicplaylistmanager.track.TrackList;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -51,6 +52,9 @@ public class PlaylistListController {
 
     @FXML
     private StackPane mainStackPane;
+
+    @FXML
+    private Button undoButton;
 
     private String resourceRoot = "/org/unisa/musicplaylistmanager/playlist/";
     private ObservableList<Playlist> playlistListObservable;
@@ -209,6 +213,16 @@ public class PlaylistListController {
         // Termina l'intero programma
         System.exit(0);
 
+    }
+
+    /**
+     * Annulla l'ultima operazione effettuata.
+     *
+     * @param event l'evento generato dal click
+     */
+    @FXML
+    public void undo(ActionEvent event){
+        CommandInvoker.getCommandInvokerPointer().undoCommand();
     }
 
 }

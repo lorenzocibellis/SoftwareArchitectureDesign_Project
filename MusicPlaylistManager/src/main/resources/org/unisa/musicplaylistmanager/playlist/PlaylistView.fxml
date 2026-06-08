@@ -11,7 +11,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.playlist.PlaylistController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.playlist.PlaylistController">
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="70.0" style="-fx-background-color: #F8F8F8; -fx-border-color: #E0E0E0; -fx-border-width: 0 0 1 0;">
             <children>
@@ -31,6 +31,7 @@
                     <Insets right="30.0" />
                 </HBox.margin>
                 <children>
+                  <Button fx:id="undoButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#undo" prefHeight="35.0" prefWidth="100.0" styleClass="playlist-button" text="Undo" />
                     <Button fx:id="playAllButton" mnemonicParsing="false" onAction="#handlePlayAll" prefHeight="35.0" prefWidth="40.0" styleClass="playlist-play-button" text="▶" />
                     <Button fx:id="shuffleAllButton" mnemonicParsing="false" onAction="#handleShuffleAll" prefHeight="35.0" prefWidth="40.0" styleClass="playlist-shuffle-button" text="⤮">
                         <padding>
@@ -39,7 +40,7 @@
                     </Button>
                 </children>
             </HBox>
-            <Button fx:id="backButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#goBack" prefHeight="35.0" prefWidth="80.0" styleClass="close-button" text="←  Back" />
+            <Button fx:id="backButton1" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#goBack" prefHeight="35.0" prefWidth="80.0" styleClass="close-button" text="←  Back" />
             </children>
             <padding>
                 <Insets left="20.0" right="10.0" />

@@ -65,7 +65,8 @@ public class CommandInvoker {
      */
     public void undoCommand(){
         if (commands.size() > 0){
-            commands.pop().undo();
+            commands.removeLast().undo();
+            return;
         }
         throw new ArrayIndexOutOfBoundsException();
     }

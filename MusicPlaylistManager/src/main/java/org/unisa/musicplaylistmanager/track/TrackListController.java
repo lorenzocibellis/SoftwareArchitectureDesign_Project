@@ -58,6 +58,8 @@ public class TrackListController {
     private Button closeButton;
     @FXML
     private Button goPlaylistButton;
+    @FXML
+    private Button undoButton;
 
     //Definizione attributi
     //Path per accedere agli oggetti View.fxml
@@ -151,6 +153,17 @@ public class TrackListController {
 
         // cambio contenuto mantenendo il player
         NavigationManager.getInstance().navigateTo(playlistParent);
+    }
+
+    /**
+     * Naviga annulla l'ultima operazione effettuata.
+     *
+     * @param event l'evento generato dal click
+     *
+     */
+    @FXML
+    void undo(ActionEvent event){
+        CommandInvoker.getCommandInvokerPointer().undoCommand();
     }
 
     // Dichiarazione metodi pubblici

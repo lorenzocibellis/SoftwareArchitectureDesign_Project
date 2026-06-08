@@ -2,6 +2,7 @@ module org.unisa.musicplaylistmanager {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.base;
+    requires java.desktop;
 
 
     exports org.unisa.musicplaylistmanager.app;

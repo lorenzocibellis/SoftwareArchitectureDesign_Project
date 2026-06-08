@@ -8,6 +8,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.stage.Stage;
+import org.unisa.musicplaylistmanager.command.AddTrackCommand;
+import org.unisa.musicplaylistmanager.command.BaseTrackCommands;
 import org.unisa.musicplaylistmanager.track.Track;
 import org.unisa.musicplaylistmanager.track.TrackCellController;
 
@@ -31,7 +33,7 @@ public class AddTracksToPlaylistController {
     @FXML
     private Button cancelButton;
 
-    private List<Track> selectedTracks = new ArrayList<>();
+    private ArrayList<Track> selectedTracks = new ArrayList<>();
     private boolean confirmed = false;
 
     /**
@@ -110,7 +112,7 @@ public class AddTracksToPlaylistController {
      * 
      * @return una lista di oggetti {@link Track}
      */
-    public List<Track> getSelectedTracks() {
+    public ArrayList<Track> getSelectedTracks() {
         return selectedTracks;
     }
 }

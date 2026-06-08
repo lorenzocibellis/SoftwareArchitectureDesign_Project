@@ -20,36 +20,51 @@ public class AddTrackCommand extends BaseTrackCommands{
         setObservableList(o);
     }
 
+    public AddTrackCommand(ArrayList<Track> ts, TrackCollection tc, ObservableList<Track> o){
+        setTracks(ts);
+        setTrackCollection(tc);
+        setObservableList(o);
+    }
+
     @Override
     public void undo() {
-        Track t = getTracks().get(0);
-        if (t == null)
+        ArrayList<Track> ts = getTracks();
+        if (ts == null)
             throw new IllegalArgumentException();
 
         TrackCollection tc = getTrackCollection();
-        if (tc != null){
-            tc.removeTrack(t);
-            if(tc.getClass() == TrackList.class) {
+        if (tc != null) {
+            tc.removeAllTracks(ts);
+            if (tc.getClass() == TrackList.class) {
+                for(Track t: ts){
                 TrackList tl = (TrackList) tc;
                 tl.notifyObservers(t);
             }
         }
     }
 
-    @Override
-    public void execute() {
-
-        Track t = getTracks().get(0);
-        if (t == null)
-            throw new IllegalArgumentException();
-
-        TrackCollection tc = getTrackCollection();
-        if (tc != null)
-            tc.addTrack(t);
 
         ObservableList<Track> obs = getObservableList();
         if(obs != null)
-            obs.add(t);
+            obs.removeAll(ts);
+    }
+
+    @Override
+    public void execute() {
+        ArrayList<Track> ts = getTracks();
+        if (ts == null)
+            throw new IllegalArgumentException();
+
+        TrackCollection tc = getTrackCollection();
+        ObservableList<Track> obs = getObservableList();
+
+        for(Track t: ts) {
+            if (tc != null)
+                tc.addTrack(t);
+
+            if (obs != null)
+                obs.add(t);
+        }
 
 
     }
