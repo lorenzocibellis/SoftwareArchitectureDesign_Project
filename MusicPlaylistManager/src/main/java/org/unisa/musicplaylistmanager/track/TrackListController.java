@@ -164,6 +164,7 @@ public class TrackListController {
     @FXML
     void undo(ActionEvent event){
         CommandInvoker.getCommandInvokerPointer().undoCommand();
+        trackListObservable.setAll(trackList.getTracks());
         listView.refresh();
     }
 
