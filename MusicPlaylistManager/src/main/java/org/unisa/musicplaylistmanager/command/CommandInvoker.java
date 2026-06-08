@@ -64,7 +64,7 @@ public class CommandInvoker {
      *
      */
     public void undoCommand(){
-        if (commands.size() > 0){
+        if (!commands.isEmpty()){
             commands.removeLast().undo();
             return;
         }
