@@ -37,7 +37,10 @@ public class AddPlaylistCommand extends BasePlaylistCommands{
      */
     @Override
     public void undo() {
-        Playlist playlist = getPlaylists().get(0);
+        ArrayList<Playlist> playlists = getPlaylists();
+        if(playlists == null)
+            throw new IllegalArgumentException();
+        Playlist playlist = playlists.get(0);
         if (playlist == null)
             throw new IllegalArgumentException();
 
@@ -56,9 +59,15 @@ public class AddPlaylistCommand extends BasePlaylistCommands{
 
     @Override
     public void execute() {
-        Playlist playlist = getPlaylists().get(0);
+
+        // Controllo esistenza lista di playlist e playlist da aggiungere
+        ArrayList<Playlist> playlists = getPlaylists();
+        if(playlists == null)
+            throw new IllegalArgumentException();
+        Playlist playlist = playlists.get(0);
         if (playlist == null)
             throw new IllegalArgumentException();
+
 
         // Pattern Observer: attach observer della playlist prima di aggiungerla
         TrackList tl = TrackList.getTrackListPointer();

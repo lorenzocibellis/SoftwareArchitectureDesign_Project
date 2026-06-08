@@ -71,11 +71,9 @@ public class DeletePlaylistCommand extends BasePlaylistCommands{
             throw new IllegalArgumentException();
 
         // Pattern Observer: detach observer di ogni playlist prima di eliminarla
-        if(TrackList.exists()) {
-            TrackList tl = TrackList.getTrackListPointer();
-            for (Playlist p : ps)
-               tl.detach(p);
-        }
+        TrackList tl = TrackList.getTrackListPointer();
+        for (Playlist p : ps)
+            tl.detach(p);
 
         PlaylistList pl = getPlaylistList();
         if (pl != null)

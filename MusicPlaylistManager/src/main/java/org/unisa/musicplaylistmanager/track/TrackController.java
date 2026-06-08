@@ -255,7 +255,7 @@ public class TrackController {
             Track track = getTrack();
 
             //aggiungi la traccia alla lista di tracce usando pattern Command
-            BaseTrackCommands command = new AddTrackCommand(track, trackList, observableList);
+            BaseTrackCommands command = new AddTrackCommand(track, trackList,  observableList);
             CommandInvoker.getCommandInvokerPointer().setCommand(command);
 
             // chiudi il popUp
