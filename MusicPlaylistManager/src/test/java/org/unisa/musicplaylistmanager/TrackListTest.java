@@ -50,6 +50,11 @@ class TrackListTest {
         assertTrue(trackList.getTracks().contains(track1));
     }
 
+    @Test @DisplayName("addTrack: aggiungere null lancia eccezione")
+    void testAddTrackNull() {
+        assertThrows(IllegalArgumentException.class, () -> trackList.addTrack(null));
+    }
+
     @Test @DisplayName("removeTrack: rimuove una traccia presente")
     void testRemoveTrackPresent() {
         trackList.addTrack(track1);
@@ -57,6 +62,15 @@ class TrackListTest {
         trackList.removeTrack(track1);
         assertEquals(1, trackList.getSize());
         assertFalse(trackList.getTracks().contains(track1));
+    }
+
+    @Test @DisplayName("deleteAll: svuota l'intera TrackList")
+    void testDeleteAll() {
+        trackList.addTrack(track1);
+        trackList.addTrack(track2);
+        trackList.deleteAll();
+        assertEquals(0, trackList.getSize());
+        assertTrue(trackList.getTracks().isEmpty());
     }
 
     @Test @DisplayName("updateTrack: aggiorna i campi in-place")
@@ -69,5 +83,17 @@ class TrackListTest {
 
         Track inList = trackList.getTracks().get(0);
         assertEquals("Bohemian Rhapsody Remaster", inList.getTitle());
+    }
+
+    @Test @DisplayName("updateTrack: lancia eccezione se i nuovi dati creano un duplicato")
+    void testUpdateTrackDuplicateException() {
+        trackList.addTrack(track1);
+        trackList.addTrack(track2);
+        
+        // Proviamo a fare l'update di track2 usando gli stessi dati (titolo, autore, anno) di track1
+        Track newData = new Track("Bohemian Rhapsody", "Queen", Year.of(1975), "Rock", 354, true, false, false);
+        
+        assertThrows(IllegalArgumentException.class, () -> trackList.updateTrack(track2, newData), 
+            "Non deve permettere di modificare una traccia se crea un duplicato nella TrackCollection");
     }
 }
