@@ -39,9 +39,4 @@ public class Playlist extends TrackCollection implements BaseObserver {
     public void update(Track track) {
         this.removeTrack(track);
     }
-
-
-    public void detach(){
-        TrackList.getTrackListPointer().detach(this);
-    }
 }

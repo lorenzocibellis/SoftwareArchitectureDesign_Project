@@ -3,11 +3,14 @@ package org.unisa.musicplaylistmanager.command;
 import javafx.collections.ObservableList;
 import org.unisa.musicplaylistmanager.playlist.Playlist;
 import org.unisa.musicplaylistmanager.playlist.PlaylistList;
+import org.unisa.musicplaylistmanager.track.TrackList;
+
+import java.util.ArrayList;
 
 /**
  *
  * Classe che implementa il comando di aggiunta di una playlist, e le eventuali operazioni per permettere
- * l'annullamento di tali operazioni
+ * l'annullamento di tale operazione
  *
  */
 public class AddPlaylistCommand extends BasePlaylistCommands{
@@ -15,10 +18,14 @@ public class AddPlaylistCommand extends BasePlaylistCommands{
     /**
      * Costruttore
      *
-     * @param p Playlist da aggiungere alla lista di Playlist
+     * @param p Playlist da aggiungere alla lista di Playlist.
+     * @param pl Lista di playlist a cui aggiungere la playlist.
+     * @param o Lista osservabile di playlist da aggiornare.
+     *
      */
     public AddPlaylistCommand(Playlist p, PlaylistList pl, ObservableList<Playlist> o){
-        setPlaylist(p);
+        setPlaylists(new ArrayList<Playlist>());
+        getPlaylists().add(p);
         setPlaylistList(pl);
         setObservableList(o);
     }
@@ -30,13 +37,39 @@ public class AddPlaylistCommand extends BasePlaylistCommands{
      */
     @Override
     public void undo() {
-        throw new UnsupportedOperationException();
+        Playlist playlist = getPlaylists().get(0);
+        if (playlist == null)
+            throw new IllegalArgumentException();
+
+        // Pattern Observer: detach observer della playlist prima di rimuoverla
+        TrackList tl = TrackList.getTrackListPointer();
+        tl.detach(playlist);
+
+        PlaylistList playlistList = getPlaylistList();
+        if (playlistList != null)
+            getPlaylistList().deletePlaylist(playlist);
+
+        ObservableList<Playlist> obsList = getObservableList();
+        if (obsList != null)
+            getObservableList().remove(playlist);
     }
 
     @Override
     public void execute() {
-        Playlist p = getPlaylist();
-        getPlaylistList().addPlaylist(p);
-        getObservableList().add(p);
+        Playlist playlist = getPlaylists().get(0);
+        if (playlist == null)
+            throw new IllegalArgumentException();
+
+        // Pattern Observer: attach observer della playlist prima di aggiungerla
+        TrackList tl = TrackList.getTrackListPointer();
+        tl.attach(playlist);
+
+        PlaylistList playlistList = getPlaylistList();
+        if (playlistList != null)
+            getPlaylistList().addPlaylist(playlist);
+
+        ObservableList<Playlist> obsList = getObservableList();
+        if (obsList != null)
+            getObservableList().add(playlist);
     }
 }

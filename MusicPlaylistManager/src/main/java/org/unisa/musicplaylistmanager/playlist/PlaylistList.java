@@ -1,5 +1,7 @@
 package org.unisa.musicplaylistmanager.playlist;
 
+import org.unisa.musicplaylistmanager.track.TrackList;
+
 import java.util.ArrayList;
 
 /**
@@ -58,9 +60,7 @@ public class PlaylistList {
      */
     public void deletePlaylist(Playlist p){
         if (p != null) {
-            p.deleteAll();
             playlistList.remove(p);
-            p.detach();
         }
     }
 
@@ -74,7 +74,7 @@ public class PlaylistList {
         for(int i = 0; i < pl.size(); i++){
             Playlist p = pl.get(i);
             if (p != null){
-                p.deleteAll();
+                //p.deleteAll();
                 playlistList.remove(p);
             }
         }

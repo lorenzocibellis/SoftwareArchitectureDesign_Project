@@ -11,19 +11,10 @@ import org.unisa.musicplaylistmanager.playlist.Playlist;
 public abstract class BaseCommands implements AbstractCommand{
     //ATTRIBUTI
     //Permettono di lavorare sulle playlist di interesse (sia quella effettiva che quella visuale)
-    protected Playlist playlist;
-    protected ObservableList obsList;
-
-    protected Playlist getPlaylist() {
-        return playlist;
-    }
+    private ObservableList obsList;
 
     protected ObservableList getObservableList() {
         return obsList;
-    }
-
-    protected void setPlaylist(Playlist playlist) {
-        this.playlist = playlist;
     }
 
     protected void setObservableList(ObservableList obsList) {

@@ -13,7 +13,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.unisa.musicplaylistmanager.command.BasePlaylistCommands;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;
+import org.unisa.musicplaylistmanager.command.DeletePlaylistCommand;
 import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
 import org.unisa.musicplaylistmanager.track.TrackList;
@@ -165,16 +167,11 @@ public class PlaylistListController {
 
             ArrayList<Playlist> toRemove = new ArrayList<>(selectedItems);
 
-            // Pattern Observer: detach observer di ogni playlist prima di eliminarla
-            if (TrackList.exists()) {
-                for (Playlist p : toRemove) {
-                    p.detach();
-                }
-            }
 
             // Rimuovi gli elementi dalla lista osservabile e dalla tracklist
-            playlistListObservable.removeAll(toRemove);
-            playlistList.deletePlaylists(toRemove);
+            BasePlaylistCommands command= new DeletePlaylistCommand(toRemove ,playlistList, playlistListObservable);
+            CommandInvoker.getCommandInvokerPointer().setCommand(command);
+
 
             // Se stiamo eliminando la playlist in riproduzione, chiudi il player
             // Utilizzo TrackCollection per gestire correttamente sia Playlist che TrackList

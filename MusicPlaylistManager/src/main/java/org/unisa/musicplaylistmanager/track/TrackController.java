@@ -7,6 +7,9 @@ import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.stage.Stage;
+import org.unisa.musicplaylistmanager.command.AddTrackCommand;
+import org.unisa.musicplaylistmanager.command.BaseTrackCommands;
+import org.unisa.musicplaylistmanager.command.CommandInvoker;
 import org.unisa.musicplaylistmanager.playlist.Playlist;
 import org.unisa.musicplaylistmanager.playlist.TrackCollection;
 
@@ -252,7 +255,9 @@ public class TrackController {
             Track track = getTrack();
 
             //aggiungi la traccia alla lista di tracce
-            this.add(track);
+            BaseTrackCommands command = new AddTrackCommand(track, trackList, observableList);
+            CommandInvoker.getCommandInvokerPointer().setCommand(command);
+            //this.add(track);
 
             // chiudi il popUp
             goBack(actionEvent);
