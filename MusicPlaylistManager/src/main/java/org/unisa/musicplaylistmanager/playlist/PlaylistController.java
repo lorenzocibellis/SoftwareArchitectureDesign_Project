@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import org.unisa.musicplaylistmanager.command.AddTrackCommand;
 import org.unisa.musicplaylistmanager.command.BaseTrackCommands;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;
+import org.unisa.musicplaylistmanager.command.RemoveTrackCommand;
 import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
 import org.unisa.musicplaylistmanager.track.Track;
@@ -270,8 +271,9 @@ public class PlaylistController {
             Track playingTrack = ActivePlayerManager.getInstance().getCurrentTrack();
             TrackCollection playingCollection = ActivePlayerManager.getInstance().getCurrentPlaylist();
 
-            playlistObservable.removeAll(toRemove);
-            playlist.removeAllTracks(toRemove);
+            // Pattern Command
+            BaseTrackCommands command = new RemoveTrackCommand(toRemove, playlist ,playlistObservable);
+            CommandInvoker.getCommandInvokerPointer().setCommand(command);
 
             if (playingTrack != null && toRemove.contains(playingTrack) && playingCollection instanceof Playlist && playlist.equals(playingCollection)) {
                 ActivePlayerManager.getInstance().closePlayer();
