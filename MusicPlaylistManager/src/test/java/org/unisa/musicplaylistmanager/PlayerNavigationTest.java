@@ -38,9 +38,14 @@ class PlayerNavigationTest {
         public void execute(Player player) { }
     }
 
+    /**
+     * Necessario perché il nextTrack() nel Timer interno del Player chiama Platform.runLater()
+     * Se qui non accendessimo forzatamente il toolkit in background,
+     * i test di JUnit mostrerebbero l'errore: "IllegalStateException: Toolkit not initialized".
+     */
     @BeforeAll
     static void initJFX() {
-        // Necessario perché il nextTrack() nel Timer interno del Player chiama Platform.runLater()
+
         try {
             javafx.application.Platform.startup(() -> {});
         } catch (IllegalStateException e) {

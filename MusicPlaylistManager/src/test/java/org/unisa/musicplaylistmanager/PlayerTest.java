@@ -36,12 +36,16 @@ class PlayerTest {
         }
     }
 
-    // -----------------------------------------------------------------------
-    // Setup / Teardown
-    // -----------------------------------------------------------------------
 
+    /**
+     * Questo workaround serve perché la classe Player
+     * usa metodi legati a JavaFX (come Platform.runLater() per il timer).
+     * Se non accendessimo forzatamente il toolkit in background,
+     * i test di JUnit mostrerebbero l'errore: "IllegalStateException: Toolkit not initialized".
+     */
     @BeforeAll
     static void initJFX() {
+
         try {
             javafx.application.Platform.startup(() -> {});
         } catch (IllegalStateException e) {
