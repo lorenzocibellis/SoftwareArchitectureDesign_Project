@@ -21,10 +21,10 @@ import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
 import org.unisa.musicplaylistmanager.track.Track;
 import org.unisa.musicplaylistmanager.track.TrackCellController;
 import org.unisa.musicplaylistmanager.track.TrackController;
-import org.unisa.musicplaylistmanager.player.PlayerController;
 import org.unisa.musicplaylistmanager.track.TrackList;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.WeakChangeListener;
+import java.util.function.BooleanSupplier;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -72,6 +72,7 @@ public class PlaylistController {
     private String resourceRoot = "/org/unisa/musicplaylistmanager/playlist/";
     private ObservableList<Track> playlistObservable;
     private Playlist playlist;
+    private BooleanSupplier playlistValidator;
 
 
     private ChangeListener<Boolean> playerActiveListener;
@@ -332,10 +333,17 @@ public class PlaylistController {
      * @param event l'evento generato dal click
      */
     @FXML
-    public void undo(ActionEvent event){
+    public void undo(ActionEvent event) throws IOException {
         CommandInvoker.getCommandInvokerPointer().undoCommand();
         playlistObservable.setAll(playlist.getTracks());
         listView.refresh();
+
+        if(playlistValidator != null && !playlistValidator.getAsBoolean()){
+            goBack(event);
+        }
     }
 
+    public void setPlaylistValidator(BooleanSupplier validator){
+        this.playlistValidator = validator;
+    }
 }

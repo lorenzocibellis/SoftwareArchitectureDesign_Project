@@ -75,6 +75,7 @@ public class PlaylistListController {
 
         PlaylistController controller = loader.getController();
         controller.setPlaylist(p);
+        controller.setPlaylistValidator(() -> playlistList.getPlaylists().contains(p));
 
         // Naviga usando NavigationManager
         NavigationManager.getInstance().navigateTo(root);
