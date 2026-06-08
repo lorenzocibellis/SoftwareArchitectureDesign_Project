@@ -4,6 +4,8 @@ import org.unisa.musicplaylistmanager.track.Track;
 import org.unisa.musicplaylistmanager.track.TrackList;
 
 import java.util.ArrayDeque;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 
 
 /**
@@ -24,8 +26,14 @@ public class CommandInvoker {
     private final int SIZE_LIMIT = 10;
     //Attributo che permette di implementare il pattern Singleton e l'ottenimento dell'istanza del CommandInvoker
     private static CommandInvoker pnt = null;
+    
+    private BooleanProperty hasCommandsToUndo = new SimpleBooleanProperty(false);
 
     //METODI
+    
+    public BooleanProperty hasCommandsToUndoProperty() {
+        return hasCommandsToUndo;
+    }
 
     /**
      * Costruttore
@@ -55,6 +63,7 @@ public class CommandInvoker {
         command.execute();
         // e lo aggiungo alla fine della coda
         commands.addLast(command);
+        hasCommandsToUndo.set(!commands.isEmpty());
     }
 
 
@@ -75,6 +84,7 @@ public class CommandInvoker {
         //altrimenti:
         //rimuovo il comando più "nuovo" e ne annullo gli effetti
         commands.removeLast().undo();
+        hasCommandsToUndo.set(!commands.isEmpty());
     }
 
     /**

@@ -31,7 +31,7 @@
                     <Insets right="30.0" />
                 </HBox.margin>
                 <children>
-                  <Button fx:id="undoButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#undo" prefHeight="35.0" prefWidth="100.0" styleClass="playlist-button" text="Undo" />
+                  <Button fx:id="undoButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#undo" prefHeight="35.0" prefWidth="100.0" styleClass="playlist-button" text="↺  Undo" />
                     <Button fx:id="playAllButton" mnemonicParsing="false" onAction="#handlePlayAll" prefHeight="35.0" prefWidth="40.0" styleClass="playlist-play-button" text="▶" />
                     <Button fx:id="shuffleAllButton" mnemonicParsing="false" onAction="#handleShuffleAll" prefHeight="35.0" prefWidth="40.0" styleClass="playlist-shuffle-button" text="⤮">
                         <padding>

@@ -99,6 +99,7 @@ public class TrackListController {
         // Inizializza l'ObservableList con i dati esistenti
         trackListObservable = FXCollections.observableArrayList(trackList.getTracks());
         commandInvoker = CommandInvoker.getCommandInvokerPointer();
+        undoButton.disableProperty().bind(commandInvoker.hasCommandsToUndoProperty().not());
 
         // fa in modo che la list view usi la cella personalizzata
         listView.setCellFactory(param -> new TrackCellController(this::showTrackDetails));

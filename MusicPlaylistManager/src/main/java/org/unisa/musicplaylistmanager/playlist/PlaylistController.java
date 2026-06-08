@@ -93,6 +93,7 @@ public class PlaylistController {
         deleteButton.disableProperty().bind(Bindings.isEmpty(listView.getSelectionModel().getSelectedItems()));
 
         commandInvoker = CommandInvoker.getCommandInvokerPointer();
+        undoButton.disableProperty().bind(commandInvoker.hasCommandsToUndoProperty().not());
         
         // Ascolta le variazioni dello stato del player (apertura/chiusura) per aggiornare dinamicamente il padding inferiore della ListView.
         // Utilizziamo un WeakChangeListener associato a un riferimento forte di istanza per evitare memory leak del controller.

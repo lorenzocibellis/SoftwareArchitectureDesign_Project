@@ -89,6 +89,7 @@ public class PlaylistListController {
     public void initialize(){
          playlistList = PlaylistList.getPlaylistListPointer();
          commandInvoker = CommandInvoker.getCommandInvokerPointer();
+         undoButton.disableProperty().bind(commandInvoker.hasCommandsToUndoProperty().not());
 
 
         playlistListObservable = FXCollections.observableArrayList(playlistList.getPlaylists());
