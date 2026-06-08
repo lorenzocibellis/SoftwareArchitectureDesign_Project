@@ -1,6 +1,7 @@
 package org.unisa.musicplaylistmanager;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,6 +39,15 @@ class PlayerTest {
     // -----------------------------------------------------------------------
     // Setup / Teardown
     // -----------------------------------------------------------------------
+
+    @BeforeAll
+    static void initJFX() {
+        try {
+            javafx.application.Platform.startup(() -> {});
+        } catch (IllegalStateException e) {
+            // Toolkit già inizializzato
+        }
+    }
 
     @BeforeEach
     void setUp() {
