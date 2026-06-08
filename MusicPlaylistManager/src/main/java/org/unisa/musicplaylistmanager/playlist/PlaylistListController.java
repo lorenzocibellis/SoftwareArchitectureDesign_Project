@@ -18,7 +18,6 @@ import org.unisa.musicplaylistmanager.command.CommandInvoker;
 import org.unisa.musicplaylistmanager.command.DeletePlaylistCommand;
 import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
-import org.unisa.musicplaylistmanager.track.TrackList;
 
 import javax.swing.*;
 import java.io.IOException;

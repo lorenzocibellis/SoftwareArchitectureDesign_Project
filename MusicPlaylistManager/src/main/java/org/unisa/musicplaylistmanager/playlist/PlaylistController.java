@@ -346,6 +346,13 @@ public class PlaylistController {
         }
     }
 
+    /**
+     *
+     * Permette di settare un metodo per sapere se la playlist è ancora presente nella lista delle playlist.
+     *
+     * @param validator Parametro che permette di ottenere un risultato Booleano (può essere una funzione lambda).
+     *
+     */
     public void setPlaylistValidator(BooleanSupplier validator){
         this.playlistValidator = validator;
     }
