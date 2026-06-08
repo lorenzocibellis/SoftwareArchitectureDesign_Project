@@ -42,19 +42,6 @@ public class PlaylistCreationController {
     private void add(Playlist p) {
         AddPlaylistCommand command = new AddPlaylistCommand(p, playlistList, playlistListObservable);
         CommandInvoker.getCommandInvokerPointer().setCommand(command);
-        //command.execute();
-        //playlistList.addPlaylist(p);
-        //playlistListObservable.add(p);
-
-        // Pattern Observer: crea observer per la playlist e lo registra sul subject della TrackList
-        /*
-        if (TrackList.exists()) {
-            ObserverPlaylist observer = new ObserverPlaylist(p);
-            p.setObserver(observer);
-            TrackList.getTrackListPointer().getSubjectTrackList().attach(observer);
-        }
-
-         */
     }
 
     /**

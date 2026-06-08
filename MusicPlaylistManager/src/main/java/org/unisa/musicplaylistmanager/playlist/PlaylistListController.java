@@ -223,6 +223,7 @@ public class PlaylistListController {
     @FXML
     public void undo(ActionEvent event){
         CommandInvoker.getCommandInvokerPointer().undoCommand();
+        listView.refresh();
     }
 
 }

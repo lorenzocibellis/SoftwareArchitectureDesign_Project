@@ -164,6 +164,7 @@ public class TrackListController {
     @FXML
     void undo(ActionEvent event){
         CommandInvoker.getCommandInvokerPointer().undoCommand();
+        listView.refresh();
     }
 
     // Dichiarazione metodi pubblici

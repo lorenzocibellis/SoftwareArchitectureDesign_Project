@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.unisa.musicplaylistmanager.command.AddPlaylistCommand;
+import org.unisa.musicplaylistmanager.command.CommandInvoker;
 import org.unisa.musicplaylistmanager.track.Track;
 import org.unisa.musicplaylistmanager.track.TrackList;
 
@@ -311,9 +312,10 @@ public class PlaylistAutomaticController {
                 playlist.addTrack(track);
             }
 
+
             // Aggiungi alla lista globale tramite Command pattern
             AddPlaylistCommand command = new AddPlaylistCommand(playlist, playlistList, playlistListObservable);
-            command.execute();
+            CommandInvoker.getCommandInvokerPointer().setCommand(command);
 
             // Mostra conferma
             showAlert(Alert.AlertType.INFORMATION,
