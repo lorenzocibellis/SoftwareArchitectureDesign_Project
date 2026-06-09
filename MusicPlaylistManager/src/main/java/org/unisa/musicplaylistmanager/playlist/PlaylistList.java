@@ -42,7 +42,8 @@ public class PlaylistList {
      * Aggiunge una nuova playlist alla collezione.
      * 
      * @param p la playlist da aggiungere
-     * @throws IllegalArgumentException se la playlist è nulla o è già presente
+     * @throws IllegalArgumentException se la playlist è nulla o è già presente, o se il nome è
+     *         uguale al nome riservato a TrackList: "La Mia Libreria"
      */
     public void addPlaylist(Playlist p){
         if (p != null && !playlistList.contains(p)) {

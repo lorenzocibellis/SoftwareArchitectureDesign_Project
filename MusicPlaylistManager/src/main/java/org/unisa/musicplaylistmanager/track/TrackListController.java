@@ -11,11 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
+import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -60,6 +56,8 @@ public class TrackListController {
     private Button goPlaylistButton;
     @FXML
     private Button undoButton;
+    @FXML
+    private Label libraryName;
 
     //Definizione attributi
     //Path per accedere agli oggetti View.fxml
@@ -76,9 +74,6 @@ public class TrackListController {
 
     private CommandInvoker commandInvoker;
 
-    //METODI
-    //METODI FXML
-
     /**
      * Metodo chiamato automaticamente da JavaFX dopo il caricamento del file FXML.
      * Inizializza il Singleton di {@link TrackList} (se non già presente),
@@ -91,6 +86,7 @@ public class TrackListController {
         // Ottieni l'istanza (Singleton) in modo sicuro
         trackList = TrackList.getTrackListPointer();
 
+        libraryName.setText(trackList.getName());
         // Carichiamo le tracce dal CSV se la lista è vuota
         if (trackList.getTracks().isEmpty()) {
             loadMockTracksFromCSV();
