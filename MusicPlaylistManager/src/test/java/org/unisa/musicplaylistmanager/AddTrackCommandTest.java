@@ -105,6 +105,21 @@ class AddTrackCommandTest {
         System.out.println("=== FINE: testExecuteConListaTracce ===\n");
     }
 
+
+    /**
+     * Verifica il blocco preventivo nel costruttore con traccia nulla.
+     * Lancio previsto: IllegalArgumentException al momento dell'istanziazione.
+     */
+    @Test
+    void testCostruttoreConSingolaTracciaNull() {
+        
+        assertThrows(IllegalArgumentException.class, () -> {
+            new AddTrackCommand((Track) null, trackList, obsList);
+        }, "Il costruttore deve lanciare IllegalArgumentException impedendo la creazione del comando se la traccia è null.");
+
+    }
+
+
     /**
      *
      * Verifica l'annullamento dell'aggiunta.
