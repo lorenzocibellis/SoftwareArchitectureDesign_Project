@@ -25,12 +25,22 @@ public class Playlist extends TrackCollection implements BaseObserver {
      */
     public Playlist(String name) {
         super(name);
-        if(name == null || name.equals(super.TRACKLIST_NAME)) {
+        if(name == null || name.equals(TrackList.TRACKLIST_NAME)) {
             throw new IllegalArgumentException("Non è possibile creare una playlist con questo nome!");
         }
         TrackList.getTrackListPointer().attach(this);
     }
 
+
+    /**
+     * Imposta o modifica il nome della playlist.
+     *
+     * @param name il nuovo nome
+     */
+    @Override
+    public void setName(String name) {
+        super.setName(name);
+    }
 
     @Override
     public void update(Track track) {

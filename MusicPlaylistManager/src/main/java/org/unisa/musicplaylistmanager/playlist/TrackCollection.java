@@ -12,18 +12,13 @@ public abstract class TrackCollection implements IterableCollection {
     private String name;
     private ArrayList<Track> tracks;
 
-    protected final String TRACKLIST_NAME = "La Mia Libreria";
-
     /**
      * Costruisce una nuova playlist con il nome specificato.
      *
      * @param name il nome della playlist
      */
     public TrackCollection(String name) {
-        if(name != null)
-            this.name = name;
-        else
-            this.name = TRACKLIST_NAME;
+        this.name = name;
         this.tracks = new ArrayList<Track>();
     }
 
@@ -51,7 +46,7 @@ public abstract class TrackCollection implements IterableCollection {
      *
      * @param name il nuovo nome
      */
-    public void setName(String name) {
+    protected void setName(String name) {
         this.name = name;
     }
 
