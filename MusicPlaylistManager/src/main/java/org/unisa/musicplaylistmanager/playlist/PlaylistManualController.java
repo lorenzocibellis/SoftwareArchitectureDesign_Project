@@ -17,7 +17,7 @@ import org.unisa.musicplaylistmanager.command.CommandInvoker;
  *
  * @author gruppo10
  */
-public class PlaylistCreationController {
+public class PlaylistManualController {
 
     //Definizione attributi
     @FXML
@@ -120,7 +120,7 @@ public class PlaylistCreationController {
      * @param actionEvent l'evento generato dal click
      */
     @FXML
-    void addPlaylist(ActionEvent actionEvent){
+    void createPlaylist(ActionEvent actionEvent){
         String playlistName = nameInput.getText().trim();
 
         // Validazione dei dati inseriti

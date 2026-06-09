@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="173.0" prefWidth="506.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.playlist.PlaylistCreationController">
+<AnchorPane prefHeight="173.0" prefWidth="506.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.playlist.PlaylistManualController">
     <children>
         <VBox alignment="TOP_CENTER" prefHeight="450.0" prefWidth="500.0" spacing="20.0" style="-fx-background-color: #F8F8F8;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <padding>
@@ -30,7 +30,7 @@
 
                 <HBox alignment="CENTER" prefHeight="116.0" prefWidth="460.0" spacing="30.0" VBox.vgrow="ALWAYS">
                     <children>
-                        <Button fx:id="addPlaylistButton" mnemonicParsing="false" onAction="#addPlaylist" text="✓  Conferma" />
+                        <Button fx:id="addPlaylistButton" mnemonicParsing="false" onAction="#createPlaylist" text="✓  Conferma" />
                         <Button fx:id="buttonBack" mnemonicParsing="false" onAction="#goBack" styleClass="cancel-button" text="✕  Annulla" />
                     </children>
                 </HBox>

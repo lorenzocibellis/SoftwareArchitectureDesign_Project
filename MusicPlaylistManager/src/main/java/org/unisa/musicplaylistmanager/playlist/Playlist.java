@@ -26,7 +26,7 @@ public class Playlist extends TrackCollection implements BaseObserver {
     public Playlist(String name) {
         super(name);
         if(name == null || name.equals(super.TRACKLIST_NAME)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Non è possibile creare una playlist con questo nome!");
         }
         TrackList.getTrackListPointer().attach(this);
     }

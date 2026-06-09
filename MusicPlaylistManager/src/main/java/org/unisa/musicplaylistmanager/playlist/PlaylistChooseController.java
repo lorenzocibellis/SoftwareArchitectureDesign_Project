@@ -85,7 +85,7 @@ public class PlaylistChooseController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "PlaylistCreationView.fxml"));
         Parent root = loader.load();
 
-        PlaylistCreationController controller = loader.getController();
+        PlaylistManualController controller = loader.getController();
         controller.setPlaylistList(playlistList);
         controller.setObservable(playlistListObservable);
 
