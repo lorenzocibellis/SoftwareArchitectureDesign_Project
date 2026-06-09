@@ -11,11 +11,10 @@ package org.unisa.musicplaylistmanager.player;
  * @author gruppo10
  */
 
-import org.unisa.musicplaylistmanager.playlist.Playlist;
-import org.unisa.musicplaylistmanager.playlist.TrackCollection;
+import org.unisa.musicplaylistmanager.iterator.AbstractIterator;
+import org.unisa.musicplaylistmanager.iterator.IterableCollection;
 import org.unisa.musicplaylistmanager.state.PlayerState;
 import org.unisa.musicplaylistmanager.track.Track;
-import org.unisa.musicplaylistmanager.iterator.Iterator;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,12 +28,10 @@ public class Player {
     // variabili dello State Pattern  
     private PlayerState currentState;
     private PlayerState defaultState; // Aggiunto per fedeltà all'UML!
-    
-    // playlist o tracklist in cui scorrere le tracce
-    private TrackCollection trackCollection;
+
     
     // Iteratore incaricato della gestione dello scorrimento delle tracce
-    private Iterator trackIterator;
+    private AbstractIterator trackIterator;
     
     //  Variabili interne per la riproduzione 
     private int elapsedSeconds;
@@ -49,12 +46,12 @@ public class Player {
     /**
      * Costruttore della classe Player.
      * * @param defaultState    lo stato iniziale della riproduzione
-     * @param trackCollection la collezione di tracce (o playlist) da cui è stata avviata la canzone
+     * @param iter la collezione di tracce (o playlist) da cui è stata avviata la canzone
      * @param currentTrack    la traccia attualmente in riproduzione
      */
-    public Player(PlayerState defaultState, TrackCollection trackCollection, Track currentTrack) {
+    public Player(PlayerState defaultState, IterableCollection iter, Track currentTrack) {
         // Manteniamo il controllo di validità per evitare NullPointerException
-        if (trackCollection == null || currentTrack == null) {
+        if (iter == null || currentTrack == null) {
             throw new IllegalArgumentException("Il player richiede una collezione di tracce e una traccia valide per essere inizializzato.");
         }
 
@@ -62,15 +59,12 @@ public class Player {
         this.currentState = defaultState;
         
         // Assegnazione della collezione
-        this.trackCollection = trackCollection; 
         this.elapsedSeconds = 0;
         
         // Inizializza l'iteratore passando la collezione base
-        this.trackIterator = new Iterator(this.trackCollection);
+        this.trackIterator = iter.createIterator();
         this.trackIterator.moveToTrack(currentTrack);
     }
-
-    //  Registrazione eventi sulla GUI  in tempo reale
     
     /**
      * Imposta il callback per l'aggiornamento in tempo reale del timer.
@@ -122,11 +116,11 @@ public class Player {
     }
 
     /**
- * Restituisce la collezione (Playlist o TrackList) attualmente in riproduzione.
- * @return la collezione corrente (TrackCollection)
+ * Restituisce l'identificatore della collezione (Playlist o TrackList) attualmente in riproduzione.
+ * @return l'identificatore della TrackCollection corrente
  */
-public TrackCollection getCurrentPlaylist() {
-    return this.trackCollection;
+public String getCurrentPlaylistIdentifier() {
+    return this.trackIterator.getIdentifier();
 }
     /**
      * Restituisce lo stato corrente del player.
@@ -140,7 +134,7 @@ public TrackCollection getCurrentPlaylist() {
      * Restituisce l'iteratore associato al player per consentire il cambio di Strategy.
      * @return l'iteratore corrente
      */
-    public Iterator getIterator() {
+    public AbstractIterator getIterator() {
         return this.trackIterator;
     }
 

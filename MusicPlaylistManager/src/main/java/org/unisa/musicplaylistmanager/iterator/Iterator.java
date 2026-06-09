@@ -5,6 +5,8 @@ import org.unisa.musicplaylistmanager.strategy.ExecutionStrategy;
 import org.unisa.musicplaylistmanager.strategy.Sequential;
 import org.unisa.musicplaylistmanager.track.Track;
 
+import java.util.ArrayList;
+
 /**
  * @author gruppo10
  */
@@ -12,7 +14,8 @@ public class Iterator implements AbstractIterator {
 
     private int currentindext; // Puntatore all'interno dell'array iterationindex
     private int[] iterationindex; // Array che mappa l'ordine di riproduzione
-    private TrackCollection trackCollection;
+    private ArrayList<Track> tracks;
+    private String name;
     
     // Variabile per ricordare la modalità corrente (es. se aggiungo una traccia durante lo shuffle, deve ricalcolare lo shuffle)
     private ExecutionStrategy currentStrategy; 
@@ -22,7 +25,8 @@ public class Iterator implements AbstractIterator {
      * @param trackCollection L'elenco delle tracce in cui scorrere
      */
     public Iterator(TrackCollection trackCollection) {
-        this.trackCollection = trackCollection;
+        this.tracks = trackCollection.getTracks();
+        this.name = trackCollection.getName();
         this.currentindext = 0;
         
         // Inizializza con la strategia sequenziale di default
@@ -35,7 +39,7 @@ public class Iterator implements AbstractIterator {
      * Se sì, forza il ricalcolo dell'array di iterazione mantenendo la strategia attuale.
      */
     private void syncWithPlaylist() {
-        if (iterationindex != null && trackCollection != null && iterationindex.length != trackCollection.getTracks().size()) {
+        if (iterationindex != null && tracks != null && iterationindex.length != tracks.size()) {
             if (currentStrategy != null) {
                 setStrategy(currentStrategy);
             }
@@ -50,11 +54,11 @@ public class Iterator implements AbstractIterator {
     public Track getCurrent() {
         syncWithPlaylist(); // Sincronizza la coda prima di restituire il brano!
         
-        if (iterationindex == null || iterationindex.length == 0 || trackCollection.getTracks().isEmpty()) {
+        if (iterationindex == null || iterationindex.length == 0 || tracks.isEmpty()) {
             return null;
         }
         int realIndex = iterationindex[currentindext];
-        return trackCollection.getTracks().get(realIndex);
+        return tracks.get(realIndex);
     }
 
     /**
@@ -101,11 +105,11 @@ public class Iterator implements AbstractIterator {
      */
     @Override
     public void setStrategy(ExecutionStrategy es) {
-        if (trackCollection == null || trackCollection.getTracks().isEmpty()) return;
+        if (tracks == null || tracks.isEmpty()) return;
         
         this.currentStrategy = es; // Salva la strategia in memoria
         
-        int size = trackCollection.getTracks().size();
+        int size = tracks.size();
         
         // Recuperiamo l'indice reale della traccia in corso per non interrompere l'ascolto
         int realCurrentIndex = 0;
@@ -136,7 +140,7 @@ public class Iterator implements AbstractIterator {
      */
     public void moveToTrack(Track track) {
         syncWithPlaylist();
-        int realIndex = trackCollection.getTracks().indexOf(track);
+        int realIndex = tracks.indexOf(track);
         if (realIndex != -1 && iterationindex != null) {
             for (int i = 0; i < iterationindex.length; i++) {
                 if (iterationindex[i] == realIndex) {
@@ -145,5 +149,15 @@ public class Iterator implements AbstractIterator {
                 }
             }
         }
+    }
+
+    /**
+     *
+     * Metodo che permette di ottenere l'identificatore di una TrackCollection (Il nome).
+     *
+     * @return L'identificatore della TrackCollection che l'iterator rappresenta.
+     */
+    public String getIdentifier(){
+        return this.name;
     }
 }

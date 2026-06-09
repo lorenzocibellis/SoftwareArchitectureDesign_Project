@@ -1,10 +1,8 @@
 package org.unisa.musicplaylistmanager.service.player;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.BorderPane;
 import org.unisa.musicplaylistmanager.player.Player;
 import org.unisa.musicplaylistmanager.player.PlayerController;
-import org.unisa.musicplaylistmanager.playlist.Playlist;
 import org.unisa.musicplaylistmanager.playlist.TrackCollection;
 import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
 import org.unisa.musicplaylistmanager.track.Track;
@@ -127,14 +125,14 @@ public class ActivePlayerManager implements PlayerManager {
     }
 
     /**
-    * Restituisce la collezione (Playlist o TrackList) attualmente in uso nel player.
+    * Restituisce l'identificatore della collezione (Playlist o TrackList) attualmente in uso nel player.
     *
-     * @return la collezione corrente, o {@code null} se il player è chiuso
+     * @return l'identificatore della collezione corrente, o {@code null} se il player è chiuso
     */
     @Override
-    public TrackCollection getCurrentPlaylist() {
+    public String getCurrentPlaylistIdentifier() {
         if (playerController != null && playerController.getPlayer() != null) {
-            return playerController.getPlayer().getCurrentPlaylist();
+            return playerController.getPlayer().getCurrentPlaylistIdentifier();
         }
         return null;
     }

@@ -1,6 +1,5 @@
 package org.unisa.musicplaylistmanager.service.player;
 
-import org.unisa.musicplaylistmanager.playlist.Playlist;
 import org.unisa.musicplaylistmanager.playlist.TrackCollection;
 import org.unisa.musicplaylistmanager.track.Track;
 
@@ -31,11 +30,11 @@ public interface PlayerManager {
     Track getCurrentTrack();
 
     /**
-     * Restituisce la playlist (o la tracklist principale) attualmente in uso nel player,
+     * Restituisce l'identificatore della playlist (o della tracklist principale) attualmente in uso nel player,
      * ovvero il contesto da cui è stata avviata la traccia.
      *
      */
-    TrackCollection getCurrentPlaylist();
+    String getCurrentPlaylistIdentifier();
 
     /**
      * Indica se il mini-player è aperto e visibile.

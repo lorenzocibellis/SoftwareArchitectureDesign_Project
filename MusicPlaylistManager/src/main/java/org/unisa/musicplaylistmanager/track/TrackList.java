@@ -31,7 +31,7 @@ public class TrackList extends TrackCollection implements BaseSubject{
      * Inizializza il subject per il pattern Observer e imposta il puntatore Singleton.
      */
     private TrackList(){
-        super("La Mia Libreria");
+        super(null);
         observers = new ArrayList<>();
         pnt = this;
     }

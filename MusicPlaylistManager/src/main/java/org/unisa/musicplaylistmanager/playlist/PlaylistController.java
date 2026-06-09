@@ -271,13 +271,13 @@ public class PlaylistController {
             // Memorizza lo stato del player PRIMA di rimuovere i dati, 
 
             Track playingTrack = ActivePlayerManager.getInstance().getCurrentTrack();
-            TrackCollection playingCollection = ActivePlayerManager.getInstance().getCurrentPlaylist();
+            String identifier = ActivePlayerManager.getInstance().getCurrentPlaylistIdentifier();
 
             // Pattern Command
             BaseTrackCommands command = new RemoveTrackCommand(toRemove, playlist ,playlistObservable);
             CommandInvoker.getCommandInvokerPointer().setCommand(command);
 
-            if (playingTrack != null && toRemove.contains(playingTrack) && playingCollection instanceof Playlist && playlist.equals(playingCollection)) {
+            if (playingTrack != null && toRemove.contains(playingTrack) && playlist.equals(new Playlist(identifier))) {
                 ActivePlayerManager.getInstance().closePlayer();
             }
         }

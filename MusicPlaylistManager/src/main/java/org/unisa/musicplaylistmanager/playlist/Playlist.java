@@ -7,6 +7,7 @@ package org.unisa.musicplaylistmanager.playlist;
  *
  * @author gruppo10
  */
+import javafx.scene.control.Alert;
 import org.unisa.musicplaylistmanager.observer.BaseObserver;
 import org.unisa.musicplaylistmanager.track.Track;
 import org.unisa.musicplaylistmanager.track.TrackList;
@@ -19,9 +20,14 @@ public class Playlist extends TrackCollection implements BaseObserver {
      * Costruisce una nuova playlist con il nome specificato.
      * 
      * @param name il nome della playlist
+     *
+     * @throws IllegalArgumentException Quando il nome della playlist è null
      */
     public Playlist(String name) {
         super(name);
+        if(name == null || name.equals(super.TRACKLIST_NAME)) {
+            throw new IllegalArgumentException();
+        }
         TrackList.getTrackListPointer().attach(this);
     }
 

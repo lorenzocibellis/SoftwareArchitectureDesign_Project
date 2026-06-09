@@ -19,7 +19,6 @@ import org.unisa.musicplaylistmanager.command.DeletePlaylistCommand;
 import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -179,9 +178,9 @@ public class PlaylistListController {
 
 
             // Se stiamo eliminando la playlist in riproduzione, chiudi il player
-            // Utilizzo TrackCollection per gestire correttamente sia Playlist che TrackList
-            TrackCollection playingCollection = ActivePlayerManager.getInstance().getCurrentPlaylist();
-            if (playingCollection instanceof Playlist && toRemove.contains((Playlist) playingCollection)) {
+            // Ottengo l'identificatore della TrackCollection presa in considerazione
+            String identifier = ActivePlayerManager.getInstance().getCurrentPlaylistIdentifier();
+            if (toRemove.contains(new Playlist(identifier))) {
                 ActivePlayerManager.getInstance().closePlayer();
             }
         }

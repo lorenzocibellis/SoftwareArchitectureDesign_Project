@@ -1,14 +1,18 @@
 package org.unisa.musicplaylistmanager.playlist;
 
+import org.unisa.musicplaylistmanager.iterator.AbstractIterator;
+import org.unisa.musicplaylistmanager.iterator.IterableCollection;
+import org.unisa.musicplaylistmanager.iterator.Iterator;
 import org.unisa.musicplaylistmanager.track.Track;
 import org.unisa.musicplaylistmanager.track.TrackList;
 
 import java.util.ArrayList;
 
-public abstract class TrackCollection {
+public abstract class TrackCollection implements IterableCollection {
     private String name;
     private ArrayList<Track> tracks;
 
+    protected final String TRACKLIST_NAME = "La Mia Libreria";
 
     /**
      * Costruisce una nuova playlist con il nome specificato.
@@ -16,7 +20,10 @@ public abstract class TrackCollection {
      * @param name il nome della playlist
      */
     public TrackCollection(String name) {
-        this.name = name;
+        if(name != null)
+            this.name = name;
+        else
+            this.name = TRACKLIST_NAME;
         this.tracks = new ArrayList<Track>();
     }
 
@@ -177,6 +184,10 @@ public abstract class TrackCollection {
                 trackList.updateTrack(existingTrack, newDataTrack);
             }
         }
+    }
+
+    public AbstractIterator createIterator(){
+        return new Iterator(this);
     }
 
 

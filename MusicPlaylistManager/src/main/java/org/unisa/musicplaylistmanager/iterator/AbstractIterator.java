@@ -13,4 +13,6 @@ public interface AbstractIterator {
     Track getNext();
     Track getPrevious();
     void setStrategy(ExecutionStrategy strategy);
+    void moveToTrack(Track track);
+    String getIdentifier();
 }
