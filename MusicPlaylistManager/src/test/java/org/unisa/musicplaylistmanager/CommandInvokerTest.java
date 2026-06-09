@@ -7,9 +7,17 @@ import org.unisa.musicplaylistmanager.command.CommandInvoker;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ *
+ * Classe di test per {@link CommandInvoker}
+ *
+ */
 class CommandInvokerTest {
 
+    //Attributi
     private CommandInvoker invoker;
+
+    //Dimensione della coda dei comandi
     private final int x = 10;
 
     @BeforeEach
