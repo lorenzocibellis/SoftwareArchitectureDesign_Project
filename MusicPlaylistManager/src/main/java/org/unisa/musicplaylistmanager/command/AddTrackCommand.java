@@ -13,8 +13,7 @@ import java.util.ArrayList;
  *
  */
 public class AddTrackCommand extends BaseTrackCommands{
-
-
+    
     /**
      *
      * Costruttore.
@@ -24,6 +23,8 @@ public class AddTrackCommand extends BaseTrackCommands{
      * @param o Lista osservabile a cui aggiungere la traccia.
      */
     public AddTrackCommand(Track t, TrackCollection tc, ObservableList<Track> o){
+        if(t == null)
+            throw new IllegalArgumentException();
         ArrayList<Track> ts = new ArrayList<>();
         ts.add(t);
         setTracks(ts);

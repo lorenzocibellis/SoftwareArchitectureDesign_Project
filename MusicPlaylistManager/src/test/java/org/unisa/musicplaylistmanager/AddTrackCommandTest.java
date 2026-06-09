@@ -137,10 +137,11 @@ class AddTrackCommandTest {
     @Test
     void testExecuteConTracceNull() {
         // Inietto il null direttamente dalla porta principale (il costruttore pubblico)
-        AddTrackCommand command = new AddTrackCommand((Track) null, trackList, obsList);
+        AddTrackCommand command = new AddTrackCommand((ArrayList<Track>) null, trackList, obsList);
 
         assertThrows(IllegalArgumentException.class, () -> command.execute());
     }
+
 
     /**
      *
