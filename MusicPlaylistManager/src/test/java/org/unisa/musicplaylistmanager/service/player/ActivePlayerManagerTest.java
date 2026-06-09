@@ -46,7 +46,7 @@ class ActivePlayerManagerTest {
     @DisplayName("Getter: devono ritornare null se il player non è aperto")
     void testGettersReturnNullWhenClosed() {
         assertNull(manager.getCurrentTrack());
-        assertNull(manager.getCurrentPlaylist());
+        assertNull(manager.getCurrentPlaylistIdentifier());
     }
     @Test
     @DisplayName("Singleton: getInstance deve ritornare sempre la stessa istanza")
