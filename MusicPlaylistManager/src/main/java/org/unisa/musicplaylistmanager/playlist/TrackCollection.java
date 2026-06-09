@@ -104,15 +104,6 @@ public abstract class TrackCollection {
     }
 
     /**
-     * Annulla l'ultima operazione (non supportato al momento).
-     *
-     * @throws UnsupportedOperationException sempre
-     */
-    public void undo(){
-        throw new UnsupportedOperationException();
-    }
-
-    /**
      * Verifica l'uguaglianza tra questa playlist e un altro oggetto.
      * Due playlist sono considerate uguali se hanno lo stesso nome.
      *

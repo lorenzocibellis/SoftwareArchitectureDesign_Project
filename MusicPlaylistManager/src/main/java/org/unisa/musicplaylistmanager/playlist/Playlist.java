@@ -26,15 +26,6 @@ public class Playlist extends TrackCollection implements BaseObserver {
     }
 
 
-    /**
-     * Annulla l'ultima operazione (non supportato al momento).
-     * 
-     * @throws UnsupportedOperationException sempre
-     */
-    public void undo(){
-        throw new UnsupportedOperationException();
-    }
-
     @Override
     public void update(Track track) {
         this.removeTrack(track);
