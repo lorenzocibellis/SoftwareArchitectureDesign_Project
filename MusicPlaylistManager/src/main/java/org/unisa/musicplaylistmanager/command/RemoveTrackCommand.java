@@ -80,15 +80,6 @@ public class RemoveTrackCommand extends BaseTrackCommands{
         if(tc != null){
             // rimuovo le tracce dalla collezione di tracce
             tc.removeAllTracks(ts);
-            // controllo che la collezione sia la libreria principale (TrackList)
-            if(tc.getClass() == TrackList.class){
-                // se lo è:
-                // uso il pattern Observer per aggiornare lo stato di tutti gli observer
-                TrackList tl = (TrackList) tc;
-                for(Track t: ts){
-                    tl.notifyObservers(t);
-                }
-            }
         }
     }
 }

@@ -70,15 +70,8 @@ public class AddTrackCommand extends BaseTrackCommands{
         if (tc != null) {
             // rimuove le tracce dalla collezione
             tc.removeAllTracks(ts);
-            // se la collezione è la libreria principale (TrackList)
-            if (tc.getClass() == TrackList.class) {
-                // Pattern Observer: notifico tutti gli observer così che possano aggiornare il loro stato
-                for(Track t: ts){
-                TrackList tl = (TrackList) tc;
-                tl.notifyObservers(t);
-                }
-            }
         }
+
         // ottengo il riferimento alla lista osservabile
         ObservableList<Track> obs = getObservableList();
         // se il riferimento non è nullo, rimuovo le tracce dalla lista osservabile
