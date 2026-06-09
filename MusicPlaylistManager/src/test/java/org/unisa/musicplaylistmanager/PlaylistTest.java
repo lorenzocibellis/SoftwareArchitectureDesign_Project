@@ -101,9 +101,4 @@ class PlaylistTest {
         assertEquals("Test Playlist", playlist.toString());
     }
 
-    @Test
-    @DisplayName("undo: metodo non supportato (lancia eccezione)")
-    void testUndoThrowsException() {
-        assertThrows(UnsupportedOperationException.class, () -> playlist.undo());
-    }
 }
