@@ -277,7 +277,7 @@ public class PlaylistController {
             BaseTrackCommands command = new RemoveTrackCommand(toRemove, playlist ,playlistObservable);
             CommandInvoker.getCommandInvokerPointer().setCommand(command);
 
-            if (playingTrack != null && toRemove.contains(playingTrack) && playlist.equals(new Playlist(identifier))) {
+            if (playingTrack != null && toRemove.contains(playingTrack) && playlist.getName().equals(identifier)) {
                 ActivePlayerManager.getInstance().closePlayer();
             }
         }

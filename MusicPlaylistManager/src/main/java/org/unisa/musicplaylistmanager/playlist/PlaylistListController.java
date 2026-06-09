@@ -180,7 +180,7 @@ public class PlaylistListController {
             // Se stiamo eliminando la playlist in riproduzione, chiudi il player
             // Ottengo l'identificatore della TrackCollection presa in considerazione
             String identifier = ActivePlayerManager.getInstance().getCurrentPlaylistIdentifier();
-            if (toRemove.contains(new Playlist(identifier))) {
+            if (identifier != null && toRemove.stream().anyMatch(p -> p.getName().equals(identifier))) {
                 ActivePlayerManager.getInstance().closePlayer();
             }
         }
