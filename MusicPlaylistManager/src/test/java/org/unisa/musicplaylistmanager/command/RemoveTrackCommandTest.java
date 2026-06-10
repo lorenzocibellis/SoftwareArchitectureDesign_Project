@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.unisa.musicplaylistmanager.command.RemoveTrackCommand;
 import org.unisa.musicplaylistmanager.observer.BaseObserver;
 import org.unisa.musicplaylistmanager.playlist.Playlist;
+import org.unisa.musicplaylistmanager.playlist.PlaylistList;
 import org.unisa.musicplaylistmanager.track.Track;
 import org.unisa.musicplaylistmanager.track.TrackList;
 
@@ -31,6 +32,15 @@ class RemoveTrackCommandTest {
     @BeforeEach
     void setUp() {
         trackList = TrackList.getTrackListPointer();
+
+        // Scollega e rimuove tutte le playlist prima di svuotare la TrackList,
+        // per evitare che la notifica observer interferisca con il cleanup
+        PlaylistList playlistList = PlaylistList.getPlaylistListPointer();
+        ArrayList<Playlist> existingPlaylists = new ArrayList<>(playlistList.getPlaylists());
+        for (Playlist p : existingPlaylists) {
+            trackList.detach(p);
+            playlistList.deletePlaylist(p);
+        }
 
         // Svuotiamo il singleton prima del test
         ArrayList<Track> oldList = new ArrayList<>(trackList.getTracks());
@@ -242,5 +252,107 @@ class RemoveTrackCommandTest {
 
         assertDoesNotThrow(() -> command.undo(),
                 "Il comando deve poter eseguire undo() in sicurezza se i contenitori sono nulli.");
+    }
+
+    /**
+     *
+     * Verifica che undo() ripristini la traccia nella playlist che la conteneva prima
+     * dell'eliminazione. La rimozione dalla TrackList notifica le playlist (Observer),
+     * che rimuovono la traccia da sé stesse; l'undo deve invertire anche questo effetto.
+     *
+     */
+    @Test
+    void testUndoRipristinaTracceNellePlaylistObserver() {
+        System.out.println("=== INIZIO: testUndoRipristinaTracceNellePlaylistObserver ===");
+        trackList.addTrack(track1);
+        trackList.addTrack(track2);
+        obsList.addAll(track1, track2);
+
+        Playlist playlist = new Playlist("PlaylistTest");
+        PlaylistList.getPlaylistListPointer().addPlaylist(playlist);
+        playlist.addTrack(track1);
+
+        RemoveTrackCommand command = new RemoveTrackCommand(listaTracce, trackList, obsList);
+
+        // execute() rimuove da TrackList → l'Observer notifica la playlist → playlist rimuove track1
+        command.execute();
+        assertFalse(playlist.getTracks().contains(track1),
+                "Dopo execute(), track1 deve essere stata rimossa dalla playlist via Observer.");
+        assertFalse(playlist.getTracks().contains(track2),
+                "track2 non era nella playlist, non vi deve essere neanche dopo execute().");
+
+        // undo() deve ripristinare track1 nella playlist
+        command.undo();
+        assertTrue(playlist.getTracks().contains(track1),
+                "Dopo undo(), track1 deve essere ripristinata nella playlist.");
+        assertFalse(playlist.getTracks().contains(track2),
+                "Dopo undo(), track2 non deve essere nella playlist poiché non vi era mai stata.");
+        System.out.println("=== FINE: testUndoRipristinaTracceNellePlaylistObserver ===\n");
+    }
+
+    /**
+     *
+     * Verifica che undo() ripristini una traccia in più playlist simultaneamente,
+     * quando la traccia era presente in ciascuna di esse prima della rimozione.
+     *
+     */
+    @Test
+    void testUndoRipristinaTracceInPiuPlaylist() {
+        System.out.println("=== INIZIO: testUndoRipristinaTracceInPiuPlaylist ===");
+        trackList.addTrack(track1);
+        obsList.add(track1);
+
+        PlaylistList playlistList = PlaylistList.getPlaylistListPointer();
+        Playlist playlist1 = new Playlist("Playlist1");
+        Playlist playlist2 = new Playlist("Playlist2");
+        playlistList.addPlaylist(playlist1);
+        playlistList.addPlaylist(playlist2);
+        playlist1.addTrack(track1);
+        playlist2.addTrack(track1);
+
+        ArrayList<Track> singleTrack = new ArrayList<>();
+        singleTrack.add(track1);
+        RemoveTrackCommand command = new RemoveTrackCommand(singleTrack, trackList, obsList);
+
+        command.execute();
+        assertFalse(playlist1.getTracks().contains(track1),
+                "Dopo execute(), track1 non deve essere in playlist1.");
+        assertFalse(playlist2.getTracks().contains(track1),
+                "Dopo execute(), track1 non deve essere in playlist2.");
+
+        command.undo();
+        assertTrue(playlist1.getTracks().contains(track1),
+                "Dopo undo(), track1 deve essere ripristinata nella playlist1.");
+        assertTrue(playlist2.getTracks().contains(track1),
+                "Dopo undo(), track1 deve essere ripristinata nella playlist2.");
+        System.out.println("=== FINE: testUndoRipristinaTracceInPiuPlaylist ===\n");
+    }
+
+    /**
+     *
+     * Verifica che undo() non generi eccezioni quando la traccia rimossa non era
+     * presente in nessuna playlist.
+     *
+     */
+    @Test
+    void testUndoConTracciaInNessunaPlaylist() {
+        System.out.println("=== INIZIO: testUndoConTracciaInNessunaPlaylist ===");
+        trackList.addTrack(track1);
+        obsList.add(track1);
+
+        Playlist playlist = new Playlist("PlaylistVuota");
+        PlaylistList.getPlaylistListPointer().addPlaylist(playlist);
+
+        ArrayList<Track> singleTrack = new ArrayList<>();
+        singleTrack.add(track1);
+        RemoveTrackCommand command = new RemoveTrackCommand(singleTrack, trackList, obsList);
+
+        command.execute();
+
+        assertDoesNotThrow(() -> command.undo(),
+                "undo() non deve lanciare eccezioni quando la traccia non era in nessuna playlist.");
+        assertFalse(playlist.getTracks().contains(track1),
+                "track1 non deve essere nella playlist, poiché non vi era prima della rimozione.");
+        System.out.println("=== FINE: testUndoConTracciaInNessunaPlaylist ===\n");
     }
 }

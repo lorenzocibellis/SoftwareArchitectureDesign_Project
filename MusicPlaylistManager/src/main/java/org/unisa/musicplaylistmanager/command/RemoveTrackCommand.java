@@ -60,7 +60,7 @@ public class RemoveTrackCommand extends BaseTrackCommands{
                 obs.add(t);
 
             // riaggiungo la traccia a tutte le playlist in cui era stata eliminata
-            for(Playlist p: playlistMap.get(t)){
+            for(Playlist p: playlistMap.getOrDefault(t, new ArrayList<>())){
                 p.addTrack(t);
             }
         }
