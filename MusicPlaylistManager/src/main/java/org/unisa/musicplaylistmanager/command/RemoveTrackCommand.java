@@ -1,13 +1,23 @@
 package org.unisa.musicplaylistmanager.command;
 
 import javafx.collections.ObservableList;
+import org.unisa.musicplaylistmanager.playlist.Playlist;
+import org.unisa.musicplaylistmanager.playlist.PlaylistList;
 import org.unisa.musicplaylistmanager.playlist.TrackCollection;
 import org.unisa.musicplaylistmanager.track.Track;
 import org.unisa.musicplaylistmanager.track.TrackList;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class RemoveTrackCommand extends BaseTrackCommands{
+
+    //ATTRIBUTI
+    // HashMap utile a implementare l'undo dell'eliminazione di una traccia anche dalle playlist
+    // che implementano l'observer
+    private Map<Track, List<Playlist>> playlistMap = new HashMap<>();
 
     /**
      *
@@ -48,6 +58,11 @@ public class RemoveTrackCommand extends BaseTrackCommands{
 
             if (obs != null)
                 obs.add(t);
+
+            // riaggiungo la traccia a tutte le playlist in cui era stata eliminata
+            for(Playlist p: playlistMap.get(t)){
+                p.addTrack(t);
+            }
         }
     }
 
@@ -78,6 +93,25 @@ public class RemoveTrackCommand extends BaseTrackCommands{
 
         // controllo che il riferimento alla collezione di tracce non sia null
         if(tc != null){
+
+            // controllo che la TrackCollection sia una TrackList
+            if(tc instanceof TrackList){
+                // Se lo è, inizio a popolare l'hashMap
+                ArrayList<Playlist> temp = PlaylistList.getPlaylistListPointer().getPlaylists();
+                for(Track t: ts){
+                    // creo l'array di playlist che contengono una certa traccia
+                    ArrayList<Playlist> playlistWTrack = new ArrayList<>();
+                    for(Playlist p: temp){
+                        // controllo che la traccia sia contenuta in una certa playlist
+                        if(p.getTracks().contains(t))
+                            // se è contenuta, aggiungo la playlist alla lista di playlist che contengono la data traccia
+                            playlistWTrack.add(p);
+                    }
+                    // memorizzo la lista di playlist che contengono una data traccia con la traccia stessa come chiave
+                    playlistMap.put(t, playlistWTrack);
+                }
+            }
+
             // rimuovo le tracce dalla collezione di tracce
             tc.removeAllTracks(ts);
         }
