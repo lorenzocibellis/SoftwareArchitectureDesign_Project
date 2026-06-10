@@ -8,11 +8,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.stage.Stage;
-import org.unisa.musicplaylistmanager.command.AddTrackCommand;
-import org.unisa.musicplaylistmanager.command.BaseTrackCommands;
 import org.unisa.musicplaylistmanager.track.Track;
 import org.unisa.musicplaylistmanager.track.TrackCellController;
-
 import java.util.List;
 import java.util.ArrayList;
 

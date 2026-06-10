@@ -30,7 +30,7 @@ import java.util.Optional;
  *
  * @author gruppo10
  */
-public class PlaylistListController {
+public class  PlaylistListController {
 
     //Dichiarazione attributi
     @FXML

@@ -18,7 +18,6 @@ import javafx.stage.Stage;
 import org.unisa.musicplaylistmanager.command.BaseTrackCommands;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;
 import org.unisa.musicplaylistmanager.command.RemoveTrackCommand;
-import org.unisa.musicplaylistmanager.player.PlayerController;
 import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
 import javafx.beans.value.ChangeListener;
@@ -27,9 +26,7 @@ import javafx.beans.value.WeakChangeListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.time.Year;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Optional;
 import javafx.geometry.Insets;
 
@@ -235,12 +232,8 @@ public class TrackListController {
 
             // Memorizziamo lo stato del player PRIMA di distruggere i dati
             Track playingTrack = ActivePlayerManager.getInstance().getCurrentTrack();
-/*
-            // Aggiorniamo l'interfaccia visiva
-            trackListObservable.removeAll(toRemove);
-            // La TrackList si occuperà in automatico di rimuovere i dati e avvisare gli observer
-            trackList.removeAllTracks(toRemove);
- */
+
+
             BaseTrackCommands command = new RemoveTrackCommand(toRemove, trackList, trackListObservable);
             CommandInvoker.getCommandInvokerPointer().setCommand(command);
 

@@ -10,7 +10,6 @@ import javafx.stage.Stage;
 import org.unisa.musicplaylistmanager.command.AddTrackCommand;
 import org.unisa.musicplaylistmanager.command.BaseTrackCommands;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;
-import org.unisa.musicplaylistmanager.playlist.Playlist;
 import org.unisa.musicplaylistmanager.playlist.TrackCollection;
 
 import java.io.IOException;
@@ -284,7 +283,7 @@ public class TrackController {
      * Imposta il riferimento alla Playlist (o TrackList) in cui si sta
      * salvando o modificando la traccia.
      * 
-     * @param tc l'oggetto Playlist
+     * @param tc l'oggetto TrackList
      */
     public void setTrackList(TrackCollection tc) {
         trackList = tc;
