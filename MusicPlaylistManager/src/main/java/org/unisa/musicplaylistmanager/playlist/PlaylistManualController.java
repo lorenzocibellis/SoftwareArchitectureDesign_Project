@@ -31,7 +31,6 @@ public class PlaylistManualController {
 
     private PlaylistList playlistList;
     private ObservableList<Playlist> playlistListObservable;
-    private CommandInvoker commandInvoker;
 
     /**
      * Aggiunge la playlist creata sia al modello dei dati sia alla lista osservabile
