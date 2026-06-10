@@ -335,7 +335,7 @@ public class PlaylistController {
      * @param event l'evento generato dal click.
      */
     @FXML
-    public void undo(ActionEvent event) throws IOException {
+    void undo(ActionEvent event) throws IOException {
         commandInvoker.undoCommand();
         playlistObservable.setAll(playlist.getTracks());
         listView.refresh();

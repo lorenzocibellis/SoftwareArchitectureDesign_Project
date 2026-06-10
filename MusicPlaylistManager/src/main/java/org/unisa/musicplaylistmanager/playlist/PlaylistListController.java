@@ -221,7 +221,7 @@ public class PlaylistListController {
      * @param event l'evento generato dal click.
      */
     @FXML
-    public void undo(ActionEvent event){
+    void undo(ActionEvent event){
         commandInvoker.undoCommand();
         playlistListObservable.setAll(playlistList.getPlaylists());
         // ricarico gli elementi visuali
