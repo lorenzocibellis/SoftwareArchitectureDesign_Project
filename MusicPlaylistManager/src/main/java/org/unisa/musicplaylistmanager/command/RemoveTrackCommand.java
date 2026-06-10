@@ -17,7 +17,7 @@ public class RemoveTrackCommand extends BaseTrackCommands{
     //ATTRIBUTI
     // HashMap utile a implementare l'undo dell'eliminazione di una traccia anche dalle playlist
     // che implementano l'observer
-    private Map<Track, List<Playlist>> playlistMap = new HashMap<>();
+    private HashMap<Track, ArrayList<Playlist>> playlistMap = new HashMap<>();
 
     /**
      *
