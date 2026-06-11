@@ -1,5 +1,6 @@
 package org.unisa.musicplaylistmanager.track;
 
+import javafx.beans.value.WeakChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -7,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.beans.value.ChangeListener;
 
 import java.io.IOException;
 import java.util.function.Consumer;
@@ -54,6 +56,19 @@ public class TrackCellController extends ListCell<Track> {
     // METODI
 
     /**
+     * Listener che osserva i cambiamenti della traccia in riproduzione.
+     * Mantenuto come riferimento forte per evitare che venga rimosso dal Garbage Collector
+     * quando si utilizza un WeakChangeListener.
+     */
+    private final ChangeListener<Track> playerListener = (obs, oldTrack, newTrack) -> {
+        Track myTrack = getItem();
+        if (myTrack != null) {
+            boolean isPlaying = (newTrack != null && newTrack.equals(myTrack));
+            updateStyle(isPlaying);
+        }
+    };
+
+    /**
      * Costruttore.
      *
      * @param onInfoClicked funzione che viene eseguita quando il bottone "info" viene cliccato.
@@ -61,6 +76,11 @@ public class TrackCellController extends ListCell<Track> {
     public TrackCellController(Consumer<Track> onInfoClicked) {
         this.onInfoClicked = onInfoClicked;
         loadFXML();
+        
+        //  listener legato alla cella per reagire istantaneamente ai cambi di traccia
+        ActivePlayerManager.getInstance().currentTrackProperty().addListener(
+            new WeakChangeListener<>(playerListener)
+        );
     }
 
     /**
@@ -74,6 +94,29 @@ public class TrackCellController extends ListCell<Track> {
             root = loader.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+    
+    /**
+     * Applica gli stili CSS alla cella per indicare visivamente se la traccia è 
+     * attualmente in riproduzione o meno.
+     *
+     * @param isPlaying {@code true} se la traccia è in riproduzione e deve essere evidenziata, {@code false} altrimenti.
+     */
+    private void updateStyle(boolean isPlaying) {
+        if (isPlaying) {
+            // Se la canzone è attualmente in riproduzione,
+            // applica uno stile CSS inline per evidenziare il titolo in blu.
+            titleLabel.setStyle("-fx-text-fill: #007AFF;"); 
+            iconContainer.setStyle("-fx-background-color: #D5E5F5; -fx-background-radius: 5;");
+            iconLabel.setText("ılılı");
+            iconLabel.setStyle("-fx-text-fill: #007AFF;");
+        } else {
+            // Se la canzone NON è in riproduzione, ripristina lo stile predefinito:
+            titleLabel.setStyle("-fx-text-fill: #1D1D1F;");
+            iconContainer.setStyle("-fx-background-color: #EAEAEA; -fx-background-radius: 5;");
+            iconLabel.setText("♫");
+            iconLabel.setStyle("-fx-text-fill: #888888;"); 
         }
     }
 
@@ -115,20 +158,7 @@ public class TrackCellController extends ListCell<Track> {
             Track playingTrack = ActivePlayerManager.getInstance().currentTrackProperty().get();
             boolean isPlaying = (playingTrack != null && playingTrack.equals(track));
 
-            if (isPlaying) {
-                // Se la canzone è attualmente in riproduzione,
-                // applica uno stile CSS inline per evidenziare il titolo in blu.
-                titleLabel.setStyle("-fx-text-fill: #007AFF;"); 
-                iconContainer.setStyle("-fx-background-color: #D5E5F5; -fx-background-radius: 5;");
-                iconLabel.setText("ılılı");
-                iconLabel.setStyle("-fx-text-fill: #007AFF;");
-            } else {
-                // Se la canzone NON è in riproduzione, ripristina lo stile predefinito:
-                titleLabel.setStyle("-fx-text-fill: #1D1D1F;");
-                iconContainer.setStyle("-fx-background-color: #EAEAEA; -fx-background-radius: 5;");
-                iconLabel.setText("♫");
-                iconLabel.setStyle("-fx-text-fill: #888888;"); 
-            }
+            updateStyle(isPlaying);
 
             // Imposta il layout FXML caricato come grafica della cella
             setText(null);

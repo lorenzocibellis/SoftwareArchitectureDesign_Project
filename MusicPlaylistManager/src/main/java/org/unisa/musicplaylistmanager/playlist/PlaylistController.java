@@ -74,9 +74,8 @@ public class PlaylistController {
     private Playlist playlist;
     private BooleanSupplier playlistValidator;
 
-
+    // Riferimento forte al listener per prevenire la garbage collection precoce quando usiamo WeakChangeListener
     private ChangeListener<Boolean> playerActiveListener;
-    private ChangeListener<Track> currentTrackListener;
 
     private CommandInvoker commandInvoker;
 
@@ -102,12 +101,6 @@ public class PlaylistController {
                 new WeakChangeListener<>(playerActiveListener)
         );
         updateBottomPadding();
-
-        // Aggiunge un listener sulla proprietà della traccia corrente dell'ActivePlayerManager.
-        currentTrackListener = (obs, oldTrack, newTrack) -> listView.refresh();
-        ActivePlayerManager.getInstance().currentTrackProperty().addListener(
-                new WeakChangeListener<>(currentTrackListener)
-        );
     }
 
     /**
