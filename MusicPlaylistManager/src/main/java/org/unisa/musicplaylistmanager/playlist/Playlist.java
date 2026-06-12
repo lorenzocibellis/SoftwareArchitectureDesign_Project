@@ -14,7 +14,7 @@ import org.unisa.musicplaylistmanager.track.TrackList;
 
 import java.util.ArrayList;
 
-public class Playlist extends TrackCollection implements BaseObserver {
+public class Playlist extends TrackCollection implements BaseObserver, MostPlayed {
 
     //ATTRIBUTI
     // indica il numero di volte che la playlist è stata ascoltata
