@@ -16,6 +16,10 @@ import java.util.ArrayList;
 
 public class Playlist extends TrackCollection implements BaseObserver {
 
+    //ATTRIBUTI
+    // indica il numero di volte che la playlist è stata ascoltata
+    private int numOfPlay;
+
     /**
      * Costruisce una nuova playlist con il nome specificato.
      * 
@@ -28,6 +32,7 @@ public class Playlist extends TrackCollection implements BaseObserver {
         if(name == null || name.equals(TrackList.TRACKLIST_NAME)) {
             throw new IllegalArgumentException("Non è possibile creare una playlist con questo nome!");
         }
+        numOfPlay = 0;
         TrackList.getTrackListPointer().attach(this);
     }
 
@@ -46,4 +51,20 @@ public class Playlist extends TrackCollection implements BaseObserver {
     public void update(Track track) {
         this.removeTrack(track);
     }
+
+    /**
+     *
+     * Restituisce il numero di volte che la playlist è stata ascoltata.
+     *
+     * @return numOfPlay Numero di volte che la playlist è stata ascoltata.
+     *
+     */
+    public int getNumOfPlay(){ return numOfPlay;}
+
+    /**
+     *
+     * Incrementa di 1 il numero di ascolti della playlist
+     *
+     */
+    public void incrementNumOfPlay(){ numOfPlay += 1;}
 }
