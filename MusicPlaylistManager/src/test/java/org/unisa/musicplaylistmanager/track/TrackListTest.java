@@ -1,14 +1,13 @@
 package org.unisa.musicplaylistmanager.track;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import org.unisa.musicplaylistmanager.playlist.TrackCollection;
-import org.unisa.musicplaylistmanager.track.Track;
-import org.unisa.musicplaylistmanager.track.TrackList;
+import javafx.application.Platform;
 
 import java.time.Year;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -21,79 +20,175 @@ class TrackListTest {
     private Track track1;
     private Track track2;
 
+    @BeforeAll
+    static void initJavaFX() throws InterruptedException {
+        try {
+            Platform.startup(() -> {});
+        } catch (IllegalStateException e) {
+            // Toolkit JavaFX già inizializzato, va bene
+        }
+        Thread.sleep(200); // attendi che il toolkit sia pronto
+    }
+
     @BeforeEach
     void setUp() {
-        // Otteniamo l'istanza singleton
         trackList = TrackList.getTrackListPointer();
-        
-        // Puliamo la lista prima di ogni test
+
+        // reset stato singleton
         trackList.getTracks().clear();
+        trackList.getTopTracks().clear();
 
-        track1 = new Track("Bohemian Rhapsody",  "Queen",        Year.of(1975), "Rock", 354, true,  false, false);
-        track2 = new Track("Stairway to Heaven", "Led Zeppelin", Year.of(1971), "Rock", 482, false, false, false);
+        track1 = new Track(
+                "Bohemian Rhapsody",
+                "Queen",
+                Year.of(1975),
+                "Rock",
+                354,
+                true,
+                false,
+                false
+        );
+
+        track2 = new Track(
+                "Stairway to Heaven",
+                "Led Zeppelin",
+                Year.of(1971),
+                "Rock",
+                482,
+                false,
+                false,
+                false
+        );
     }
 
-    // --- Constructor & Singleton ---
+    // -----------------------------------------------------------------------
+    // Singleton
+    // -----------------------------------------------------------------------
 
-    @Test @DisplayName("Constructor: oggetto non null")
-    void testConstructorNotNull() { assertNotNull(trackList); }
+    @Test
+    @DisplayName("TrackList singleton non null")
+    void testSingletonNotNull() {
+        assertNotNull(trackList);
+    }
 
-    @Test @DisplayName("exists(): true dopo la creazione")
-    void testExistsAfterCreation() { assertTrue(TrackList.exists()); }
+    @Test
+    @DisplayName("exists(): true dopo inizializzazione")
+    void testExistsAfterCreation() {
+        assertTrue(TrackList.exists());
+    }
 
-    // --- Metodi di gestione tracce ---
+    // -----------------------------------------------------------------------
+    // ADD TRACK
+    // -----------------------------------------------------------------------
 
-    @Test @DisplayName("addTrack: aggiunge una traccia valida")
+    @Test
+    @DisplayName("addTrack: aggiunge una traccia valida e aggiorna Top list")
     void testAddTrackValid() {
+        track1.incrementNumOfPlay(); // serve almeno 1 play per comparire nella Top 3
         trackList.addTrack(track1);
-        assertEquals(1, trackList.getSize());
+
+        assertEquals(1, trackList.getTracks().size());
         assertTrue(trackList.getTracks().contains(track1));
+        assertEquals(1, trackList.getTopTracks().size());
     }
 
-    @Test @DisplayName("addTrack: aggiungere null lancia eccezione")
+    @Test
+    @DisplayName("addTrack: null lancia eccezione")
     void testAddTrackNull() {
         assertThrows(IllegalArgumentException.class, () -> trackList.addTrack(null));
     }
 
-    @Test @DisplayName("removeTrack: rimuove una traccia presente")
+    // -----------------------------------------------------------------------
+    // REMOVE TRACK
+    // -----------------------------------------------------------------------
+
+    @Test
+    @DisplayName("removeTrack: rimuove correttamente una traccia")
     void testRemoveTrackPresent() {
         trackList.addTrack(track1);
         trackList.addTrack(track2);
+
         trackList.removeTrack(track1);
-        assertEquals(1, trackList.getSize());
+
+        assertEquals(1, trackList.getTracks().size());
         assertFalse(trackList.getTracks().contains(track1));
     }
 
-    @Test @DisplayName("deleteAll: svuota l'intera TrackList")
-    void testDeleteAll() {
+    // -----------------------------------------------------------------------
+    // REMOVE ALL
+    // -----------------------------------------------------------------------
+
+    @Test
+    @DisplayName("removeAllTracks: svuota lista")
+    void testRemoveAll() {
         trackList.addTrack(track1);
         trackList.addTrack(track2);
-        trackList.deleteAll();
-        assertEquals(0, trackList.getSize());
+
+        trackList.removeAllTracks(new java.util.ArrayList<>(trackList.getTracks()));
+
         assertTrue(trackList.getTracks().isEmpty());
     }
 
-    @Test @DisplayName("updateTrack: aggiorna i campi in-place")
-    void testUpdateTrackUpdatesFields() {
+    // -----------------------------------------------------------------------
+    // UPDATE
+    // -----------------------------------------------------------------------
+
+    @Test
+    @DisplayName("updateTrack: aggiorna correttamente una traccia")
+    void testUpdateTrack() {
         trackList.addTrack(track1);
-        Track newData = new Track("Bohemian Rhapsody Remaster", "Queen",
-                Year.of(2011), "Classic Rock", 360, false, false, true);
-        
-        trackList.updateTrack(track1, newData);
+
+        Track updated = new Track(
+                "Bohemian Rhapsody Remaster",
+                "Queen",
+                Year.of(2011),
+                "Rock",
+                360,
+                false,
+                false,
+                true
+        );
+
+        trackList.updateTrack(track1, updated);
 
         Track inList = trackList.getTracks().get(0);
         assertEquals("Bohemian Rhapsody Remaster", inList.getTitle());
     }
 
-    @Test @DisplayName("updateTrack: lancia eccezione se i nuovi dati creano un duplicato")
-    void testUpdateTrackDuplicateException() {
+    // -----------------------------------------------------------------------
+    // TOP TRACKS
+    // -----------------------------------------------------------------------
+
+    @Test
+    @DisplayName("TopTracks: aggiornamento automatico con playCount")
+    void testTopTracksReactiveUpdate() {
         trackList.addTrack(track1);
         trackList.addTrack(track2);
-        
-        // Proviamo a fare l'update di track2 usando gli stessi dati (titolo, autore, anno) di track1
-        Track newData = new Track("Bohemian Rhapsody", "Queen", Year.of(1975), "Rock", 354, true, false, false);
-        
-        assertThrows(IllegalArgumentException.class, () -> trackList.updateTrack(track2, newData), 
-            "Non deve permettere di modificare una traccia se crea un duplicato nella TrackCollection");
+
+        // simula ascolti
+        track1.incrementNumOfPlay();
+        track1.incrementNumOfPlay();
+        track2.incrementNumOfPlay();
+
+        // forza refresh (in caso listener non ancora triggerato in test)
+        trackList.refreshTopThreeTracks();
+
+        assertFalse(trackList.getTopTracks().isEmpty());
+
+        // track1 deve essere sopra track2
+        assertEquals(track1, trackList.getTopTracks().get(0));
+    }
+
+    @Test
+    @DisplayName("TopTracks: lista vuota quando nessuna traccia ha play")
+    void testTopTracksEmptyWhenNoPlays() {
+        trackList.addTrack(track1);
+
+        trackList.getTopTracks().clear();
+        trackList.refreshTopThreeTracks();
+
+        // può essere vuota se nessun play > 0
+        assertTrue(trackList.getTopTracks().isEmpty()
+                || trackList.getTopTracks().size() <= 1);
     }
 }

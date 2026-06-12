@@ -27,8 +27,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import javafx.geometry.Insets;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 /**
  * Controller per la schermata principale della libreria musicale (TrackListView).
@@ -55,7 +58,8 @@ public class TrackListController {
     private Button undoButton;
     @FXML
     private Label libraryName;
-
+@FXML
+private VBox topTracksContainer;
     //Definizione attributi
     //Path per accedere agli oggetti View.fxml
     private String resourceRoot = "/org/unisa/musicplaylistmanager/track/";
@@ -78,52 +82,53 @@ public class TrackListController {
      * per l'apertura del player.
      */
     @FXML
-    public void initialize() {
-        // Ottieni l'istanza (Singleton) in modo sicuro
-        trackList = TrackList.getTrackListPointer();
+public void initialize() {
 
-        libraryName.setText(trackList.getName());
-        // Carichiamo le tracce dal CSV se la lista è vuota
-        if (trackList.getTracks().isEmpty()) {
-            loadMockTracksFromCSV();
-        }
+    trackList = TrackList.getTrackListPointer();
 
-        // Inizializza l'ObservableList con i dati esistenti
-        trackListObservable = FXCollections.observableArrayList(trackList.getTracks());
-        commandInvoker = CommandInvoker.getCommandInvokerPointer();
-        undoButton.disableProperty().bind(commandInvoker.hasCommandsToUndoProperty().not());
+    libraryName.setText(trackList.getName());
 
-        // fa in modo che la list view usi la cella personalizzata
-        listView.setCellFactory(param -> new TrackCellController(this::showTrackDetails));
-
-        //wrapping della struttura dati osservabile in una lista della UI
-        listView.setItems(trackListObservable);
-
-        //Abilito la selezione multipla di elementi
-        listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
-        // Lega la proprietà 'disable' del bottone 'deleteButton' allo stato della selezione della lista.
-        // Se non ci sono elementi selezionati (isEmpty() è true), il bottone sarà disabilitato.
-        deleteButton.disableProperty().bind(Bindings.isEmpty(listView.getSelectionModel().getSelectedItems()));
-
-
-        // Gestione del doppio click su una riga per aprire il player
-        listView.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2) { // Apri il player con un doppio click
-                Track selected = listView.getSelectionModel().getSelectedItem();
-                if (selected == null) return;
-                openPlayerFor(selected);
-            }
-        });
-
-        // Ascolta le variazioni dello stato del player (apertura/chiusura) per aggiornare dinamicamente il padding inferiore della ListView.
-        // Utilizziamo un WeakChangeListener associato a un riferimento forte di istanza per evitare memory leak del controller.
-        playerActiveListener = (obs, oldVal, newVal) -> updateBottomPadding();
-        ActivePlayerManager.getInstance().playerActiveProperty().addListener(
-                new WeakChangeListener<>(playerActiveListener)
-        );
-        updateBottomPadding();
+    if (trackList.getTracks().isEmpty()) {
+        loadMockTracksFromCSV();
     }
+
+    trackListObservable = FXCollections.observableArrayList(trackList.getTracks());
+
+    commandInvoker = CommandInvoker.getCommandInvokerPointer();
+    undoButton.disableProperty().bind(commandInvoker.hasCommandsToUndoProperty().not());
+
+    listView.setCellFactory(param -> new TrackCellController(this::showTrackDetails));
+    listView.setItems(trackListObservable);
+
+    listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+    deleteButton.disableProperty().bind(
+        Bindings.isEmpty(listView.getSelectionModel().getSelectedItems())
+    );
+
+    listView.setOnMouseClicked(event -> {
+        if (event.getClickCount() == 2) {
+            Track selected = listView.getSelectionModel().getSelectedItem();
+            if (selected == null) return;
+            openPlayerFor(selected);
+        }
+    });
+
+    playerActiveListener = (obs, oldVal, newVal) -> updateBottomPadding();
+    ActivePlayerManager.getInstance().playerActiveProperty().addListener(
+            new WeakChangeListener<>(playerActiveListener)
+    );
+
+    updateBottomPadding();
+
+    // 🔥 FIX IMPORTANTE: binding diretto Top 3 UI
+    trackList.getTopTracks().addListener((javafx.collections.ListChangeListener<? super Track>) c -> {
+        Platform.runLater(this::refreshTopTracksUI);
+    });
+
+    trackList.refreshTopThreeTracks();
+    refreshTopTracksUI();
+}
 
     /**
      * Naviga verso la schermata delle Playlist (PlaylistListView).
@@ -341,7 +346,7 @@ public class TrackListController {
                     Track t = new Track(title, author, year, genre, duration, favourite, explicit, newRelease);
                     
                     // Aggiunta effettiva alla TrackList!
-                    trackList.getTracks().add(t); 
+                    trackList.addTrack(t);
                 }
             }
             System.out.println("Tracce caricate e aggiunte alla lista con successo!");
@@ -363,5 +368,42 @@ public class TrackListController {
         double padding = ActivePlayerManager.getInstance().getPlayerHeight();
         listView.setPadding(new Insets(0, 0, padding, 0));
     }
+    /**
+     * Aggiorna dinamicamente l'interfaccia grafica dedicata alla visualizzazione delle 
+     * tre tracce più riprodotte (Top 3).
+     * Il metodo recupera le tracce più ascoltate dalla {@link TrackList}, pulisce il 
+     * contenitore corrente e rigenera i blocchi grafici per ogni traccia, includendo 
+     * il binding automatico del numero di riproduzioni. 
+     * Se non sono presenti tracce ascoltate, visualizza un messaggio di stato (placeholder).
+     */
+    private void refreshTopTracksUI() {
+    topTracksContainer.getChildren().clear();
 
+    List<Track> top3 = trackList.getTopTracks();
+
+    if (top3.isEmpty()) {
+        Label emptyLabel = new Label("Ascolta qualche traccia per vedere qui la tua Top 3!");
+        emptyLabel.setStyle("-fx-text-fill: #888888;");
+        topTracksContainer.getChildren().add(emptyLabel);
+        return;
+    }
+
+    for (Track t : top3) {
+        // Usiamo un HBox per mettere "titolo di autore" e "n ascolti" sulla stessa riga
+        HBox trackRow = new HBox();
+        trackRow.setSpacing(10);
+        trackRow.setStyle(
+            "-fx-background-color: white; -fx-padding: 10; " +
+            "-fx-border-radius: 5; -fx-border-color: #E0E0E0; -fx-alignment: CENTER_LEFT;"
+        );
+
+        // Formato: "Titolo di Autore - N ascolti"
+        String displayText = t.getTitle() + " di " + t.getAuthor() + " - " + t.getNumOfPlay() + " ascolti";
+        Label trackLabel = new Label(displayText);
+        trackLabel.setStyle("-fx-font-weight: bold;");
+
+        trackRow.getChildren().add(trackLabel);
+        topTracksContainer.getChildren().add(trackRow);
+    }
+}
 }

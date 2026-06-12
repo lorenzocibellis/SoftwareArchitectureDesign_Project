@@ -43,9 +43,13 @@ public class Player {
     private Runnable onPauseUIUpdate;
     private Runnable onTrackChanged;
 
+    // FLAG per distinguere play nuovo vs resume da pausa (IMPORTANTE PER BUSINESS RULE)
+    private boolean resumed = false;
+
     /**
      * Costruttore della classe Player.
      * * @param defaultState    lo stato iniziale della riproduzione
+     * @param defaultState
      * @param iter la collezione di tracce (o playlist) da cui è stata avviata la canzone
      * @param currentTrack    la traccia attualmente in riproduzione
      */
@@ -116,12 +120,13 @@ public class Player {
     }
 
     /**
- * Restituisce l'identificatore della collezione (Playlist o TrackList) attualmente in riproduzione.
- * @return l'identificatore della TrackCollection corrente
- */
-public String getCurrentPlaylistIdentifier() {
-    return this.trackIterator.getIdentifier();
-}
+    * Restituisce l'identificatore della collezione (Playlist o TrackList) attualmente in riproduzione.
+    * @return l'identificatore della TrackCollection corrente
+    */
+    public String getCurrentPlaylistIdentifier() {
+        return this.trackIterator.getIdentifier();
+    }
+
     /**
      * Restituisce lo stato corrente del player.
      * @return lo stato attualmente attivo
@@ -148,9 +153,17 @@ public String getCurrentPlaylistIdentifier() {
     public void startPlayback() {
         // pulizia risorse timer
         if (timer != null) timer.cancel();
-        // creazione di un nuovo timer
+
         timer = new Timer();
-        
+
+        // incrementa SOLO se NON è un resume da pausa
+        if (!resumed) {
+            registerPlay();
+        }
+
+        // dopo il primo start, qualsiasi play successivo è resume
+        resumed = false;
+
         timer.scheduleAtFixedRate(new TimerTask() {
             // Thread per la riproduzione 
             @Override
@@ -178,7 +191,23 @@ public String getCurrentPlaylistIdentifier() {
             timer.cancel();
             timer = null;
         }
+
+        // ✔ IMPORTANTISSIMO: segnala che il prossimo play è un RESUME
+        resumed = true;
+
         if (onPauseUIUpdate != null) onPauseUIUpdate.run();
+    }
+    
+    /**
+    * Metodo che registra un riproduzione per la traccia attualmente selezionata.
+    * Recupera la traccia corrente tramite {@link #getCurrentTrack()} e, 
+    * se valida, incrementa il suo contatore di riproduzioni.
+    */
+    private void registerPlay() {
+        Track current = getCurrentTrack();
+        if (current != null) {
+            current.incrementNumOfPlay();
+        }
     }
 
     /**
@@ -188,6 +217,10 @@ public String getCurrentPlaylistIdentifier() {
         stopPlayback();
         this.elapsedSeconds = 0;
         this.trackIterator.getNext();
+
+        // nuova traccia = NON resume
+        resumed = false;
+    
         if (onTrackChanged != null) onTrackChanged.run();
         startPlayback();
     }
@@ -199,6 +232,10 @@ public String getCurrentPlaylistIdentifier() {
         stopPlayback();
         this.elapsedSeconds = 0;
         this.trackIterator.getPrevious();
+
+        // nuova traccia = NON resume
+        resumed = false;
+
         if (onTrackChanged != null) onTrackChanged.run();
         startPlayback();
     }

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
@@ -20,47 +20,48 @@
                         <Font name="System Bold" size="24.0" />
                     </font>
                 </Label>
-            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <Button fx:id="undoButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#undo" prefHeight="35.0" prefWidth="100.0" styleClass="playlist-button" text="↺  Undo">
-               <HBox.margin>
-                  <Insets right="20.0" />
-               </HBox.margin>
-            </Button>
-            <Button fx:id="goPlaylistButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#goPlaylist" prefHeight="35.0" prefWidth="100.0" styleClass="playlist-button" text="♫  Playlists">
-               <HBox.margin>
-                  <Insets right="20.0" />
-               </HBox.margin></Button>
-            <Button fx:id="closeButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#closeApp" prefHeight="35.0" prefWidth="100.0" styleClass="close-button" text="✕  Chiudi App" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button fx:id="undoButton" alignment="CENTER" mnemonicParsing="false" onAction="#undo" prefHeight="35.0" prefWidth="100.0" styleClass="playlist-button" text="↺  Undo">
+                    <HBox.margin><Insets right="20.0" /></HBox.margin>
+                </Button>
+                <Button fx:id="goPlaylistButton" alignment="CENTER" mnemonicParsing="false" onAction="#goPlaylist" prefHeight="35.0" prefWidth="100.0" styleClass="playlist-button" text="♫  Playlists">
+                    <HBox.margin><Insets right="20.0" /></HBox.margin>
+                </Button>
+                <Button fx:id="closeButton" alignment="CENTER" mnemonicParsing="false" onAction="#closeApp" prefHeight="35.0" prefWidth="100.0" styleClass="close-button" text="✕  Chiudi App" />
             </children>
             <padding>
                 <Insets left="20.0" right="10.0" />
             </padding>
         </HBox>
     </top>
+
     <center>
-        <StackPane fx:id="mainStackPane">
-            <children>
-                <ListView fx:id="listView">
-                    <placeholder>
-                        <Label text="Nessuna traccia inserita" textFill="#888888">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                        </Label>
-                    </placeholder>
-                </ListView>
-            </children>
-        </StackPane>
+        <VBox fx:id="mainVBox" prefWidth="800.0">
+            <VBox fx:id="topTracksArea" prefHeight="100.0" spacing="5.0" style="-fx-background-color: #F0F8FF; -fx-padding: 10;">
+                <Label text="Le tue tracce più ascoltate:" textFill="#555555">
+                    <font><Font name="System Bold" size="14.0" /></font>
+                </Label>
+                <VBox fx:id="topTracksContainer" spacing="10.0" />
+            </VBox>
+
+            <ListView fx:id="listView" VBox.vgrow="ALWAYS">
+                <placeholder>
+                    <Label text="Nessuna traccia inserita" textFill="#888888">
+                        <font><Font size="16.0" /></font>
+                    </Label>
+                </placeholder>
+            </ListView>
+        </VBox>
     </center>
+
     <bottom>
         <HBox alignment="CENTER" prefHeight="70.0" spacing="15.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 1 0 0 0;">
             <children>
                 <Button fx:id="button1" graphicTextGap="10" mnemonicParsing="false" onAction="#addNewTrack" prefHeight="35.0" prefWidth="170.0" text="Nuova Traccia">
                     <graphic>
                         <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;" text="+">
-                     <padding>
-                        <Insets bottom="2.0" />
-                     </padding></Label>
+                            <padding><Insets bottom="2.0" /></padding>
+                        </Label>
                     </graphic>
                 </Button>
                 <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteTrack" prefHeight="37.0" prefWidth="170.0" styleClass="delete-button" text="Elimina Selezionata">

@@ -9,8 +9,14 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import java.time.Year;
 import java.util.Objects;
+import javafx.beans.property.IntegerProperty;
+import org.unisa.musicplaylistmanager.playlist.MostPlayed;
 
-public class Track {
+/**
+ *
+ * @author filom
+ */
+public class Track implements MostPlayed {
 
     //ATTRIBUTI
     private StringProperty title;
@@ -21,6 +27,9 @@ public class Track {
     private boolean favourite;
     private boolean explicit;
     private boolean newRelease;
+    // variabile per il conteggio delle tracce
+    private final javafx.beans.property.IntegerProperty playCount =
+        new javafx.beans.property.SimpleIntegerProperty(0);
 
     //METODI
 
@@ -134,35 +143,112 @@ public class Track {
     /** @return {@code true} se la traccia è una nuova uscita */
     public boolean isNewRelease()   { return newRelease; }
 
+    /**
+     * Getter per il conteggio delle riproduzioni
+     * @return
+     */
+    public IntegerProperty playCountProperty() {
+        return playCount;
+    }
+    
     // Setters
+
+    /**
+     * Setter per il titolo della traccia
+     * @param title
+     */
     public void setTitle(String title) {
         if (isBlank(title)) throw new IllegalArgumentException("Il titolo non può essere vuoto.");
         this.title.set(title);
     }
+
+    /**
+     * Setter per l'autore della traccia
+     * @param author
+     */
     public void setAuthor(String author) {
         if (isBlank(author)) throw new IllegalArgumentException("L'autore non può essere vuoto.");
         this.author.set(author);
     }
+
+    /**
+     * Setter per il genere della traccia
+     * @param genre
+     */
     public void setGenre(String genre) {
         if (isBlank(genre)) throw new IllegalArgumentException("Il genere non può essere vuoto.");
         this.genre = genre;
     }
+
+    /**
+     * Setter per l'anno della traccia
+     * @param year
+     */
     public void setYear(Year year) {
         if (!validateYear(year)) throw new IllegalArgumentException("L'anno è obbligatorio e non può essere superiore all'anno corrente.");
         this.year = year;
     }
+
+    /**
+     * Setter per la durata della traccia
+     * @param duration
+     */
     public void setDuration(int duration) {
         if (duration <= 0) throw new IllegalArgumentException("La durata deve essere maggiore di 0.");
         this.duration = duration;
     }
+
+    /**
+     * Setter per impostare una traccia come preferita
+     * @param favourite
+     */
     public void setFavourite(boolean favourite)  { this.favourite = favourite; }
+
+    /**
+     * Setter per impostare una traccia come contenente termini espliciti
+     * @param explicit
+     */
     public void setExplicit(boolean explicit)    { this.explicit = explicit; }
+
+    /**
+     * Setter per impostare una traccia come preferita
+     * @param newRelease
+     */
     public void setNewRelease(boolean newRelease){ this.newRelease = newRelease; }
 
+    /**
+     * Setter per il titolo della traccia visualizzabile sulla GUI 
+     * @return
+     */
     public StringProperty titleProperty() { return title; }
+
+    /**
+     * Setter per il nome dell'autore della traccia visualizzabile sulla GUI della Track
+     * @return
+     */
     public StringProperty authorProperty() { return author; }
 
 
+    // METODI OVERRIDATI DALL'INTERFACCIA MOST PLAYED PER LA VISUALIZZAZIONE DELLE TRACCE PIU' RIPRODOTTE
+
+    /**
+     * Metodo per ottenere il numero di riproduzioni
+     * @return
+     */
+    @Override
+    public int getNumOfPlay() {
+        return playCount.get();
+    }
+
+    /**
+     * Metodo per incrementare il numero di riproduzioni
+     */
+    @Override
+    public void incrementNumOfPlay() {
+        playCount.set(playCount.get() + 1);
+    }   
+
+    
     /**
      * Metodo per controllare che l'oggetto chiamante sia uguale all'oggetto passato come parametro.
      * Due tracce sono considerate uguali se hanno lo stesso titolo, lo stesso autore e lo stesso anno.
@@ -198,4 +284,5 @@ public class Track {
     public String toString(){
         return this.getTitle() + " | " + this.getAuthor() + " | " + this.getYear();
     }
+
 }

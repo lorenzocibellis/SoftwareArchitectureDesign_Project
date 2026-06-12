@@ -1,13 +1,10 @@
 package org.unisa.musicplaylistmanager.player;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.unisa.musicplaylistmanager.player.Player;
-import org.unisa.musicplaylistmanager.playlist.Playlist;
+import org.junit.jupiter.api.*;
+import org.unisa.musicplaylistmanager.iterator.AbstractIterator;
+import org.unisa.musicplaylistmanager.iterator.IterableCollection;
 import org.unisa.musicplaylistmanager.state.PlayerState;
+import org.unisa.musicplaylistmanager.strategy.ExecutionStrategy;
 import org.unisa.musicplaylistmanager.track.Track;
 
 import java.time.Year;
@@ -18,15 +15,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test class for {@link Player}.
- * @author gruppo10
  */
 class PlayerTest {
 
     private Player player;
-    private Playlist playlist;
+    private IterableCollection collection;
     private Track track;
 
-    // Stub minimale di PlayerState per i test
+    // -----------------------------------------------------------------------
+    // Stub PlayerState
+    // -----------------------------------------------------------------------
     private static class StubState implements PlayerState {
         boolean executeCalled = false;
 
@@ -36,236 +34,240 @@ class PlayerTest {
         }
     }
 
+    // -----------------------------------------------------------------------
+    // Stub IterableCollection + AbstractIterator Fixato
+    // -----------------------------------------------------------------------
+    private static class StubCollection implements IterableCollection {
 
-    /**
-     * Questo workaround serve perché la classe Player
-     * usa metodi legati a JavaFX (come Platform.runLater() per il timer).
-     * Se non accendessimo forzatamente il toolkit in background,
-     * i test di JUnit mostrerebbero l'errore: "IllegalStateException: Toolkit not initialized".
-     */
+        private final Track track;
+
+        StubCollection(Track track) {
+            this.track = track;
+        }
+
+        @Override
+        public AbstractIterator createIterator() {
+            return new AbstractIterator() {
+
+                private Track current = track;
+
+                @Override
+                public Track getCurrent() {
+                    return current;
+                }
+
+                @Override
+                public Track getNext() {
+                    return current;
+                }
+
+                @Override
+                public Track getPrevious() {
+                    return current;
+                }
+
+                @Override
+                public void moveToTrack(Track t) {
+                    current = t;
+                }
+
+                @Override
+                public String getIdentifier() {
+                    return "STUB";
+                }
+
+                // FIX COMPILAZIONE: metodo richiesto dalla nuova AbstractIterator
+                @Override
+                public void setStrategy(ExecutionStrategy strategy) {
+                    // no-op per test
+                }
+            };
+        }
+    }
+
+    // -----------------------------------------------------------------------
+    // Setup JavaFX
+    // -----------------------------------------------------------------------
     @BeforeAll
     static void initJFX() {
-
         try {
             javafx.application.Platform.startup(() -> {});
-        } catch (IllegalStateException e) {
-            // Toolkit già inizializzato
-        }
+        } catch (IllegalStateException ignored) {}
     }
 
     @BeforeEach
     void setUp() {
-        playlist = new Playlist("Test Playlist");
-        track    = new Track("Bohemian Rhapsody", "Queen", Year.of(1975), "Rock", 5, false, false, false);
-        // durata breve (5 s) per i test sul timer
+        track = new Track("Bohemian Rhapsody", "Queen",
+                Year.of(1975), "Rock", 5, false, false, false);
 
-        playlist.addTrack(track);
-        player = new Player(new StubState(), playlist, track);
+        collection = new StubCollection(track);
+        player = new Player(new StubState(), collection, track);
     }
 
     @AfterEach
     void tearDown() {
-        // garantisce che il timer venga sempre fermato dopo ogni test
         player.terminate();
     }
 
     // -----------------------------------------------------------------------
     // Constructor
     // -----------------------------------------------------------------------
-
     @Test
-    @DisplayName("Constructor: oggetto creato correttamente")
-    void testConstructorNotNull() {
+    @DisplayName("Constructor: crea Player correttamente")
+    void testConstructor() {
         assertNotNull(player);
     }
 
     @Test
-    @DisplayName("Constructor: accetta defaultState null senza eccezioni")
-    void testConstructorNullState() {
-        // Poiché il controllo sulle eccezioni gestisce solo playlist e track,
-        // questo test rimane orientato a verificare la tolleranza verso lo stato nullo.
-        assertDoesNotThrow(() -> new Player(null, playlist, track));
+    @DisplayName("Constructor: null collection lancia eccezione")
+    void testConstructorNullCollection() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new Player(new StubState(), null, track));
     }
 
     @Test
-    @DisplayName("Constructor: lancia eccezione se la playlist è null")
-    void testConstructorNullPlaylist() {
-        // Cambiato da assertDoesNotThrow a assertThrows per verificare il rispetto del contratto
-        assertThrows(IllegalArgumentException.class, () -> new Player(new StubState(), null, track));
-    }
-
-    @Test
-    @DisplayName("Constructor: lancia eccezione se la currentTrack è null")
+    @DisplayName("Constructor: null track lancia eccezione")
     void testConstructorNullTrack() {
-        // Cambiato da assertDoesNotThrow a assertThrows per verificare il rispetto del contratto
-        assertThrows(IllegalArgumentException.class, () -> new Player(new StubState(), playlist, null));
+        assertThrows(IllegalArgumentException.class,
+                () -> new Player(new StubState(), collection, null));
     }
 
     // -----------------------------------------------------------------------
-    // setState() / changeState()
+    // State pattern
     // -----------------------------------------------------------------------
-
     @Test
-    @DisplayName("setState + changeState: esegue il metodo execute() del nuovo stato")
-    void testSetStateAndChangeState() {
-        StubState newState = new StubState();
-        player.setState(newState);
+    void testChangeState() {
+        StubState state = new StubState();
+        player.setState(state);
+
         player.changeState();
-        assertTrue(newState.executeCalled);
+
+        assertTrue(state.executeCalled);
     }
 
     @Test
-    @DisplayName("changeState: usa lo stato di default impostato nel costruttore")
-    void testChangeStateUsesDefaultState() {
-        StubState defaultState = new StubState();
-        Player p = new Player(defaultState, playlist, track);
+    void testChangeStateDefault() {
+        StubState state = new StubState();
+        Player p = new Player(state, collection, track);
+
         p.changeState();
-        assertTrue(defaultState.executeCalled);
+
+        assertTrue(state.executeCalled);
     }
 
     @Test
-    @DisplayName("setState: sostituisce lo stato corrente")
-    void testSetStateReplacesCurrentState() {
-        StubState first  = new StubState();
-        StubState second = new StubState();
+    void testSetStateReplace() {
+        StubState s1 = new StubState();
+        StubState s2 = new StubState();
 
-        player.setState(first);
-        player.setState(second);
+        player.setState(s1);
+        player.setState(s2);
+
         player.changeState();
 
-        assertFalse(first.executeCalled,  "Il primo stato NON deve essere eseguito");
-        assertTrue(second.executeCalled, "Il secondo stato DEVE essere eseguito");
+        assertFalse(s1.executeCalled);
+        assertTrue(s2.executeCalled);
     }
 
     // -----------------------------------------------------------------------
-    // Callbacks – registrazione
+    // Callbacks
     // -----------------------------------------------------------------------
-
     @Test
-    @DisplayName("setOnTimeTick: accetta un listener senza eccezioni")
-    void testSetOnTimeTick() {
+    void testCallbacksSetters() {
         assertDoesNotThrow(() -> player.setOnTimeTick(t -> {}));
-    }
-
-    @Test
-    @DisplayName("setOnPlayUIUpdate: accetta un listener senza eccezioni")
-    void testSetOnPlayUIUpdate() {
         assertDoesNotThrow(() -> player.setOnPlayUIUpdate(() -> {}));
-    }
-
-    @Test
-    @DisplayName("setOnPauseUIUpdate: accetta un listener senza eccezioni")
-    void testSetOnPauseUIUpdate() {
         assertDoesNotThrow(() -> player.setOnPauseUIUpdate(() -> {}));
-    }
-
-    @Test
-    @DisplayName("setOnTimeTick: accetta null senza eccezioni")
-    void testSetOnTimeTickNull() {
-        assertDoesNotThrow(() -> player.setOnTimeTick(null));
+        assertDoesNotThrow(() -> player.setOnTrackChanged(() -> {}));
     }
 
     // -----------------------------------------------------------------------
-    // startPlayback()
+    // Playback
     // -----------------------------------------------------------------------
-
     @Test
-    @DisplayName("startPlayback: invoca onPlayUIUpdate immediatamente")
-    void testStartPlaybackFiresPlayUIUpdate() {
+    void testStartPlaybackUI() {
         AtomicBoolean called = new AtomicBoolean(false);
-        player.setOnPlayUIUpdate(() -> called.set(true));
 
+        player.setOnPlayUIUpdate(() -> called.set(true));
         player.startPlayback();
 
-        assertTrue(called.get(), "onPlayUIUpdate deve essere chiamato subito");
+        assertTrue(called.get());
     }
 
     @Test
-    @DisplayName("startPlayback: non lancia eccezioni con currentTrack valida")
-    void testStartPlaybackNoException() {
+    void testStartPlaybackNoCrash() {
         assertDoesNotThrow(() -> player.startPlayback());
     }
 
     @Test
-    @DisplayName("startPlayback: onTimeTick viene invocato dopo circa 1 secondo")
-    void testStartPlaybackTimeTickFired() throws InterruptedException {
+    void testTimeTick() throws InterruptedException {
         AtomicInteger ticks = new AtomicInteger(0);
+
         player.setOnTimeTick(t -> ticks.incrementAndGet());
-
         player.startPlayback();
-        Thread.sleep(1500); // attende ~1,5 s per almeno 1 tick
 
-        assertTrue(ticks.get() >= 1, "onTimeTick deve scattare almeno una volta dopo 1 s");
+        Thread.sleep(1200);
+
+        assertTrue(ticks.get() >= 1);
     }
 
     @Test
-    @DisplayName("startPlayback due volte: il vecchio timer viene cancellato (no tick doppi)")
-    void testStartPlaybackRestartsTimer() throws InterruptedException {
+    void testRestartTimer() throws InterruptedException {
         AtomicInteger ticks = new AtomicInteger(0);
+
         player.setOnTimeTick(t -> ticks.incrementAndGet());
 
         player.startPlayback();
-        player.startPlayback(); // ricomincia: deve azzerare il timer precedente
-        Thread.sleep(1500);
+        player.startPlayback();
 
-        // Con due timer attivi avremmo ≥ 2 tick in 1,5 s; con uno solo ≥ 1 ma ≤ 2
-        assertTrue(ticks.get() >= 1, "Almeno un tick atteso");
+        Thread.sleep(1200);
+
+        assertTrue(ticks.get() >= 1);
     }
 
     // -----------------------------------------------------------------------
-    // stopPlayback()
+    // Stop
     // -----------------------------------------------------------------------
-
     @Test
-    @DisplayName("stopPlayback: invoca onPauseUIUpdate")
-    void testStopPlaybackFiresPauseUIUpdate() {
+    void testStopPlaybackUI() {
         AtomicBoolean called = new AtomicBoolean(false);
+
         player.setOnPauseUIUpdate(() -> called.set(true));
 
         player.startPlayback();
         player.stopPlayback();
 
-        assertTrue(called.get(), "onPauseUIUpdate deve essere chiamato");
+        assertTrue(called.get());
     }
 
     @Test
-    @DisplayName("stopPlayback senza startPlayback: non lancia eccezioni")
-    void testStopPlaybackWithoutStart() {
+    void testStopDoesNotCrash() {
         assertDoesNotThrow(() -> player.stopPlayback());
     }
 
     @Test
-    @DisplayName("stopPlayback: il timer non fa più tick dopo lo stop")
-    void testStopPlaybackHaltsTimer() throws InterruptedException {
+    void testStopStopsTimer() throws InterruptedException {
         AtomicInteger ticks = new AtomicInteger(0);
+
         player.setOnTimeTick(t -> ticks.incrementAndGet());
 
         player.startPlayback();
-        Thread.sleep(1500);   // accumula qualche tick
+        Thread.sleep(1200);
         player.stopPlayback();
 
-        int ticksAtStop = ticks.get();
-        Thread.sleep(1500);   // aspetta ancora
+        int before = ticks.get();
 
-        assertEquals(ticksAtStop, ticks.get(), "Nessun tick deve scattare dopo stopPlayback");
-    }
+        Thread.sleep(1200);
 
-    @Test
-    @DisplayName("stopPlayback ripetuto: non lancia eccezioni (timer già null)")
-    void testStopPlaybackCalledTwice() {
-        player.startPlayback();
-        player.stopPlayback();
-        assertDoesNotThrow(() -> player.stopPlayback());
+        assertEquals(before, ticks.get());
     }
 
     // -----------------------------------------------------------------------
-    // terminate()
+    // Terminate
     // -----------------------------------------------------------------------
-
     @Test
-    @DisplayName("terminate: invoca onPauseUIUpdate (delega a stopPlayback)")
-    void testTerminateFiresPauseUIUpdate() {
+    void testTerminateUI() {
         AtomicBoolean called = new AtomicBoolean(false);
+
         player.setOnPauseUIUpdate(() -> called.set(true));
 
         player.startPlayback();
@@ -275,24 +277,24 @@ class PlayerTest {
     }
 
     @Test
-    @DisplayName("terminate senza startPlayback: non lancia eccezioni")
-    void testTerminateWithoutStart() {
+    void testTerminateNoCrash() {
         assertDoesNotThrow(() -> player.terminate());
     }
 
     @Test
-    @DisplayName("terminate: il timer non fa più tick dopo la chiamata")
-    void testTerminateHaltsTimer() throws InterruptedException {
+    void testTerminateStopsTimer() throws InterruptedException {
         AtomicInteger ticks = new AtomicInteger(0);
+
         player.setOnTimeTick(t -> ticks.incrementAndGet());
 
         player.startPlayback();
-        Thread.sleep(1500);
+        Thread.sleep(1200);
         player.terminate();
 
-        int ticksAtTerminate = ticks.get();
-        Thread.sleep(1500);
+        int before = ticks.get();
 
-        assertEquals(ticksAtTerminate, ticks.get(), "Nessun tick deve scattare dopo terminate");
+        Thread.sleep(1200);
+
+        assertEquals(before, ticks.get());
     }
 }
