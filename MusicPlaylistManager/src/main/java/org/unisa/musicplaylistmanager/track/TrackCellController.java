@@ -153,7 +153,14 @@ public class TrackCellController extends ListCell<Track> {
         }
     }
 
-    // Metodo di supporto per ripristinare lo stato di default
+    /**
+    * Ripristina l'icona testuale predefinita, nascondendo la copertina personalizzata.
+    * Mostra il simbolo animato {@code "ılılı"} se la traccia è in riproduzione,
+    * oppure il simbolo musicale {@code "♫"} se è ferma.
+     *
+    * @param isPlaying {@code true} se la traccia è attualmente in riproduzione,
+    *                  {@code false} altrimenti
+    */
     private void setDefaultIcon(boolean isPlaying) {
         coverImageView.setVisible(false);
         coverImageView.setManaged(false);
@@ -216,6 +223,7 @@ public class TrackCellController extends ListCell<Track> {
      * al parametro passato. Utile ad esempio per nasconderlo quando si stanno
      * semplicemente selezionando tracce da aggiungere a una playlist.
      * * @param visible {@code true} per mostrare il bottone, {@code false} per nasconderlo
+     * @param visible
      */
     public void setInfoButtonVisible(boolean visible) {
         if (infoButton != null) {
