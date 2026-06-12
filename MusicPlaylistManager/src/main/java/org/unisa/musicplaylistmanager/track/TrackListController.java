@@ -60,6 +60,8 @@ public class TrackListController {
     private Label libraryName;
 @FXML
 private VBox topTracksContainer;
+
+
     //Definizione attributi
     //Path per accedere agli oggetti View.fxml
     private String resourceRoot = "/org/unisa/musicplaylistmanager/track/";

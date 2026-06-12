@@ -40,6 +40,17 @@
                     </children>
                 </VBox>
 
+                <VBox spacing="5.0">
+                    <children>
+                        <Label text="Copertina (Opzionale)" textFill="#555555" />
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <children>
+                                <TextField fx:id="coverPathInput" editable="false" promptText="Nessun file selezionato" HBox.hgrow="ALWAYS" />
+                                <Button fx:id="browseCoverButton" mnemonicParsing="false" onAction="#browseCover" text="Sfoglia..." />
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
 
                 <VBox spacing="8.0" styleClass="tag-section">
                     <children>

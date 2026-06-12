@@ -30,6 +30,8 @@ public class Track implements MostPlayed {
     // variabile per il conteggio delle tracce
     private final javafx.beans.property.IntegerProperty playCount =
         new javafx.beans.property.SimpleIntegerProperty(0);
+    // variabile per memorizzare la cover opzionale da associare alla traccia
+    private String coverImage;
 
     //METODI
 
@@ -44,10 +46,11 @@ public class Track implements MostPlayed {
      * @param favourite {@code true} se è tra i preferiti, {@code false} altrimenti
      * @param explicit {@code true} se contiene contenuti espliciti, {@code false} altrimenti
      * @param newRelease {@code true} se è una nuova uscita, {@code false} altrimenti
+     * @param coverImage Il path dell'immagine personalizzata associata alla traccia
      * @throws IllegalArgumentException se i parametri non superano la validazione
      */
     public Track(String title, String author, Year year, String genre, int duration,
-                 boolean favourite, boolean explicit, boolean newRelease) {
+                 boolean favourite, boolean explicit, boolean newRelease, String coverImage) {
 
         //Controllo validità dati di input
         validate(title, author, genre, year, duration);
@@ -61,9 +64,14 @@ public class Track implements MostPlayed {
         this.favourite = favourite;
         this.explicit = explicit;
         this.newRelease = newRelease;
+        this.coverImage = coverImage; // inizi
     }
 
-
+// COSTRUTTORE SECONDARIO TEMPORANEO PER NON ROMPERE IL CARICAMENTO DELLE TRACCE DA CSV
+    public Track(String title, String author, Year year, String genre, int duration,
+             boolean favourite, boolean explicit, boolean newRelease) {
+    this(title, author, year, genre, duration, favourite, explicit, newRelease, null);
+}
     // METODI UTILITARI
     /**
      * Metodo per la validazione interna di dati.
@@ -142,6 +150,8 @@ public class Track implements MostPlayed {
     public boolean isExplicitContent() { return explicit; }
     /** @return {@code true} se la traccia è una nuova uscita */
     public boolean isNewRelease()   { return newRelease; }
+    /** @return Il nome del file della copertina (può essere null) */
+    public String getCoverImage() { return coverImage; }
 
     /**
      * Getter per il conteggio delle riproduzioni
@@ -228,7 +238,8 @@ public class Track implements MostPlayed {
      */
     public StringProperty authorProperty() { return author; }
 
-
+    /** @param coverImage Il nome del file della copertina */
+    public void setCoverImage(String coverImage) { this.coverImage = coverImage; }
     // METODI OVERRIDATI DALL'INTERFACCIA MOST PLAYED PER LA VISUALIZZAZIONE DELLE TRACCE PIU' RIPRODOTTE
 
     /**

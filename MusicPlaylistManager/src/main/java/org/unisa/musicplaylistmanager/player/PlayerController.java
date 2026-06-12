@@ -14,6 +14,7 @@ import org.unisa.musicplaylistmanager.state.Play;
 import org.unisa.musicplaylistmanager.track.Track;
 import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -50,6 +51,8 @@ public class PlayerController implements Initializable {
     private Button shuffleButton;
     @FXML 
     private Button loopButton;
+    @FXML
+    private ImageView playerCoverImageView;
 
     // Variabili per tracciare la modalità attiva
     private boolean isShuffleActive = false;
@@ -160,6 +163,33 @@ public class PlayerController implements Initializable {
             songProgress.setValue(0);
             duration.setText(formatTime(track.getDuration()));
             counter.setText("0:00");
+            
+            // Logica per aggiornare l'immagine di copertina
+            if (track.getCoverImage() != null && !track.getCoverImage().trim().isEmpty()) {
+                try {
+                    File file = new File(track.getCoverImage());
+                    if (file.exists()) {
+                        playerCoverImageView.setImage(new Image(file.toURI().toString()));
+                    } else {
+                        setDefaultPlayerIcon();
+                    }
+                } catch (Exception e) {
+                    setDefaultPlayerIcon();
+                }
+            } else {
+                setDefaultPlayerIcon();
+            }
+        }
+    }
+    
+    /**
+     * Ripristina l'icona di default (nota musicale) se la traccia non ha una copertina.
+     */
+    private void setDefaultPlayerIcon() {
+        try {
+            playerCoverImageView.setImage(new Image(getClass().getResourceAsStream(iconsRoot + "musical-note.png")));
+        } catch (Exception e) {
+            System.err.println("Immagine di default del player non trovata.");
         }
     }
 

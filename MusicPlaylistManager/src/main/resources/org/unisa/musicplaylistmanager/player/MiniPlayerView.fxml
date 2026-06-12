@@ -13,6 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.shape.Rectangle?>
+
 <AnchorPane id="AnchorPane" StackPane.alignment="BOTTOM_CENTER" prefHeight="130.0" prefWidth="600.0" maxHeight="130.0" pickOnBounds="false" style="-fx-background-color: transparent;" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.player.PlayerController">
     
     <StackPane.margin>
@@ -20,7 +21,7 @@
     </StackPane.margin>
     
     <children>
-        <AnchorPane fx:id="topPane" visible="false" managed="false" style="-fx-background-color: #f4f4f4; -fx-border-color: #cccccc; -fx-border-width: 2 0 0 0;" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <AnchorPane fx:id="topPane" visible="false" managed="false" style="-fx-background-color: #f4f4f4; -fx-border-color: #E0E0E0; -fx-border-width: 0.5 0 0 0;" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <VBox alignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
                     <children>
@@ -33,14 +34,14 @@
             </children>
         </AnchorPane>
 
-        <AnchorPane fx:id="bottomPane" prefHeight="130.0" style="-fx-background-color: #f4f4f4; -fx-border-color: #cccccc; -fx-border-width: 1 0 0 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <AnchorPane fx:id="bottomPane" prefHeight="130.0" style="-fx-background-color: #f4f4f4; -fx-border-color: #E0E0E0; -fx-border-width: 0.5 0 0 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <children>
 
                 <StackPane AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="30.0" prefHeight="70.0" prefWidth="70.0" style="-fx-background-color: #e4e7eb; -fx-background-radius: 8;">
                     <children>
-                        <ImageView fitHeight="52.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="playerCoverImageView" fitHeight="68.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true">
                             <clip>
-                                <Rectangle width="52.0" height="52.0" arcWidth="8.0" arcHeight="8.0" />
+                                <Rectangle width="68.0" height="68.0" arcWidth="8.0" arcHeight="8.0" />
                             </clip>
                             <image>
                                 <Image url="@../../../../icons/musical-note.png" />

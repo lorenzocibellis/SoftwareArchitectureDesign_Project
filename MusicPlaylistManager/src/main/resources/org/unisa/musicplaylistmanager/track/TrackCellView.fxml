@@ -13,14 +13,15 @@
     <children>
 
         <VBox fx:id="iconContainer" alignment="CENTER" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #EAEAEA; -fx-background-radius: 5;">
-            <children>
-                <Label fx:id="iconLabel" text="♫" textFill="#888888">
-                    <font>
-                        <Font size="20.0" />
-                    </font>
-                </Label>
-            </children>
-        </VBox>
+    <children>
+        <Label fx:id="iconLabel" text="♫" textFill="#888888">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </Label>
+        <javafx.scene.image.ImageView fx:id="coverImageView" fitHeight="40.0" fitWidth="40.0" preserveRatio="true" managed="false" visible="false" />
+    </children>
+</VBox>
 
 
         <VBox HBox.hgrow="ALWAYS" spacing="3.0">

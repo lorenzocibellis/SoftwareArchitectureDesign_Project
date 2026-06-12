@@ -6,12 +6,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.unisa.musicplaylistmanager.command.AddTrackCommand;
 import org.unisa.musicplaylistmanager.command.BaseTrackCommands;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;
 import org.unisa.musicplaylistmanager.playlist.TrackCollection;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.Year;
 import java.util.ArrayList;
@@ -62,6 +64,12 @@ public class TrackController {
     private Label explicitPreview;
     @FXML
     private Label newReleasePreview;
+    
+    // Nuovi controlli per il FileChooser della copertina
+    @FXML
+    private TextField coverPathInput;
+    @FXML
+    private Button browseCoverButton;
 
     // definizione attributi
 
@@ -138,10 +146,43 @@ public class TrackController {
     }
 
     /**
+     * Apre il FileChooser di sistema per selezionare un'immagine dal computer
+     * dell'utente e ne salva il percorso nel campo di testo dedicato.
+     * * @param event l'evento generato dal click
+     */
+    @FXML
+public void browseCover(ActionEvent event) {
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Seleziona Copertina");
+    
+    // Imposta la cartella iniziale predefinita
+    File defaultDir = new File("src/main/resources/covers");
+    
+    // Controllo di sicurezza: imposta la directory solo se esiste ed è effettivamente una cartella
+    if (defaultDir.exists() && defaultDir.isDirectory()) {
+        fileChooser.setInitialDirectory(defaultDir);
+    }
+    
+    // Filtri per far selezionare solo file immagine validi
+    fileChooser.getExtensionFilters().addAll(
+        new FileChooser.ExtensionFilter("Immagini (*.png, *.jpg, *.jpeg)", "*.png", "*.jpg", "*.jpeg"),
+        new FileChooser.ExtensionFilter("Tutti i file", "*.*")
+    );
+
+    // Apre la finestra di dialogo
+    Stage stage = (Stage) browseCoverButton.getScene().getWindow();
+    File selectedFile = fileChooser.showOpenDialog(stage);
+
+    if (selectedFile != null) {
+        // Mostra il path assoluto nel TextField
+        coverPathInput.setText(selectedFile.getAbsolutePath());
+    }
+}
+
+    /**
      * Abilita la modalità di modifica, sbloccando i campi testuali
      * (tranne quelli della durata) e aggiornando i pulsanti visibili.
-     * 
-     * @param event l'evento generato dal click
+     * * @param event l'evento generato dal click
      */
     @FXML
     public void editTrack(ActionEvent event) {
@@ -151,8 +192,7 @@ public class TrackController {
     /**
      * Annulla le modifiche in corso e ripristina i valori originali
      * della traccia, tornando alla modalità di sola lettura.
-     * 
-     * @param event l'evento generato dal click
+     * * @param event l'evento generato dal click
      */
     @FXML
     public void cancelChanges(ActionEvent event) {
@@ -165,8 +205,7 @@ public class TrackController {
      * Salva le modifiche apportate alla traccia. Esegue la validazione dell'input,
      * aggiorna il modello e, se l'operazione ha successo senza creare duplicati,
      * aggiorna la UI tornando alla modalità informativa.
-     * 
-     * @param event l'evento generato dal click
+     * * @param event l'evento generato dal click
      */
     @FXML
     public void saveChanges(ActionEvent event) {
@@ -185,6 +224,11 @@ public class TrackController {
             int totalSeconds = (minutes * 60) + seconds;
             Year year = Year.of(Integer.parseInt(yearInput.getText()));
 
+            String selectedCover = coverPathInput.getText();
+            if (selectedCover == null || selectedCover.trim().isEmpty()) {
+                selectedCover = null;
+            }
+
             // Creiamo un oggetto traccia temporaneo (usato solo per trasportare i nuovi dati)
             Track updatedData = new Track(
                     titleInput.getText(),
@@ -194,7 +238,8 @@ public class TrackController {
                     totalSeconds,
                     favouriteRadio.isSelected(),
                     explicitContentRadio.isSelected(),
-                    newReleaseRadio.isSelected()
+                    newReleaseRadio.isSelected(),
+                    selectedCover
             );
 
             // Troviamo l'indice ESATTO della traccia nella ObservableList usando il riferimento di memoria (==)
@@ -212,6 +257,10 @@ public class TrackController {
             // Deleghiamo il controllo dei duplicati e l'aggiornamento dei campi alla logica del Modello.
             // Se i nuovi dati creano un duplicato, Playlist lancerà una IllegalArgumentException
             trackList.updateTrack(currentTrack, updatedData);
+
+            if (currentTrack != null) {
+                currentTrack.setCoverImage(selectedCover);
+            }
 
             // 5. Se il modello non ha lanciato eccezioni, aggiorniamo la ListView tramite la ObservableList
             if (index != -1) {
@@ -232,8 +281,7 @@ public class TrackController {
     /**
      * Aggiunge una nuova traccia alla libreria. Esegue la validazione,
      * crea la traccia, l'aggiunge al sistema e chiude la finestra.
-     * 
-     * @param actionEvent l'evento generato dal click
+     * * @param actionEvent l'evento generato dal click
      */
     @FXML
     public void addTrack(ActionEvent actionEvent) {
@@ -266,8 +314,7 @@ public class TrackController {
 
     /**
      * Chiude la finestra corrente.
-     * 
-     * @param event l'evento generato dal click
+     * * @param event l'evento generato dal click
      * @throws IOException in caso di problemi di chiusura
      */
     @FXML
@@ -282,8 +329,7 @@ public class TrackController {
     /**
      * Imposta il riferimento alla Playlist (o TrackList) in cui si sta
      * salvando o modificando la traccia.
-     * 
-     * @param tc l'oggetto TrackList
+     * * @param tc l'oggetto TrackList
      */
     public void setTrackList(TrackCollection tc) {
         trackList = tc;
@@ -291,8 +337,7 @@ public class TrackController {
 
     /**
      * Imposta la lista osservabile per l'aggiornamento in tempo reale della UI.
-     * 
-     * @param ol la lista osservabile delle tracce
+     * * @param ol la lista osservabile delle tracce
      */
     public void setObservable(ObservableList<Track> ol) {
         this.observableList = ol;
@@ -302,8 +347,7 @@ public class TrackController {
     /**
      * Imposta i dati della traccia da visualizzare e configura la finestra
      * in modalità di sola lettura (InfoMode).
-     * 
-     * @param track la traccia di cui mostrare i dettagli
+     * * @param track la traccia di cui mostrare i dettagli
      */
     public void setTrackDetails(Track track) {
 
@@ -319,8 +363,7 @@ public class TrackController {
 
     /**
      * Valida tutti i campi di input della finestra.
-     * 
-     * @return una lista di stringhe contenente i messaggi d'errore (vuota se tutto è valido)
+     * * @return una lista di stringhe contenente i messaggi d'errore (vuota se tutto è valido)
      */
     public List<String> inputValidation() {
 
@@ -391,8 +434,7 @@ public class TrackController {
 
     /**
      * Mostra una finestra di avviso in caso di errore.
-     * 
-     * @param title il titolo della finestra di errore
+     * * @param title il titolo della finestra di errore
      * @param header l'intestazione dell'errore
      * @param content il dettaglio dell'errore
      */
@@ -407,14 +449,18 @@ public class TrackController {
     /**
      * Crea un oggetto {@link Track} utilizzando i dati attualmente inseriti 
      * nei campi di input.
-     * 
-     * @return la nuova traccia generata
+     * * @return la nuova traccia generata
      */
     private Track getTrack() {
         int minutes = Integer.parseInt(minutesInput.getText());
         int seconds = Integer.parseInt(secondsInput.getText());
         int totalSeconds = (minutes * 60) + seconds;
         Year year = Year.of(Integer.parseInt(yearInput.getText()));
+
+        String selectedCover = coverPathInput.getText();
+        if (selectedCover == null || selectedCover.trim().isEmpty()) {
+            selectedCover = null;
+        }
 
         // crea e ritorna un oggetto di tipo Track usando gli input delle zone testuali
         return new Track(
@@ -425,7 +471,8 @@ public class TrackController {
                 totalSeconds,
                 favouriteRadio.isSelected(),
                 explicitContentRadio.isSelected(),
-                newReleaseRadio.isSelected()
+                newReleaseRadio.isSelected(),
+                selectedCover
         );
     }
 
@@ -443,8 +490,7 @@ public class TrackController {
 
     /**
      * Riempie i campi di testo con i dati di una specifica traccia.
-     * 
-     * @param track la traccia di cui leggere i dati
+     * * @param track la traccia di cui leggere i dati
      */
     private void populateFieldsFromTrack(Track track) {
 
@@ -463,13 +509,18 @@ public class TrackController {
         favouriteRadio.setSelected(track.isFavourite());
         explicitContentRadio.setSelected(track.isExplicitContent());
         newReleaseRadio.setSelected(track.isNewRelease());
+
+        if (track.getCoverImage() != null) {
+            coverPathInput.setText(track.getCoverImage());
+        } else {
+            coverPathInput.clear();
+        }
     }
 
     /**
      * Abilita o disabilita la modifica dei campi di testo, impostando
      * di conseguenza la variabile di stato {@code isReadOnly}.
-     * 
-     * @param editable {@code true} se i campi devono essere modificabili
+     * * @param editable {@code true} se i campi devono essere modificabili
      */
     private void setFieldsEditable(boolean editable) {
         this.isReadOnly = !editable;
@@ -484,6 +535,10 @@ public class TrackController {
         favouriteRadio.setDisable(!editable);
         explicitContentRadio.setDisable(!editable);
         newReleaseRadio.setDisable(!editable);
+        
+        // Il campo di testo per il path resta non modificabile a mano per sicurezza
+        // ma abilitiamo/disabilitiamo il pulsante per aprirlo
+        browseCoverButton.setDisable(!editable);
     }
 
 
@@ -536,5 +591,4 @@ public class TrackController {
             titleInput.positionCaret(titleInput.getText().length());
         });
     }
-
 }

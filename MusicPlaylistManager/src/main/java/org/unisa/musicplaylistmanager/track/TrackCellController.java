@@ -10,6 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.beans.value.ChangeListener;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.function.Consumer;
 import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
@@ -40,6 +41,8 @@ public class TrackCellController extends ListCell<Track> {
     private VBox iconContainer;
     @FXML
     private Label iconLabel;
+    @FXML
+    private javafx.scene.image.ImageView coverImageView;
 
     // definizione attributi
 
@@ -99,24 +102,67 @@ public class TrackCellController extends ListCell<Track> {
     
     /**
      * Applica gli stili CSS alla cella per indicare visivamente se la traccia è 
-     * attualmente in riproduzione o meno.
+     * attualmente in riproduzione o meno. Gestisce anche il caricamento della copertina.
      *
-     * @param isPlaying {@code true} se la traccia è in riproduzione e deve essere evidenziata, {@code false} altrimenti.
+     * @param isPlaying {@code true} se la traccia è in riproduzione e deve essere evidenziata.
      */
     private void updateStyle(boolean isPlaying) {
-        if (isPlaying) {
-            // Se la canzone è attualmente in riproduzione,
-            // applica uno stile CSS inline per evidenziare il titolo in blu.
-            titleLabel.setStyle("-fx-text-fill: #007AFF;"); 
-            iconContainer.setStyle("-fx-background-color: #D5E5F5; -fx-background-radius: 5;");
-            iconLabel.setText("ılılı");
-            iconLabel.setStyle("-fx-text-fill: #007AFF;");
+        Track myTrack = getItem();
+        
+        // Controlla se la traccia ha una copertina personalizzata (path assoluto)
+        if (myTrack != null && myTrack.getCoverImage() != null && !myTrack.getCoverImage().trim().isEmpty()) {
+            iconLabel.setVisible(false);
+            iconLabel.setManaged(false);
+            coverImageView.setVisible(true);
+            coverImageView.setManaged(true);
+            
+            try {
+                // MODIFICA CRUCIALE: Lettura del file tramite percorso assoluto salvato dal FileChooser
+                File file = new File(myTrack.getCoverImage());
+                if (file.exists()) {
+                    coverImageView.setImage(new javafx.scene.image.Image(file.toURI().toString()));
+                } else {
+                    // Fallback se il file immagine non viene trovato sul disco
+                    setDefaultIcon(isPlaying);
+                }
+            } catch (Exception e) {
+                setDefaultIcon(isPlaying);
+            }
         } else {
-            // Se la canzone NON è in riproduzione, ripristina lo stile predefinito:
+            // Mostra l'icona testuale standard
+            setDefaultIcon(isPlaying);
+        }
+
+        // Gestione del colore del testo e dello sfondo del container
+        if (isPlaying) {
+            titleLabel.setStyle("-fx-text-fill: #007AFF;"); 
+            if (myTrack == null || myTrack.getCoverImage() == null || myTrack.getCoverImage().trim().isEmpty()) {
+                iconContainer.setStyle("-fx-background-color: #D5E5F5; -fx-background-radius: 5;");
+                iconLabel.setStyle("-fx-text-fill: #007AFF;");
+            } else {
+                iconContainer.setStyle("-fx-background-color: transparent;");
+            }
+        } else {
             titleLabel.setStyle("-fx-text-fill: #1D1D1F;");
-            iconContainer.setStyle("-fx-background-color: #EAEAEA; -fx-background-radius: 5;");
+            if (myTrack == null || myTrack.getCoverImage() == null || myTrack.getCoverImage().trim().isEmpty()) {
+                iconContainer.setStyle("-fx-background-color: #EAEAEA; -fx-background-radius: 5;");
+                iconLabel.setStyle("-fx-text-fill: #888888;"); 
+            } else {
+                iconContainer.setStyle("-fx-background-color: transparent;");
+            }
+        }
+    }
+
+    // Metodo di supporto per ripristinare lo stato di default
+    private void setDefaultIcon(boolean isPlaying) {
+        coverImageView.setVisible(false);
+        coverImageView.setManaged(false);
+        iconLabel.setVisible(true);
+        iconLabel.setManaged(true);
+        if (isPlaying) {
+            iconLabel.setText("ılılı");
+        } else {
             iconLabel.setText("♫");
-            iconLabel.setStyle("-fx-text-fill: #888888;"); 
         }
     }
 
@@ -130,7 +176,7 @@ public class TrackCellController extends ListCell<Track> {
     protected void updateItem(Track track, boolean empty) {
         super.updateItem(track, empty);
 
-        // controllo sull'esistenza dei dati da aggiorare
+        // controllo sull'esistenza dei dati da aggiornare
         if (empty || track == null) {
             setText(null);
             setGraphic(null);
@@ -153,7 +199,6 @@ public class TrackCellController extends ListCell<Track> {
             });
 
             // Gestione dell'aspetto grafico in base al fatto che la traccia sia in riproduzione o meno.
-
             // Recupera la traccia attualmente attiva da ActivePlayerManager.
             Track playingTrack = ActivePlayerManager.getInstance().currentTrackProperty().get();
             boolean isPlaying = (playingTrack != null && playingTrack.equals(track));
@@ -170,8 +215,7 @@ public class TrackCellController extends ListCell<Track> {
      * Rende il bottone delle informazioni (i) visibile o nascosto in base
      * al parametro passato. Utile ad esempio per nasconderlo quando si stanno
      * semplicemente selezionando tracce da aggiungere a una playlist.
-     * 
-     * @param visible {@code true} per mostrare il bottone, {@code false} per nasconderlo
+     * * @param visible {@code true} per mostrare il bottone, {@code false} per nasconderlo
      */
     public void setInfoButtonVisible(boolean visible) {
         if (infoButton != null) {
