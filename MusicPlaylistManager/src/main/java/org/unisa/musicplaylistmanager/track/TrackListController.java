@@ -13,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -60,8 +61,8 @@ public class TrackListController {
     private Button undoButton;
     @FXML
     private Label libraryName;
-@FXML
-private VBox topTracksContainer;
+    @FXML
+    private HBox topTracksContainer;
 
 
     //Definizione attributi
@@ -376,39 +377,62 @@ public void initialize() {
         listView.setPadding(new Insets(0, 0, padding, 0));
     }
     /**
-     * Aggiorna dinamicamente l'interfaccia grafica dedicata alla visualizzazione delle 
-     * tre tracce più riprodotte (Top 3).
-     * Il metodo recupera le tracce più ascoltate dalla {@link TrackList}, pulisce il 
-     * contenitore corrente e rigenera i blocchi grafici per ogni traccia, includendo 
-     * il binding automatico del numero di riproduzioni. 
-     * Se non sono presenti tracce ascoltate, visualizza un messaggio di stato (placeholder).
+     * Rigenera l'interfaccia grafica della Top 3 (il podio orizzontale).
+     * Viene invocato automaticamente ogni volta che il {@link RankingService}
+     * rileva un cambiamento (nuovi ascolti, sorpassi in classifica, eliminazioni).
+     * Svuota il contenitore e ricrea le card grafiche aggiornate basandosi sulla lista passata in input.
+     * Se la lista è vuota, visualizza un messaggio informativo.
+     * 
+     * @param top3 La lista aggiornata delle tracce attualmente sul podio
      */
-    private void refreshTopTracksUI(List<Track> top3) {
-    topTracksContainer.getChildren().clear();
+    private void refreshTopTracksUI(java.util.List<Track> top3) {
+        topTracksContainer.getChildren().clear();
 
-    if (top3.isEmpty()) {
-        Label emptyLabel = new Label("Ascolta qualche traccia per vedere qui la tua Top 3!");
-        emptyLabel.setStyle("-fx-text-fill: #888888;");
-        topTracksContainer.getChildren().add(emptyLabel);
-        return;
+        if (top3.isEmpty()) {
+            Label emptyLabel = new Label("Ascolta qualche brano per popolare la tua Top 3!");
+            emptyLabel.getStyleClass().add("top-track-empty-label");
+            topTracksContainer.getChildren().add(emptyLabel);
+            return;
+        }
+
+        for (int i = 0; i < top3.size(); i++) {
+            Track t = top3.get(i);
+            
+            VBox card = new VBox();
+            card.setSpacing(2);
+            card.setPrefWidth(220); 
+            card.getStyleClass().add("top-track-card");
+
+            String rankClass = (i == 0) ? "top-track-rank-gold" : (i == 1) ? "top-track-rank-silver" : "top-track-rank-bronze";
+
+            HBox topRow = new HBox(5);
+            topRow.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+            
+            Label rankLabel = new Label((i + 1) + "°");
+            rankLabel.getStyleClass().add(rankClass);
+            
+            Label titleLabel = new Label(t.getTitle());
+            titleLabel.getStyleClass().add("top-track-title");
+            
+            topRow.getChildren().addAll(rankLabel, titleLabel);
+
+            HBox bottomRow = new HBox(5);
+            bottomRow.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+            
+            Label authorLabel = new Label(t.getAuthor());
+            authorLabel.getStyleClass().add("top-track-author");
+            
+            Region spacer = new javafx.scene.layout.Region();
+            HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+            
+            String playText = (t.getNumOfPlay() == 1) ? "1 ascolto" : t.getNumOfPlay() + " ascolti";
+            Label playsLabel = new Label(playText);
+            playsLabel.getStyleClass().add("top-track-plays");
+            
+            bottomRow.getChildren().addAll(authorLabel, spacer, playsLabel);
+
+            card.getChildren().addAll(topRow, bottomRow);
+            topTracksContainer.getChildren().add(card);
+        }
     }
-
-    for (Track t : top3) {
-        // Usiamo un HBox per mettere "titolo di autore" e "n ascolti" sulla stessa riga
-        HBox trackRow = new HBox();
-        trackRow.setSpacing(10);
-        trackRow.setStyle(
-            "-fx-background-color: white; -fx-padding: 10; " +
-            "-fx-border-radius: 5; -fx-border-color: #E0E0E0; -fx-alignment: CENTER_LEFT;"
-        );
-
-        // Formato: "Titolo di Autore - N ascolti"
-        String displayText = t.getDisplayName() + " - " + t.getNumOfPlay() + " ascolti";
-        Label trackLabel = new Label(displayText);
-        trackLabel.setStyle("-fx-font-weight: bold;");
-
-        trackRow.getChildren().add(trackLabel);
-        topTracksContainer.getChildren().add(trackRow);
-    }
-}
 }

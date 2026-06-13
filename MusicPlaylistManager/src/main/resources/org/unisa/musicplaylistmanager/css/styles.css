@@ -302,3 +302,61 @@
 .slider:focused:hover .thumb {
     -fx-background-color: #007AFF;
 }
+
+/* stile per l'area delle top tracks */
+.top-tracks-area {
+    -fx-background-color: linear-gradient(to right, #F0F8FF, #F8F8FF);
+    -fx-padding: 8 15 8 15;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #E0E0E0;
+}
+
+/* stile per le card della Top 3 */
+.top-track-card {
+    -fx-background-color: white;
+    -fx-padding: 6 12 6 12;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-border-color: #EAEAEA;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 3, 0, 0, 1);
+}
+
+.top-track-rank-gold {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #D4AF37;
+}
+
+.top-track-rank-silver {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #A8A9AD;
+}
+
+.top-track-rank-bronze {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #CD7F32;
+}
+
+.top-track-title {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+.top-track-author {
+    -fx-font-size: 11px;
+    -fx-text-fill: #777777;
+}
+
+.top-track-plays {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #007AFF;
+}
+
+.top-track-empty-label {
+    -fx-text-fill: #888888;
+    -fx-font-style: italic;
+}

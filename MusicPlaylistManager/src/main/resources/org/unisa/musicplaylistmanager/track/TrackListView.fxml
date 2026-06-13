@@ -37,11 +37,11 @@
 
     <center>
         <VBox fx:id="mainVBox" prefWidth="800.0">
-            <VBox fx:id="topTracksArea" prefHeight="100.0" spacing="5.0" style="-fx-background-color: #F0F8FF; -fx-padding: 10;">
-                <Label text="Le tue tracce più ascoltate:" textFill="#555555">
+            <VBox fx:id="topTracksArea" spacing="5.0" styleClass="top-tracks-area">
+                <Label text="La tua Top 3" textFill="#333333">
                     <font><Font name="System Bold" size="14.0" /></font>
                 </Label>
-                <VBox fx:id="topTracksContainer" spacing="10.0" />
+                <HBox fx:id="topTracksContainer" spacing="15.0" alignment="CENTER_LEFT" />
             </VBox>
 
             <ListView fx:id="listView" VBox.vgrow="ALWAYS">
