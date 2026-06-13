@@ -269,6 +269,7 @@ class RemoveTrackCommandTest {
         obsList.addAll(track1, track2);
 
         Playlist playlist = new Playlist("PlaylistTest");
+        TrackList.getTrackListPointer().attach(playlist);
         PlaylistList.getPlaylistListPointer().addPlaylist(playlist);
         playlist.addTrack(track1);
 
@@ -305,6 +306,8 @@ class RemoveTrackCommandTest {
         PlaylistList playlistList = PlaylistList.getPlaylistListPointer();
         Playlist playlist1 = new Playlist("Playlist1");
         Playlist playlist2 = new Playlist("Playlist2");
+        TrackList.getTrackListPointer().attach(playlist1);
+        TrackList.getTrackListPointer().attach(playlist2);
         playlistList.addPlaylist(playlist1);
         playlistList.addPlaylist(playlist2);
         playlist1.addTrack(track1);
@@ -341,6 +344,7 @@ class RemoveTrackCommandTest {
         obsList.add(track1);
 
         Playlist playlist = new Playlist("PlaylistVuota");
+        TrackList.getTrackListPointer().attach(playlist);
         PlaylistList.getPlaylistListPointer().addPlaylist(playlist);
 
         ArrayList<Track> singleTrack = new ArrayList<>();

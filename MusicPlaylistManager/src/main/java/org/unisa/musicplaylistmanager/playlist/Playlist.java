@@ -32,7 +32,6 @@ public class Playlist extends TrackCollection implements BaseObserver, MostPlaye
      */
     public Playlist(String name) {
         super(name);
-        TrackList.getTrackListPointer().attach(this);
     }
 
 
