@@ -93,7 +93,7 @@
                 <HBox alignment="CENTER_RIGHT" spacing="10.0" VBox.vgrow="ALWAYS">
                     <children>
                         <Button fx:id="addTrackButton" mnemonicParsing="false" onAction="#addTrack" text="✓  Conferma" />
-                        <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveChanges" text="💾  Salva Modifiche" visible="false" />
+                        <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveChanges" text="Salva Modifiche" visible="false" />
                         <Button fx:id="editButton" mnemonicParsing="false" onAction="#editTrack" text="✎  Modifica" visible="false" />
                         <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelChanges" styleClass="cancel-button" text="✕  Annulla" visible="false" />
                         <Button fx:id="buttonBack" mnemonicParsing="false" onAction="#goBack" styleClass="cancel-button" text="✕  Annulla" />

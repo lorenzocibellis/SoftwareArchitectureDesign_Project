@@ -128,6 +128,7 @@ public class PlaylistManualController {
         }
 
         try{
+            PlaylistList.getPlaylistListPointer().checkValidName(playlistName);
             Playlist p = this.getPlaylist();
             this.add(p);
             this.goBack(actionEvent);

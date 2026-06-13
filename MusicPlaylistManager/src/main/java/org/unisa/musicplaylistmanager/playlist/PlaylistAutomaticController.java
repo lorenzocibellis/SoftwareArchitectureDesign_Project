@@ -307,6 +307,7 @@ public class PlaylistAutomaticController {
 
         // Crea playlist e aggiungi tracce
         try {
+            PlaylistList.getPlaylistListPointer().checkValidName(playlistName);
             Playlist playlist = new Playlist(playlistName);
             for (Track track : matchingTracks) {
                 playlist.addTrack(track);

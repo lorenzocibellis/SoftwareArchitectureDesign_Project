@@ -32,9 +32,6 @@ public class Playlist extends TrackCollection implements BaseObserver, MostPlaye
      */
     public Playlist(String name) {
         super(name);
-        if(name == null || name.equals(TrackList.TRACKLIST_NAME)) {
-            throw new IllegalArgumentException("Non è possibile creare una playlist con questo nome!");
-        }
         TrackList.getTrackListPointer().attach(this);
     }
 

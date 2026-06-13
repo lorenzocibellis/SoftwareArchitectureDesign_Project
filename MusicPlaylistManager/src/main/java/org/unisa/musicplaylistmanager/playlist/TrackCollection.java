@@ -7,9 +7,11 @@ import org.unisa.musicplaylistmanager.track.Track;
 import org.unisa.musicplaylistmanager.track.TrackList;
 
 import java.util.ArrayList;
+import javafx.beans.property.StringProperty;
+import javafx.beans.property.SimpleStringProperty;
 
 public abstract class TrackCollection implements IterableCollection {
-    private String name;
+    private final StringProperty name = new SimpleStringProperty();
     private ArrayList<Track> tracks;
 
     /**
@@ -18,7 +20,7 @@ public abstract class TrackCollection implements IterableCollection {
      * @param name il nome della playlist
      */
     public TrackCollection(String name) {
-        this.name = name;
+        this.name.set(name);
         this.tracks = new ArrayList<Track>();
     }
 
@@ -38,7 +40,7 @@ public abstract class TrackCollection implements IterableCollection {
      * @return il nome della playlist
      */
     public String getName() {
-        return name;
+        return name.get();
     }
 
     /**
@@ -47,7 +49,11 @@ public abstract class TrackCollection implements IterableCollection {
      * @param name il nuovo nome
      */
     protected void setName(String name) {
-        this.name = name;
+        this.name.set(name);
+    }
+
+    public StringProperty nameProperty() {
+        return name;
     }
 
     /**

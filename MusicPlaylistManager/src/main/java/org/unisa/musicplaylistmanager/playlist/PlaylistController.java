@@ -46,6 +46,9 @@ public class PlaylistController {
     private Button backButton;
 
     @FXML
+    private Button renameButton;
+
+    @FXML
     private Button playAllButton;
 
     @FXML
@@ -110,11 +113,10 @@ public class PlaylistController {
      * * @param p la playlist da visualizzare
      */
     public void setPlaylist(Playlist p){
-
         if (p != null) {
-
             playlist = p;
-            namePlaylist.setText(playlist.getName());
+            namePlaylist.textProperty().unbind();
+            namePlaylist.textProperty().bind(playlist.nameProperty());
 
             playlistObservable = FXCollections.observableArrayList(playlist.getTracks());
 
@@ -137,6 +139,60 @@ public class PlaylistController {
             });
         }
         updateBottomPadding();
+    }
+
+    /**
+     * Gestisce l'apertura della finestra per rinominare la playlist corrente.
+     * Applica le validazioni per evitare duplicati o l'uso di nomi riservati.
+     * @param event l'evento generato dal click
+     */
+    @FXML
+    void renamePlaylist(ActionEvent event) {
+        if (playlist == null) return;
+
+        boolean success = false;
+        String initialValue = playlist.getName();
+        
+        while (!success) {
+            TextInputDialog dialog = new TextInputDialog(initialValue);
+            dialog.setTitle("Rinomina Playlist");
+            dialog.setHeaderText("Rinomina questa playlist");
+            dialog.setContentText("Nuovo nome:");
+            dialog.getDialogPane().setPrefWidth(400);
+            javafx.application.Platform.runLater(() -> {
+                dialog.getEditor().deselect();
+                dialog.getEditor().positionCaret(dialog.getEditor().getText().length());
+            });
+
+            Optional<String> result = dialog.showAndWait();
+
+            if (result.isEmpty()) {
+                break;
+            }
+            
+            String newNameRaw = result.get();
+            String newName = newNameRaw.trim();
+
+            if (newName.isEmpty() || newName.equals(playlist.getName())) {
+                break;
+            }
+
+            try {
+                PlaylistList.getPlaylistListPointer().checkValidName(newName);
+
+                playlist.setName(newName);
+                success = true;
+                
+            } catch (IllegalArgumentException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Errore");
+                alert.setHeaderText("Nome non valido");
+                alert.setContentText(e.getMessage());
+                alert.showAndWait();
+
+                initialValue = newNameRaw;
+            }
+        }
     }
 
     /**

@@ -39,6 +39,23 @@ public class PlaylistList {
     }
 
     /**
+     * Valida un nome per una playlist verificando che non sia un nome di sistema
+     * o che non esista già una playlist con questo nome.
+     * 
+     * @param name il nome da validare
+     * @throws IllegalArgumentException se il nome non è valido
+     */
+    public void checkValidName(String name) {
+        if (name == null || name.equals(TrackList.TRACKLIST_NAME)) {
+            throw new IllegalArgumentException("Non puoi usare il nome della libreria di sistema!");
+        }
+        boolean exists = playlistList.stream().anyMatch(p -> p.getName().equalsIgnoreCase(name));
+        if (exists) {
+            throw new IllegalArgumentException("Esiste già una playlist con questo nome!");
+        }
+    }
+
+    /**
      * Aggiunge una nuova playlist alla collezione.
      * 
      * @param p la playlist da aggiungere

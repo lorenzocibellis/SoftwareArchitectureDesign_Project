@@ -60,6 +60,23 @@ class PlaylistListTest {
     }
 
     @Test
+    @DisplayName("checkValidName: valida il nome di una playlist")
+    void testCheckValidName() {
+        // nome valido
+        assertDoesNotThrow(() -> playlistList.checkValidName("Nuova Playlist"));
+
+        // nome riservato di sistema
+        assertThrows(IllegalArgumentException.class, () -> playlistList.checkValidName("La Mia Libreria"),
+            "Il nome di sistema deve lanciare eccezione");
+
+        // nome duplicato
+        Playlist p = new Playlist("Esistente");
+        playlistList.addPlaylist(p);
+        assertThrows(IllegalArgumentException.class, () -> playlistList.checkValidName("Esistente"),
+            "Un nome già esistente deve lanciare eccezione");
+    }
+
+    @Test
     @DisplayName("deletePlaylist: non fa nulla se la playlist non esiste")
     void testDeleteNonExistentPlaylist() {
         Playlist p = new Playlist("Esistente");

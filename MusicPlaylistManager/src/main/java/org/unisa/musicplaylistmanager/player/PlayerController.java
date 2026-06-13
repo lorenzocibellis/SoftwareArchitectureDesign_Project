@@ -1,6 +1,7 @@
 package org.unisa.musicplaylistmanager.player;
 
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -12,6 +13,7 @@ import javafx.scene.text.Text;
 import org.unisa.musicplaylistmanager.playlist.TrackCollection;
 import org.unisa.musicplaylistmanager.state.Play;
 import org.unisa.musicplaylistmanager.track.Track;
+import org.unisa.musicplaylistmanager.track.TrackList;
 import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 
 import java.io.File;
@@ -125,7 +127,8 @@ public class PlayerController implements Initializable {
      */
     public void init(Track initialTrack, TrackCollection trackCollection) {
         if (contextLabel != null && trackCollection != null) {
-            contextLabel.setText("Riproducendo da: " + trackCollection.getName());
+            contextLabel.textProperty().unbind();
+            contextLabel.textProperty().bind(Bindings.concat("Riproducendo da: ", trackCollection.nameProperty()));
         }
         updateTrackUI(initialTrack);
         if (player != null) {

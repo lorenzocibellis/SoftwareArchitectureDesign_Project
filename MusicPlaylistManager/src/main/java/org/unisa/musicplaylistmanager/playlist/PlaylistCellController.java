@@ -64,8 +64,6 @@ public class PlaylistCellController extends ListCell<Playlist> {
             nameLabel.setText(playlist.getName());
             detailsLabel.setText(playlist.getSize() + (playlist.getSize() == 1 ? " Traccia" : " Tracce"));
 
-            // Imposta l'azione per il bottone "info"
-
             // Imposta il layout FXML caricato come grafica della cella
             setText(null);
             setGraphic(root);
