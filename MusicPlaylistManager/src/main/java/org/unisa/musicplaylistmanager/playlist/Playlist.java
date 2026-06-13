@@ -7,10 +7,13 @@ package org.unisa.musicplaylistmanager.playlist;
  *
  * @author gruppo10
  */
+import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.Alert;
 import org.unisa.musicplaylistmanager.observer.BaseObserver;
 import org.unisa.musicplaylistmanager.track.Track;
 import org.unisa.musicplaylistmanager.track.TrackList;
+import javafx.beans.property.IntegerProperty;
 
 import java.util.ArrayList;
 
@@ -18,7 +21,7 @@ public class Playlist extends TrackCollection implements BaseObserver, MostPlaye
 
     //ATTRIBUTI
     // indica il numero di volte che la playlist è stata ascoltata
-    private int numOfPlay;
+    private final IntegerProperty numOfPlay = new SimpleIntegerProperty(0);
 
     /**
      * Costruisce una nuova playlist con il nome specificato.
@@ -32,7 +35,6 @@ public class Playlist extends TrackCollection implements BaseObserver, MostPlaye
         if(name == null || name.equals(TrackList.TRACKLIST_NAME)) {
             throw new IllegalArgumentException("Non è possibile creare una playlist con questo nome!");
         }
-        numOfPlay = 0;
         TrackList.getTrackListPointer().attach(this);
     }
 
@@ -59,12 +61,24 @@ public class Playlist extends TrackCollection implements BaseObserver, MostPlaye
      * @return numOfPlay Numero di volte che la playlist è stata ascoltata.
      *
      */
-    public int getNumOfPlay(){ return numOfPlay;}
+    @Override
+    public int getNumOfPlay(){ return numOfPlay.get();}
 
     /**
      *
      * Incrementa di 1 il numero di ascolti della playlist
      *
      */
-    public void incrementNumOfPlay(){ numOfPlay += 1;}
+    @Override
+    public void incrementNumOfPlay(){ numOfPlay.set(numOfPlay.get() + 1);}
+
+    @Override
+    public ReadOnlyIntegerProperty playCountProperty() {
+        return numOfPlay;
+    }
+
+    @Override
+    public String getDisplayName() {
+        return this.getName();
+    }
 }

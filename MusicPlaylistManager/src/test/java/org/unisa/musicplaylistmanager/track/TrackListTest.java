@@ -25,9 +25,9 @@ class TrackListTest {
         try {
             Platform.startup(() -> {});
         } catch (IllegalStateException e) {
-            // Toolkit JavaFX già inizializzato, va bene
+            // Toolkit JavaFX già inizializzato
         }
-        Thread.sleep(200); // attendi che il toolkit sia pronto
+        Thread.sleep(200);
     }
 
     @BeforeEach
@@ -36,7 +36,6 @@ class TrackListTest {
 
         // reset stato singleton
         trackList.getTracks().clear();
-        trackList.getTopTracks().clear();
 
         track1 = new Track(
                 "Bohemian Rhapsody",
@@ -82,14 +81,12 @@ class TrackListTest {
     // -----------------------------------------------------------------------
 
     @Test
-    @DisplayName("addTrack: aggiunge una traccia valida e aggiorna Top list")
+    @DisplayName("addTrack: aggiunge una traccia valida")
     void testAddTrackValid() {
-        track1.incrementNumOfPlay(); // serve almeno 1 play per comparire nella Top 3
         trackList.addTrack(track1);
 
         assertEquals(1, trackList.getTracks().size());
         assertTrue(trackList.getTracks().contains(track1));
-        assertEquals(1, trackList.getTopTracks().size());
     }
 
     @Test
@@ -155,40 +152,4 @@ class TrackListTest {
         assertEquals("Bohemian Rhapsody Remaster", inList.getTitle());
     }
 
-    // -----------------------------------------------------------------------
-    // TOP TRACKS
-    // -----------------------------------------------------------------------
-
-    @Test
-    @DisplayName("TopTracks: aggiornamento automatico con playCount")
-    void testTopTracksReactiveUpdate() {
-        trackList.addTrack(track1);
-        trackList.addTrack(track2);
-
-        // simula ascolti
-        track1.incrementNumOfPlay();
-        track1.incrementNumOfPlay();
-        track2.incrementNumOfPlay();
-
-        // forza refresh (in caso listener non ancora triggerato in test)
-        trackList.refreshTopThreeTracks();
-
-        assertFalse(trackList.getTopTracks().isEmpty());
-
-        // track1 deve essere sopra track2
-        assertEquals(track1, trackList.getTopTracks().get(0));
-    }
-
-    @Test
-    @DisplayName("TopTracks: lista vuota quando nessuna traccia ha play")
-    void testTopTracksEmptyWhenNoPlays() {
-        trackList.addTrack(track1);
-
-        trackList.getTopTracks().clear();
-        trackList.refreshTopThreeTracks();
-
-        // può essere vuota se nessun play > 0
-        assertTrue(trackList.getTopTracks().isEmpty()
-                || trackList.getTopTracks().size() <= 1);
-    }
 }

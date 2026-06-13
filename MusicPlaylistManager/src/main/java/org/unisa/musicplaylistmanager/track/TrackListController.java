@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,6 +33,7 @@ import java.util.Optional;
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.unisa.musicplaylistmanager.service.statistics.RankingService;
 
 /**
  * Controller per la schermata principale della libreria musicale (TrackListView).
@@ -123,13 +125,16 @@ public void initialize() {
 
     updateBottomPadding();
 
-    // 🔥 FIX IMPORTANTE: binding diretto Top 3 UI
-    trackList.getTopTracks().addListener((javafx.collections.ListChangeListener<? super Track>) c -> {
-        Platform.runLater(this::refreshTopTracksUI);
+    // Inizializza il RankingService per gestire la classifica
+        RankingService<Track> trackRankingService =
+        new RankingService<>(trackListObservable, 3);
+    
+    // Ascolta i cambiamenti
+    trackRankingService.getTopItems().addListener((ListChangeListener.Change<? extends Track> c) -> {
+        Platform.runLater(() -> refreshTopTracksUI(trackRankingService.getTopItems()));
     });
 
-    trackList.refreshTopThreeTracks();
-    refreshTopTracksUI();
+    refreshTopTracksUI(trackRankingService.getTopItems());
 }
 
     /**
@@ -378,10 +383,8 @@ public void initialize() {
      * il binding automatico del numero di riproduzioni. 
      * Se non sono presenti tracce ascoltate, visualizza un messaggio di stato (placeholder).
      */
-    private void refreshTopTracksUI() {
+    private void refreshTopTracksUI(List<Track> top3) {
     topTracksContainer.getChildren().clear();
-
-    List<Track> top3 = trackList.getTopTracks();
 
     if (top3.isEmpty()) {
         Label emptyLabel = new Label("Ascolta qualche traccia per vedere qui la tua Top 3!");
@@ -400,7 +403,7 @@ public void initialize() {
         );
 
         // Formato: "Titolo di Autore - N ascolti"
-        String displayText = t.getTitle() + " di " + t.getAuthor() + " - " + t.getNumOfPlay() + " ascolti";
+        String displayText = t.getDisplayName() + " - " + t.getNumOfPlay() + " ascolti";
         Label trackLabel = new Label(displayText);
         trackLabel.setStyle("-fx-font-weight: bold;");
 

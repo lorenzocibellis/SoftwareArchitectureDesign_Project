@@ -33,12 +33,6 @@ public class TrackList extends TrackCollection implements BaseSubject{
     private static TrackList pnt = null;
 
     /**
-     * Lista osservabile contenente dinamicamente le tre tracce più ascoltate.
-     * Questa struttura è utilizzata dalla UI per il rendering della Top 3.
-     */
-    private final ObservableList<Track> topTracks = FXCollections.observableArrayList();
-
-    /**
      * Costruisce l'unica istanza della libreria principale.
      * Inizializza il subject per il pattern Observer e imposta il puntatore Singleton.
      */
@@ -48,18 +42,6 @@ public class TrackList extends TrackCollection implements BaseSubject{
         super(TRACKLIST_NAME);
         observers = new ArrayList<>();
         pnt = this;
-
-        // inizializzazione coerente della Top 3
-        refreshTopThreeTracks();
-    }
-
-    /**
-     * Restituisce la lista osservabile delle tre tracce più ascoltate.
-     *
-     * @return ObservableList contenente la Top 3 delle tracce
-     */
-    public ObservableList<Track> getTopTracks() {
-        return topTracks;
     }
 
     /**
@@ -92,8 +74,6 @@ public class TrackList extends TrackCollection implements BaseSubject{
     @Override
     public void addTrack(Track track) {
         super.addTrack(track);
-        observePlayCount(track);
-        refreshTopThreeTracks(); // ricalcola subito, utile per undo con playCount già > 0
     }
 
     /**
@@ -104,7 +84,6 @@ public class TrackList extends TrackCollection implements BaseSubject{
     public void removeTrack(Track track){
         super.removeTrack(track);
         notifyObservers(track);
-        refreshTopThreeTracks();
     }
 
     /**
@@ -118,8 +97,6 @@ public class TrackList extends TrackCollection implements BaseSubject{
         for(Track t: tracks){
             notifyObservers(t);
         }
-
-        refreshTopThreeTracks();
     }
 
     /**
@@ -132,7 +109,6 @@ public class TrackList extends TrackCollection implements BaseSubject{
     @Override
     public void updateTrack(Track existingTrack, Track newDataTrack) {
         super.updateTrack(existingTrack, newDataTrack);
-        refreshTopThreeTracks();
     }
 
     // ===================== OBSERVER =====================
@@ -170,34 +146,4 @@ public class TrackList extends TrackCollection implements BaseSubject{
             o.update(track);
     }
 
-    // ===================== TOP TRACKS =====================
-
-    /**
-     * Ricalcola la classifica delle tre tracce più ascoltate
-     * e aggiorna la lista osservabile {@link #topTracks}.
-     *
-     * La selezione avviene ordinando le tracce per numero di ascolti
-     * in ordine decrescente e prendendo i primi tre elementi.
-     */
-    public void refreshTopThreeTracks() {
-        List<Track> top = getTracks().stream()
-            .filter(t -> t.getNumOfPlay() > 0)
-            .sorted(Comparator.comparingInt(Track::getNumOfPlay).reversed())
-            .limit(3)
-            .toList();
-
-        topTracks.setAll(top);
-    }
-
-    /**
-     * Registra un listener sulla proprietà playCount della traccia specificata,
-     * in modo da ricalcolare automaticamente la Top 3 ad ogni variazione degli ascolti.
-     *
-     * @param track la traccia da osservare
-     */
-    public void observePlayCount(Track track) {
-        track.playCountProperty().addListener((obs, oldVal, newVal) -> {
-            refreshTopThreeTracks();
-        });
-    }
 }
