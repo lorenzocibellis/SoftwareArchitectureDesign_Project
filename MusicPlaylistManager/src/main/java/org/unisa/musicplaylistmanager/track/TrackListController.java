@@ -62,10 +62,12 @@ public class TrackListController {
     @FXML
     private Label libraryName;
     @FXML
+    private Label topTracksTitle;
+    @FXML
     private HBox topTracksContainer;
 
-
     //Definizione attributi
+    private static final int RANKING_LIMIT = 3;
     //Path per accedere agli oggetti View.fxml
     private String resourceRoot = "/org/unisa/musicplaylistmanager/track/";
 
@@ -126,9 +128,12 @@ public void initialize() {
 
     updateBottomPadding();
 
-    // Inizializza il RankingService per gestire la classifica
-        RankingService<Track> trackRankingService =
-        new RankingService<>(trackListObservable, 3);
+    // imposta il titolo in base al limite
+    topTracksTitle.setText("La tua Top " + RANKING_LIMIT);
+
+    // inizializza il RankingService per gestire la classifica
+    RankingService<Track> trackRankingService =
+        new RankingService<>(trackListObservable, RANKING_LIMIT);
     
     // Ascolta i cambiamenti
     trackRankingService.getTopItems().addListener((ListChangeListener.Change<? extends Track> c) -> {
@@ -389,7 +394,7 @@ public void initialize() {
         topTracksContainer.getChildren().clear();
 
         if (top3.isEmpty()) {
-            Label emptyLabel = new Label("Ascolta qualche brano per popolare la tua Top 3!");
+            Label emptyLabel = new Label("Ascolta qualche brano per popolare la tua Top " + RANKING_LIMIT + "!");
             emptyLabel.getStyleClass().add("top-track-empty-label");
             topTracksContainer.getChildren().add(emptyLabel);
             return;
@@ -400,10 +405,15 @@ public void initialize() {
             
             VBox card = new VBox();
             card.setSpacing(2);
-            card.setPrefWidth(220); 
+            card.setMaxWidth(Double.MAX_VALUE); // Permette alla card di allargarsi
+            HBox.setHgrow(card, javafx.scene.layout.Priority.ALWAYS); // Fa espandere la card per riempire lo spazio
             card.getStyleClass().add("top-track-card");
 
-            String rankClass = (i == 0) ? "top-track-rank-gold" : (i == 1) ? "top-track-rank-silver" : "top-track-rank-bronze";
+            String rankClass;
+            if (i == 0) rankClass = "top-track-rank-gold";
+            else if (i == 1) rankClass = "top-track-rank-silver";
+            else if (i == 2) rankClass = "top-track-rank-bronze";
+            else rankClass = "top-track-rank-normal";
 
             HBox topRow = new HBox(5);
             topRow.setAlignment(javafx.geometry.Pos.CENTER_LEFT);

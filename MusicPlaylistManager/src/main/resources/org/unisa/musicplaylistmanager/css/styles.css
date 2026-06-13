@@ -339,6 +339,12 @@
     -fx-text-fill: #CD7F32;
 }
 
+.top-track-rank-normal {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #666666;
+}
+
 .top-track-title {
     -fx-font-size: 13px;
     -fx-font-weight: bold;

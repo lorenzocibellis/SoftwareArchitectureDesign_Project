@@ -66,8 +66,8 @@ public class TrackList extends TrackCollection implements BaseSubject{
     // ===================== CORE OPERATIONS =====================
 
     /**
-     * Aggiunge una traccia alla libreria e registra il listener sul suo playCount
-     * per aggiornare automaticamente la Top 3 ad ogni ascolto.
+     * Aggiunge una traccia alla libreria.
+     *
      *
      * @param track la traccia da aggiungere
      */

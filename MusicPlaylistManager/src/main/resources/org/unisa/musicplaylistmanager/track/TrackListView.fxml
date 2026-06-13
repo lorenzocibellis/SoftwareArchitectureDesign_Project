@@ -38,7 +38,7 @@
     <center>
         <VBox fx:id="mainVBox" prefWidth="800.0">
             <VBox fx:id="topTracksArea" spacing="5.0" styleClass="top-tracks-area">
-                <Label text="La tua Top 3" textFill="#333333">
+                <Label fx:id="topTracksTitle" text="La tua Top 3" textFill="#333333">
                     <font><Font name="System Bold" size="14.0" /></font>
                 </Label>
                 <HBox fx:id="topTracksContainer" spacing="15.0" alignment="CENTER_LEFT" />
