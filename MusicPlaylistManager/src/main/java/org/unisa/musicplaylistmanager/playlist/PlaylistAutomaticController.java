@@ -6,13 +6,17 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.scene.layout.FlowPane;
 import org.unisa.musicplaylistmanager.command.AddPlaylistCommand;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;
+import org.unisa.musicplaylistmanager.tag.PersonalTagManager;
+import org.unisa.musicplaylistmanager.tag.TagUIHelper;
 import org.unisa.musicplaylistmanager.track.Track;
 import org.unisa.musicplaylistmanager.track.TrackList;
 
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Controller per la creazione automatica di playlist basata su tag, genere e anno.
@@ -59,6 +63,11 @@ public class PlaylistAutomaticController {
     @FXML
     private Button buttonBack;
 
+    @FXML
+    private FlowPane personalTagsPane;
+    
+    private List<RadioButton> personalTagsRadios = new ArrayList<>();
+
     private PlaylistList playlistList;
     private ObservableList<Playlist> playlistListObservable;
 
@@ -69,9 +78,9 @@ public class PlaylistAutomaticController {
      */
     @FXML
     public void initialize() {
-        bindTagPreview(favouriteRadio, favouritePreview);
-        bindTagPreview(explicitRadio, explicitPreview);
-        bindTagPreview(newReleaseRadio, newReleasePreview);
+        TagUIHelper.bindTagPreview(favouriteRadio, favouritePreview);
+        TagUIHelper.bindTagPreview(explicitRadio, explicitPreview);
+        TagUIHelper.bindTagPreview(newReleaseRadio, newReleasePreview);
 
         // Listener per forzare l'input a essere solo numerico e di massimo 4 cifre per l'anno
         yearInput.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -83,23 +92,21 @@ public class PlaylistAutomaticController {
                 yearInput.setText(filtered);
             }
         });
+
+        populatePersonalTags();
     }
 
     /**
-     * Collega un RadioButton alla visibilità del suo tag badge di anteprima.
-     *
-     * @param radio il RadioButton da osservare
-     * @param preview il Label badge da mostrare/nascondere
+     * Genera dinamicamente i radio button per i tag personali recuperati dal sistema.
      */
-    private void bindTagPreview(RadioButton radio, Label preview) {
-        if (radio != null && preview != null) {
-            preview.setVisible(radio.isSelected());
-            preview.setManaged(radio.isSelected());
-            radio.selectedProperty().addListener((obs, oldVal, newVal) -> {
-                preview.setVisible(newVal);
-                preview.setManaged(newVal);
-            });
-        }
+    private void populatePersonalTags() {
+        List<String> tags = PersonalTagManager.getInstance().getPersonalTags();
+        TagUIHelper.populatePersonalTags(
+                tags,
+                personalTagsPane,
+                personalTagsRadios,
+                "Nessun tag personale creato. Aggiungili dalla schermata iniziale!"
+        );
     }
 
     /**
@@ -149,6 +156,13 @@ public class PlaylistAutomaticController {
                 return result;
             }
         }
+        
+        List<String> requiredPersonalTags = new ArrayList<>();
+        for (RadioButton rb : personalTagsRadios) {
+            if (rb.isSelected()) {
+                requiredPersonalTags.add(rb.getUserData().toString());
+            }
+        }
 
         for (Track track : trackList.getTracks()) {
             boolean matches = true;
@@ -178,6 +192,21 @@ public class PlaylistAutomaticController {
             if (yearValue != null && !track.getYear().equals(yearValue)) {
                 matches = false;
             }
+            
+            // Filtro tag personali
+            if (!requiredPersonalTags.isEmpty()) {
+                List<String> trackTags = track.getPersonalTags();
+                if (trackTags == null) {
+                    matches = false;
+                } else {
+                    for (String reqTag : requiredPersonalTags) {
+                        if (!trackTags.contains(reqTag)) {
+                            matches = false;
+                            break;
+                        }
+                    }
+                }
+            }
 
             if (matches) {
                 result.add(track);
@@ -193,9 +222,11 @@ public class PlaylistAutomaticController {
      * @return {@code true} se almeno un filtro è attivo
      */
     private boolean hasAtLeastOneFilter() {
+        boolean hasPersonalTag = personalTagsRadios.stream().anyMatch(RadioButton::isSelected);
         return favouriteRadio.isSelected()
                 || explicitRadio.isSelected()
                 || newReleaseRadio.isSelected()
+                || hasPersonalTag
                 || !genreInput.getText().trim().isEmpty()
                 || !authorInput.getText().trim().isEmpty()
                 || !yearInput.getText().trim().isEmpty();

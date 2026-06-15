@@ -49,7 +49,10 @@ public class TagManagerController {
                     deleteButton.getStyleClass().add("delete-tag-button");
                     deleteButton.setOnAction(e -> deleteTag(item));
 
-                    javafx.scene.layout.HBox hbox = new javafx.scene.layout.HBox(10, badge, deleteButton);
+                    javafx.scene.layout.Region spacer = new javafx.scene.layout.Region();
+                    javafx.scene.layout.HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+
+                    javafx.scene.layout.HBox hbox = new javafx.scene.layout.HBox(10, badge, spacer, deleteButton);
                     hbox.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
 
                     setGraphic(hbox);
@@ -78,8 +81,8 @@ public class TagManagerController {
             if (!added) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Attenzione");
-                alert.setHeaderText("Tag già esistente");
-                alert.setContentText("Hai già inserito questo tag nella tua lista.");
+                alert.setHeaderText("Tag non valido o già esistente");
+                alert.setContentText("Il tag esiste già nella tua lista, oppure hai provato a usare un nome riservato di sistema (es. Preferita, Esplicita, Nuova uscita).");
                 alert.showAndWait();
             } else {
                 newTagField.clear();

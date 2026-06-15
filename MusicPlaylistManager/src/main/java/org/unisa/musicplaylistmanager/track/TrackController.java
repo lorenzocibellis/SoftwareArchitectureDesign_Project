@@ -7,7 +7,6 @@ import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.unisa.musicplaylistmanager.command.AddTrackCommand;
@@ -15,6 +14,7 @@ import org.unisa.musicplaylistmanager.command.BaseTrackCommands;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;
 import org.unisa.musicplaylistmanager.playlist.TrackCollection;
 import org.unisa.musicplaylistmanager.tag.PersonalTagManager;
+import org.unisa.musicplaylistmanager.tag.TagUIHelper;
 
 import java.io.File;
 import java.io.IOException;
@@ -130,9 +130,9 @@ public class TrackController {
         manageButtonVisibility();
 
         // Listener per mostrare/nascondere l'anteprima dei tag badge
-        bindTagPreview(favouriteRadio, favouritePreview);
-        bindTagPreview(explicitContentRadio, explicitPreview);
-        bindTagPreview(newReleaseRadio, newReleasePreview);
+        TagUIHelper.bindTagPreview(favouriteRadio, favouritePreview);
+        TagUIHelper.bindTagPreview(explicitContentRadio, explicitPreview);
+        TagUIHelper.bindTagPreview(newReleaseRadio, newReleasePreview);
         
         populatePersonalTags();
     }
@@ -144,58 +144,13 @@ public class TrackController {
      * selezionabili (RadioButton + Label) per permettere all'utente di associarli alla traccia.
      */
     private void populatePersonalTags() {
-        personalTagsPane.getChildren().clear();
-        personalTags.clear();
-
         List<String> tags = PersonalTagManager.getInstance().getPersonalTags();
-        
-        if (tags.isEmpty()) {
-            Label placeholder = new Label("Nessun tag personale creato. Aggiungili dalla schermata libreria!");
-            placeholder.getStyleClass().add("tags-placeholder");
-            personalTagsPane.getChildren().add(placeholder);
-            return;
-        }
-
-        for (String tag : tags) {
-            HBox card = new HBox();
-            card.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-            card.setSpacing(6.0);
-            card.getStyleClass().add("tag-toggle-card");
-            card.setPadding(new javafx.geometry.Insets(6.0, 10.0, 6.0, 10.0));
-
-            RadioButton rb = new RadioButton("");
-            rb.setUserData(tag);
-            
-            Label preview = new Label(tag);
-            preview.getStyleClass().addAll("tag-badge", "tag-personal");
-
-            card.setOnMouseClicked(e -> {
-                if (!rb.isDisabled()) {
-                    rb.setSelected(!rb.isSelected());
-                }
-            });
-
-            card.getChildren().addAll(rb, preview);
-            personalTags.add(rb);
-            personalTagsPane.getChildren().add(card);
-        }
-    }
-
-    /**
-     * Collega un RadioButton alla visibilità del suo tag badge di anteprima.
-     *
-     * @param radio il RadioButton da osservare
-     * @param preview il Label badge da mostrare/nascondere
-     */
-    private void bindTagPreview(RadioButton radio, Label preview) {
-        if (radio != null && preview != null) {
-            preview.setVisible(radio.isSelected());
-            preview.setManaged(radio.isSelected());
-            radio.selectedProperty().addListener((obs, oldVal, newVal) -> {
-                preview.setVisible(newVal);
-                preview.setManaged(newVal);
-            });
-        }
+        TagUIHelper.populatePersonalTags(
+                tags,
+                personalTagsPane,
+                personalTags,
+                "Nessun tag personale creato. Aggiungili dalla schermata iniziale!"
+        );
     }
 
     /**

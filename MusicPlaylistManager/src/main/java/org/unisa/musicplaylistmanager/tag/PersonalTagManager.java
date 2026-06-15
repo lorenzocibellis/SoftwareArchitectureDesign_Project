@@ -45,6 +45,12 @@ public class PersonalTagManager {
             return false;
         }
         String normalized = tag.trim().toUpperCase();
+        
+        // non permette all'utente di inserire come nome del tag personale un tag dedicato di sistema
+        if (normalized.equals("PREFERITA") || normalized.equals("ESPLICITA") || normalized.equals("NUOVA USCITA") || normalized.equals("NEW")) {
+            return false;
+        }
+
         for (String t : personalTags) {
             if (t.toUpperCase().equals(normalized)) {
                 return false;

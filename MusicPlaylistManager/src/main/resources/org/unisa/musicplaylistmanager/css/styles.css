@@ -434,3 +434,18 @@
 .transparent-container {
     -fx-background-color: transparent;
 }
+
+/* scrollPane personalizzato per l'area dei tag */
+.tags-scroll-pane {
+    -fx-background-color: #FFFFFF;
+    -fx-background: #FFFFFF;
+    -fx-border-color: #EAEAEA;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 8;
+}
+
+.tags-scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
