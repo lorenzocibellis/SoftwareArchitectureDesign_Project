@@ -2,6 +2,7 @@ package org.unisa.musicplaylistmanager.tag;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.unisa.musicplaylistmanager.track.TrackList;
 
 /**
  * Singleton che gestisce i tag personali globali.
@@ -28,10 +29,10 @@ public class PersonalTagManager {
     }
 
     /**
-     * Restituisce la lista osservabile dei tag personali.
+     * Restituisce la lista osservabile dei tag personali (in sola lettura).
      */
     public ObservableList<String> getPersonalTags() {
-        return personalTags;
+        return FXCollections.unmodifiableObservableList(personalTags);
     }
 
     /**
@@ -51,5 +52,29 @@ public class PersonalTagManager {
         }
         personalTags.add(tag.trim());
         return true;
+    }
+
+    /**
+     * Rimuove un tag dalla lista globale e provvede a cancellarlo
+     * da tutte le tracce attualmente in memoria.
+     * @param tag Il tag da rimuovere.
+     * @return true se è stato rimosso, false altrimenti.
+     */
+    public boolean removeTag(String tag) {
+        if (tag == null || tag.trim().isEmpty()) {
+            return false;
+        }
+        boolean removed = personalTags.remove(tag);
+        
+        // se il tag è stato rimosso con successo, lo elimina anche dalle tracce
+        if (removed && TrackList.exists()) {
+            TrackList.getTrackListPointer()
+                .getTracks()
+                .stream()
+                .filter(track -> track.getPersonalTags() != null && track.getPersonalTags().contains(tag))
+                .forEach(track -> track.removePersonalTag(tag));
+        }
+        
+        return removed;
     }
 }

@@ -60,7 +60,7 @@
                 <Insets left="20.0" right="20.0" />
             </padding>
             <children>
-                <Button fx:id="addTagButton" mnemonicParsing="false" onAction="#addPersonalTagDialog" prefHeight="35.0" prefWidth="120.0" styleClass="cancel-button" text="+ Aggiungi Tag" />
+                <Button fx:id="addTagButton" mnemonicParsing="false" onAction="#addPersonalTag" prefHeight="35.0" prefWidth="120.0" styleClass="cancel-button" text="+ Aggiungi Tag" />
                 <Region HBox.hgrow="ALWAYS" />
                 <Button fx:id="button1" graphicTextGap="10" mnemonicParsing="false" onAction="#addNewTrack" prefHeight="35.0" prefWidth="170.0" text="Nuova Traccia">
                     <graphic>

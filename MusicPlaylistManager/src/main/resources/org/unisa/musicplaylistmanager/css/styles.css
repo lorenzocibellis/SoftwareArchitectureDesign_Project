@@ -389,3 +389,19 @@
 .rename-button:hover {
     -fx-background-color: #F0F8FF;
 }
+
+/* stile per il bottone di eliminazione dei tag */
+.delete-tag-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #999999;
+    -fx-cursor: hand;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.delete-tag-button:hover {
+    -fx-background-color: transparent;
+    -fx-text-fill: #E53935;
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+}

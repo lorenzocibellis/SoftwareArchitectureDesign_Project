@@ -239,6 +239,16 @@ public class Track implements MostPlayed {
     }
 
     /**
+     * Rimuove un tag personale dalla traccia.
+     * @param tag Il nome del tag da rimuovere
+     */
+    public void removePersonalTag(String tag) {
+        if (!isBlank(tag)) {
+            this.personalTags.remove(tag);
+        }
+    }
+
+    /**
      * Setter per il titolo della traccia visualizzabile sulla GUI 
      * @return
      */

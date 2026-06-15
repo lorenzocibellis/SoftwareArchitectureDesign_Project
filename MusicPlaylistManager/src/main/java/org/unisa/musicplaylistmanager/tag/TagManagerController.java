@@ -47,7 +47,15 @@ public class TagManagerController {
                 } else {
                     Label badge = new Label(item);
                     badge.getStyleClass().addAll("tag-badge", "tag-personal");
-                    setGraphic(badge);
+                    
+                    Button deleteButton = new Button("✕");
+                    deleteButton.getStyleClass().add("delete-tag-button");
+                    deleteButton.setOnAction(e -> deleteTag(item));
+
+                    javafx.scene.layout.HBox hbox = new javafx.scene.layout.HBox(10, badge, deleteButton);
+                    hbox.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+
+                    setGraphic(hbox);
                 }
             }
         });
@@ -79,6 +87,29 @@ public class TagManagerController {
             } else {
                 newTagField.clear();
             }
+        }
+    }
+
+    private Runnable onTagDeleted;
+
+    /**
+     * Imposta un'azione da eseguire quando un tag viene eliminato 
+     * (es. aggiornare l'interfaccia grafica principale).
+     */
+    public void setOnTagDeleted(Runnable onTagDeleted) {
+        this.onTagDeleted = onTagDeleted;
+    }
+
+    /**
+     * Gestisce l'eliminazione di un tag delegando la logica al manager globale.
+     */
+    private void deleteTag(String tag) {
+        // rimuove il tag dalla lista globale e delega la pulizia delle tracce
+        boolean wasRemoved = PersonalTagManager.getInstance().removeTag(tag);
+
+        // notifica la finestra principale SOLO se il tag è stato effettivamente eliminato
+        if (wasRemoved && onTagDeleted != null) {
+            onTagDeleted.run();
         }
     }
 

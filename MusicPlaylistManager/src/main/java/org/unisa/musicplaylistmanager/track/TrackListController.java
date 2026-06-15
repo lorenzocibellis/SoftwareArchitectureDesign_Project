@@ -29,12 +29,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.unisa.musicplaylistmanager.service.statistics.RankingService;
+import org.unisa.musicplaylistmanager.tag.TagManagerController;
 
 /**
  * Controller per la schermata principale della libreria musicale (TrackListView).
@@ -179,15 +179,24 @@ public void initialize() {
      * Apre la finestra di dialogo per aggiungere un nuovo tag personale.
      */
     @FXML
-    public void addPersonalTagDialog(ActionEvent event) {
+    public void addPersonalTag(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/unisa/musicplaylistmanager/tag/TagManagerView.fxml"));
             Parent root = loader.load();
+            
+            // fa in modo che la lista delle canzoni venga aggiornata graficamnete in tempo reale
+            TagManagerController controller = loader.getController();
+            controller.setOnTagDeleted(() -> listView.refresh());
+
             Stage stage = new Stage();
             stage.setTitle("Gestione Tag Personali");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
             stage.showAndWait();
+            
+            // forza il ricaricamento grafico della lista tracce
+            // per far sparire eventuali tag appena rimossi
+            listView.refresh();
         } catch (IOException e) {
             e.printStackTrace();
         }
