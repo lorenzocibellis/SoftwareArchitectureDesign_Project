@@ -176,6 +176,24 @@ public void initialize() {
     // Dichiarazione metodi pubblici
 
     /**
+     * Apre la finestra di dialogo per aggiungere un nuovo tag personale.
+     */
+    @FXML
+    public void addPersonalTagDialog(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/unisa/musicplaylistmanager/tag/TagManagerView.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Gestione Tag Personali");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Apre la finestra per l'aggiunta di una nuova traccia alla libreria.
      *
      * @param actionEvent l'evento generato dal click
@@ -198,8 +216,9 @@ public void initialize() {
         controller.setObservable(trackListObservable);
 
         // visualizzazione finestra
+        stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
-        stage.show();
+        stage.showAndWait();
     }
 
     /**
@@ -357,6 +376,16 @@ public void initialize() {
                     
                     // Creazione della traccia
                     Track t = new Track(title, author, year, genre, duration, favourite, explicit, newRelease);
+                    
+                    // estrazione dei tag personali (se presenti nella nona colonna separati da virgola)
+                    if (data.length >= 9 && !data[8].trim().isEmpty()) {
+                        String[] tags = data[8].split(",");
+                        for (String tag : tags) {
+                            String trimmedTag = tag.trim();
+                            t.addPersonalTag(trimmedTag);
+                            org.unisa.musicplaylistmanager.tag.PersonalTagManager.getInstance().addTag(trimmedTag);
+                        }
+                    }
                     
                     // Aggiunta effettiva alla TrackList!
                     trackList.addTrack(t);

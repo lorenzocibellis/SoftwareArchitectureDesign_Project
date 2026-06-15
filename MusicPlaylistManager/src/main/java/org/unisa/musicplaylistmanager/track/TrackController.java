@@ -6,12 +6,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.unisa.musicplaylistmanager.command.AddTrackCommand;
 import org.unisa.musicplaylistmanager.command.BaseTrackCommands;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;
 import org.unisa.musicplaylistmanager.playlist.TrackCollection;
+import org.unisa.musicplaylistmanager.tag.PersonalTagManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -70,6 +73,10 @@ public class TrackController {
     private TextField coverPathInput;
     @FXML
     private Button browseCoverButton;
+    @FXML
+    private FlowPane personalTagsPane;
+
+    private List<RadioButton> personalTags = new ArrayList<>();
 
     // definizione attributi
 
@@ -126,6 +133,52 @@ public class TrackController {
         bindTagPreview(favouriteRadio, favouritePreview);
         bindTagPreview(explicitContentRadio, explicitPreview);
         bindTagPreview(newReleaseRadio, newReleasePreview);
+        
+        populatePersonalTags();
+    }
+
+    /**
+     * Genera dinamicamente l'interfaccia utente per la selezione dei tag personali.
+     * Recupera la lista globale dei tag da {@link org.unisa.musicplaylistmanager.tag.PersonalTagManager}.
+     * Se non ci sono tag, mostra un messaggio informativo. Altrimenti, crea una serie di bottoni 
+     * selezionabili (RadioButton + Label) per permettere all'utente di associarli alla traccia.
+     */
+    private void populatePersonalTags() {
+        personalTagsPane.getChildren().clear();
+        personalTags.clear();
+
+        List<String> tags = PersonalTagManager.getInstance().getPersonalTags();
+        
+        if (tags.isEmpty()) {
+            Label placeholder = new Label("Nessun tag personale creato. Aggiungili dalla schermata libreria!");
+            placeholder.setStyle("-fx-text-fill: #999999; -fx-font-style: italic; -fx-font-size: 13px;");
+            personalTagsPane.getChildren().add(placeholder);
+            return;
+        }
+
+        for (String tag : tags) {
+            HBox card = new HBox();
+            card.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+            card.setSpacing(6.0);
+            card.getStyleClass().add("tag-toggle-card");
+            card.setPadding(new javafx.geometry.Insets(6.0, 10.0, 6.0, 10.0));
+
+            RadioButton rb = new RadioButton("");
+            rb.setUserData(tag);
+            
+            Label preview = new Label(tag);
+            preview.getStyleClass().addAll("tag-badge", "tag-personal");
+
+            card.setOnMouseClicked(e -> {
+                if (!rb.isDisabled()) {
+                    rb.setSelected(!rb.isSelected());
+                }
+            });
+
+            card.getChildren().addAll(rb, preview);
+            personalTags.add(rb);
+            personalTagsPane.getChildren().add(card);
+        }
     }
 
     /**
@@ -241,6 +294,12 @@ public void browseCover(ActionEvent event) {
                     newReleaseRadio.isSelected(),
                     selectedCover
             );
+            
+            for (RadioButton cb : personalTags) {
+                if (cb.isSelected()) {
+                    updatedData.addPersonalTag(cb.getUserData().toString());
+                }
+            }
 
             // Troviamo l'indice ESATTO della traccia nella ObservableList usando il riferimento di memoria (==)
             // Facciamo questo controllo PRIMA della modifica, così l'identificazione è sicura al 100%
@@ -463,7 +522,7 @@ public void browseCover(ActionEvent event) {
         }
 
         // crea e ritorna un oggetto di tipo Track usando gli input delle zone testuali
-        return new Track(
+        Track track = new Track(
                 titleInput.getText(),
                 authorInput.getText(),
                 year,
@@ -474,6 +533,12 @@ public void browseCover(ActionEvent event) {
                 newReleaseRadio.isSelected(),
                 selectedCover
         );
+        for (RadioButton cb : personalTags) {
+            if (cb.isSelected()) {
+                track.addPersonalTag(cb.getUserData().toString());
+            }
+        }
+        return track;
     }
 
     /**
@@ -515,6 +580,14 @@ public void browseCover(ActionEvent event) {
         } else {
             coverPathInput.clear();
         }
+
+        // controlla la lista dei tag personali salvata nella traccia.
+        // se la traccia possiede il tag associato a quel bottone, lo imposta come selezionato,
+        // altrimenti lo lascia vuoto.
+        List<String> trackTags = track.getPersonalTags();
+        for (RadioButton cb : personalTags) {
+            cb.setSelected(trackTags != null && trackTags.contains(cb.getUserData().toString()));
+        }
     }
 
     /**
@@ -535,6 +608,10 @@ public void browseCover(ActionEvent event) {
         favouriteRadio.setDisable(!editable);
         explicitContentRadio.setDisable(!editable);
         newReleaseRadio.setDisable(!editable);
+        
+        for (RadioButton cb : personalTags) {
+            cb.setDisable(!editable);
+        }
         
         // Il campo di testo per il path resta non modificabile a mano per sicurezza
         // ma abilitiamo/disabilitiamo il pulsante per aprirlo

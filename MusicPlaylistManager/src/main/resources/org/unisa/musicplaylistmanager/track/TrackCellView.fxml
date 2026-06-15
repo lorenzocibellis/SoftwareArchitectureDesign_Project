@@ -42,6 +42,7 @@
                         <Label fx:id="newReleaseTag" text="NEW" visible="false" managed="false">
                             <styleClass><String fx:value="tag-badge" /><String fx:value="tag-new-release" /></styleClass>
                         </Label>
+                        <HBox fx:id="personalTagsBox" alignment="CENTER_LEFT" spacing="6.0" />
                     </children>
                 </HBox>
                 <Label fx:id="detailsLabel" text="Autore - Anno" textFill="#6E6E73">

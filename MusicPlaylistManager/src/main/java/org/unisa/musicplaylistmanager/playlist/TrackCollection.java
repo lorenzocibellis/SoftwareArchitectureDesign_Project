@@ -176,6 +176,17 @@ public abstract class TrackCollection implements IterableCollection {
         existingTrack.setFavourite(newDataTrack.isFavourite());
         existingTrack.setExplicit(newDataTrack.isExplicitContent());
         existingTrack.setNewRelease(newDataTrack.isNewRelease());
+        
+        // aggiornamento dei Tag Personali:
+        // prima svuotiamo la lista dei tag vecchi per rimuovere
+        // eventuali tag che l'utente ha deselezionato.
+        // poi copiamo uno ad uno i nuovi tag che l'utente ha selezionato
+        existingTrack.getPersonalTags().clear();
+        if (newDataTrack.getPersonalTags() != null) {
+            for (String tag : newDataTrack.getPersonalTags()) {
+                existingTrack.addPersonalTag(tag);
+            }
+        }
 
         // permette di modificare la tracklist e la lista osservabile della tracklist quando effettuo una modifica ad
         // una traccia nella playlist

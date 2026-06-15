@@ -8,14 +8,12 @@ package org.unisa.musicplaylistmanager.track;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import java.time.Year;
-import java.util.Objects;
+import java.util.List;
+import java.util.ArrayList;
 import javafx.beans.property.IntegerProperty;
 import org.unisa.musicplaylistmanager.playlist.MostPlayed;
 
-/**
- *
- * @author filom
- */
+
 public class Track implements MostPlayed {
 
     //ATTRIBUTI
@@ -27,6 +25,7 @@ public class Track implements MostPlayed {
     private boolean favourite;
     private boolean explicit;
     private boolean newRelease;
+    private List<String> personalTags;
     // variabile per il conteggio delle tracce
     private final javafx.beans.property.IntegerProperty playCount =
         new javafx.beans.property.SimpleIntegerProperty(0);
@@ -64,7 +63,8 @@ public class Track implements MostPlayed {
         this.favourite = favourite;
         this.explicit = explicit;
         this.newRelease = newRelease;
-        this.coverImage = coverImage; // inizi
+        this.personalTags = new ArrayList<>();
+        this.coverImage = coverImage;
     }
 
 // COSTRUTTORE SECONDARIO TEMPORANEO PER NON ROMPERE IL CARICAMENTO DELLE TRACCE DA CSV
@@ -150,6 +150,8 @@ public class Track implements MostPlayed {
     public boolean isExplicitContent() { return explicit; }
     /** @return {@code true} se la traccia è una nuova uscita */
     public boolean isNewRelease()   { return newRelease; }
+    /** @return La lista dei tag personali assegnati alla traccia */
+    public List<String> getPersonalTags() { return personalTags; }
     /** @return Il nome del file della copertina (può essere null) */
     public String getCoverImage() { return coverImage; }
 
@@ -225,6 +227,16 @@ public class Track implements MostPlayed {
      * @param newRelease
      */
     public void setNewRelease(boolean newRelease){ this.newRelease = newRelease; }
+
+    /**
+     * Aggiunge un tag personale alla traccia.
+     * @param tag Il nome del tag da associare alla traccia
+     */
+    public void addPersonalTag(String tag) {
+        if (!isBlank(tag) && !this.personalTags.contains(tag)) {
+            this.personalTags.add(tag);
+        }
+    }
 
     /**
      * Setter per il titolo della traccia visualizzabile sulla GUI 

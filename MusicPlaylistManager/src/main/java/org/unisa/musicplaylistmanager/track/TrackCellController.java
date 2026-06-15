@@ -43,6 +43,8 @@ public class TrackCellController extends ListCell<Track> {
     private Label iconLabel;
     @FXML
     private javafx.scene.image.ImageView coverImageView;
+    @FXML
+    private HBox personalTagsBox;
 
     // definizione attributi
 
@@ -196,6 +198,18 @@ public class TrackCellController extends ListCell<Track> {
             setTagVisible(favouriteTag, track.isFavourite());
             setTagVisible(explicitTag, track.isExplicitContent());
             setTagVisible(newReleaseTag, track.isNewRelease());
+            
+            // gestione dei tag personali dinamici
+            if (personalTagsBox != null) {
+                personalTagsBox.getChildren().clear();
+                if (track.getPersonalTags() != null) {
+                    for (String pTag : track.getPersonalTags()) {
+                        Label tagLabel = new Label(pTag);
+                        tagLabel.getStyleClass().addAll("tag-badge", "tag-personal");
+                        personalTagsBox.getChildren().add(tagLabel);
+                    }
+                }
+            }
 
             // Imposta l'azione per il bottone "info"
             infoButton.setOnAction(event -> {

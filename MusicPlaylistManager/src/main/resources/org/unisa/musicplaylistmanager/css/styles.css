@@ -234,6 +234,16 @@
     -fx-text-fill: white;
 }
 
+/* tag Personal */
+.tag-personal {
+    -fx-background-color: linear-gradient(to right, #9C27B0, #7B1FA2);
+    -fx-text-fill: white;
+}
+
+#tagsList .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 4px;
+}
 
 /* CSS della sezione tag all'interno di info traccia */
 
