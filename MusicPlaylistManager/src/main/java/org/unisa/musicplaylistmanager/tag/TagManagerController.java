@@ -4,14 +4,11 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.Node;
 import javafx.stage.Stage;
+
+import java.util.Optional;
 
 /**
  * Controller per la gestione dei Tag Personali.
@@ -104,12 +101,20 @@ public class TagManagerController {
      * Gestisce l'eliminazione di un tag delegando la logica al manager globale.
      */
     private void deleteTag(String tag) {
-        // rimuove il tag dalla lista globale e delega la pulizia delle tracce
-        boolean wasRemoved = PersonalTagManager.getInstance().removeTag(tag);
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmAlert.setTitle("Conferma Eliminazione");
+        confirmAlert.setHeaderText("Stai per eliminare il tag: " + tag);
+        confirmAlert.setContentText("L'eliminazione rimuoverà questo tag da tutte le tracce che lo possiedono. Sei sicuro di voler procedere?");
 
-        // notifica la finestra principale SOLO se il tag è stato effettivamente eliminato
-        if (wasRemoved && onTagDeleted != null) {
-            onTagDeleted.run();
+        Optional<ButtonType> result = confirmAlert.showAndWait();
+        if (result.isPresent() && result.get() == javafx.scene.control.ButtonType.OK) {
+            // rimuove il tag dalla lista globale e delega la pulizia delle tracce
+            boolean wasRemoved = PersonalTagManager.getInstance().removeTag(tag);
+
+            // notifica la finestra principale SOLO se il tag è stato effettivamente eliminato
+            if (wasRemoved && onTagDeleted != null) {
+                onTagDeleted.run();
+            }
         }
     }
 
