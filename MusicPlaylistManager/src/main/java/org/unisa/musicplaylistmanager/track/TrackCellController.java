@@ -135,22 +135,26 @@ public class TrackCellController extends ListCell<Track> {
             setDefaultIcon(isPlaying);
         }
 
-        // Gestione del colore del testo e dello sfondo del container
+        // rimozione classi per il cell recycle di java
+        titleLabel.getStyleClass().remove("playing-text");
+        iconContainer.getStyleClass().remove("playing-icon-container");
+        iconLabel.getStyleClass().remove("playing-text");
+        iconContainer.getStyleClass().remove("transparent-container");
+
+        // controlla se c'è un'immagine di copertina
+        boolean hasCover = myTrack != null && myTrack.getCoverImage() != null && !myTrack.getCoverImage().trim().isEmpty();
+
+        if (hasCover) {
+            // se c'è la copertina, il contenitore dell'icona deve essere trasparente
+            iconContainer.getStyleClass().add("transparent-container");
+        }
+
+        // gestione del colore del testo e dello sfondo del container tramite classi CSS
         if (isPlaying) {
-            titleLabel.setStyle("-fx-text-fill: #007AFF;"); 
-            if (myTrack == null || myTrack.getCoverImage() == null || myTrack.getCoverImage().trim().isEmpty()) {
-                iconContainer.setStyle("-fx-background-color: #D5E5F5; -fx-background-radius: 5;");
-                iconLabel.setStyle("-fx-text-fill: #007AFF;");
-            } else {
-                iconContainer.setStyle("-fx-background-color: transparent;");
-            }
-        } else {
-            titleLabel.setStyle("-fx-text-fill: #1D1D1F;");
-            if (myTrack == null || myTrack.getCoverImage() == null || myTrack.getCoverImage().trim().isEmpty()) {
-                iconContainer.setStyle("-fx-background-color: #EAEAEA; -fx-background-radius: 5;");
-                iconLabel.setStyle("-fx-text-fill: #888888;"); 
-            } else {
-                iconContainer.setStyle("-fx-background-color: transparent;");
+            titleLabel.getStyleClass().add("playing-text"); 
+            if (!hasCover) {
+                iconContainer.getStyleClass().add("playing-icon-container");
+                iconLabel.getStyleClass().add("playing-text");
             }
         }
     }

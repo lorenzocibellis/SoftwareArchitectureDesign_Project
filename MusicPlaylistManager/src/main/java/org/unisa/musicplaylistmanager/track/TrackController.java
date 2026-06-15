@@ -151,7 +151,7 @@ public class TrackController {
         
         if (tags.isEmpty()) {
             Label placeholder = new Label("Nessun tag personale creato. Aggiungili dalla schermata libreria!");
-            placeholder.setStyle("-fx-text-fill: #999999; -fx-font-style: italic; -fx-font-size: 13px;");
+            placeholder.getStyleClass().add("tags-placeholder");
             personalTagsPane.getChildren().add(placeholder);
             return;
         }

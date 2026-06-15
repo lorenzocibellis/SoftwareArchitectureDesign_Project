@@ -87,13 +87,6 @@ public class PlayerController implements Initializable {
     /** Indica se la modalità loop è attualmente attiva. */
     private boolean isLoopActive = false;
 
-    /** Stile CSS applicato ai pulsanti shuffle/loop quando sono inattivi. */
-    private final String STYLE_NORMAL = "-fx-background-color: transparent; -fx-cursor: hand; -fx-effect: none;";
-
-    /** Stile CSS applicato ai pulsanti shuffle/loop quando sono attivi (con effetto glow blu). */
-    private final String STYLE_ACTIVE = "-fx-background-color: transparent; -fx-cursor: hand; " +
-                                        "-fx-effect: dropshadow(gaussian, #0096ff, 15, 0.5, 0, 0);";
-
     /** Percorso radice delle risorse icone utilizzate nel player. */
     private String iconsRoot = "/icons/";
 
@@ -352,10 +345,19 @@ public class PlayerController implements Initializable {
 
     /**
      * Aggiorna lo stile visivo dei pulsanti shuffle e loop in base alle modalità attualmente attive.
-     * Applica {@code STYLE_ACTIVE} al pulsante della modalità attiva e {@code STYLE_NORMAL} all'altro.
+     * Aggiunge o rimuove la classe CSS .player-strategy-button-active.
      */
     private void updateStrategyUI() {
-        shuffleButton.setStyle(isShuffleActive ? STYLE_ACTIVE : STYLE_NORMAL);
-        loopButton.setStyle(isLoopActive ? STYLE_ACTIVE : STYLE_NORMAL);
+        if (isShuffleActive) {
+            if (!shuffleButton.getStyleClass().contains("player-strategy-button-active")) shuffleButton.getStyleClass().add("player-strategy-button-active");
+        } else {
+            shuffleButton.getStyleClass().remove("player-strategy-button-active");
+        }
+
+        if (isLoopActive) {
+            if (!loopButton.getStyleClass().contains("player-strategy-button-active")) loopButton.getStyleClass().add("player-strategy-button-active");
+        } else {
+            loopButton.getStyleClass().remove("player-strategy-button-active");
+        }
     }
 }
