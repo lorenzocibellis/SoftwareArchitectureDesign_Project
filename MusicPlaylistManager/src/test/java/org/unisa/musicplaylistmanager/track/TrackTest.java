@@ -300,4 +300,31 @@ class TrackTest {
     void testToString() {
         assertEquals("Bohemian Rhapsody | Queen | 1975", track.toString());
     }
+
+    // -----------------------------------------------------------------------
+    // Personal Tags
+    // -----------------------------------------------------------------------
+
+    @Test
+    @DisplayName("Gestione dei tag personali (add, remove, get)")
+    void testPersonalTags() {
+        assertNotNull(track.getPersonalTags());
+        assertTrue(track.getPersonalTags().isEmpty());
+
+        track.addPersonalTag("Rock");
+        assertEquals(1, track.getPersonalTags().size());
+        assertTrue(track.getPersonalTags().contains("Rock"));
+
+        // Test duplicati
+        track.addPersonalTag("Rock");
+        assertEquals(1, track.getPersonalTags().size());
+
+        track.addPersonalTag("Anni 2000");
+        assertEquals(2, track.getPersonalTags().size());
+        assertTrue(track.getPersonalTags().contains("Anni 2000"));
+
+        track.removePersonalTag("Rock");
+        assertEquals(1, track.getPersonalTags().size());
+        assertFalse(track.getPersonalTags().contains("Rock"));
+    }
 }
