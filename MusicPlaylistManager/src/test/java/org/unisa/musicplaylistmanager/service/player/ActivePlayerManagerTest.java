@@ -54,4 +54,76 @@ class ActivePlayerManagerTest {
         ActivePlayerManager anotherManager = ActivePlayerManager.getInstance();
         assertSame(manager, anotherManager, "Le istanze dovrebbero essere identiche");
     }
+
+    // -----------------------------------------------------------------------
+    // Proprietà osservabili (stato a player chiuso)
+    // -----------------------------------------------------------------------
+
+    @Test
+    @DisplayName("playerActiveProperty: esiste ed è false quando il player è chiuso")
+    void testPlayerActivePropertyInitiallyFalse() {
+        assertNotNull(manager.playerActiveProperty());
+        assertFalse(manager.playerActiveProperty().get());
+    }
+
+    @Test
+    @DisplayName("currentTrackProperty: esiste ed è null quando il player è chiuso")
+    void testCurrentTrackPropertyInitiallyNull() {
+        assertNotNull(manager.currentTrackProperty());
+        assertNull(manager.currentTrackProperty().get());
+    }
+
+    // -----------------------------------------------------------------------
+    // setCurrentTrack / currentTrackProperty
+    // -----------------------------------------------------------------------
+
+    @Test
+    @DisplayName("setCurrentTrack: aggiorna la proprietà osservabile della traccia corrente")
+    void testSetCurrentTrackUpdatesProperty() {
+        manager.setCurrentTrack(track);
+        assertSame(track, manager.currentTrackProperty().get());
+    }
+
+    @Test
+    @DisplayName("getCurrentTrack: resta null anche dopo setCurrentTrack se il player non è aperto")
+    void testGetCurrentTrackIndependentFromProperty() {
+        // setCurrentTrack agisce solo sulla proprietà osservabile, non sul Player sottostante
+        manager.setCurrentTrack(track);
+        assertNull(manager.getCurrentTrack(),
+                "Senza un PlayerController attivo, getCurrentTrack deve restituire null");
+    }
+
+    // -----------------------------------------------------------------------
+    // getPlayerHeight
+    // -----------------------------------------------------------------------
+
+    @Test
+    @DisplayName("getPlayerHeight: vale 0 quando non c'è alcun player attivo")
+    void testPlayerHeightWhenClosed() {
+        assertFalse(manager.hasActivePlayer());
+        assertEquals(0.0, manager.getPlayerHeight(), 0.0001);
+    }
+
+    // -----------------------------------------------------------------------
+    // closePlayer / toggleShuffle: robustezza a player chiuso
+    // -----------------------------------------------------------------------
+
+    @Test
+    @DisplayName("closePlayer: idempotente, riporta le proprietà allo stato chiuso")
+    void testClosePlayerIsIdempotent() {
+        manager.setCurrentTrack(track);
+
+        assertDoesNotThrow(() -> manager.closePlayer());
+        assertDoesNotThrow(() -> manager.closePlayer());
+
+        assertFalse(manager.hasActivePlayer());
+        assertNull(manager.currentTrackProperty().get());
+        assertFalse(manager.playerActiveProperty().get());
+    }
+
+    @Test
+    @DisplayName("toggleShuffle: nessun effetto e nessuna eccezione se il player è chiuso")
+    void testToggleShuffleWhenClosedIsSafe() {
+        assertDoesNotThrow(() -> manager.toggleShuffle());
+    }
 }

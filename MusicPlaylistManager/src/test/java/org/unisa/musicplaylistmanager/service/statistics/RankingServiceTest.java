@@ -45,7 +45,6 @@ class RankingServiceTest {
             return playCount;
         }
 
-        @Override
         public String getDisplayName() {
             return name;
         }
@@ -157,5 +156,94 @@ class RankingServiceTest {
 
         assertTrue(rankingService.getTopItems().contains(item4));
         assertEquals(item4, rankingService.getTopItems().get(2));
+    }
+
+    @Test
+    @DisplayName("getTopItems: la lista del podio non è mai null")
+    void testGetTopItemsNeverNull() {
+        assertNotNull(rankingService.getTopItems());
+    }
+
+    @Test
+    @DisplayName("Aggiungere una canzone che ha già ascolti la inserisce subito in classifica")
+    void testAddingAlreadyPlayedItemEntersPodium() {
+        // Scenario tipico dopo un undo: l'elemento rientra in libreria già con degli ascolti
+        MockItem reintrodotto = new MockItem("Reintrodotto");
+        reintrodotto.setPlayCount(7);
+
+        itemsToRank.add(reintrodotto);
+
+        assertEquals(1, rankingService.getTopItems().size());
+        assertTrue(rankingService.getTopItems().contains(reintrodotto));
+    }
+
+    @Test
+    @DisplayName("Il leader che accumula altri ascolti resta in cima e il podio si riordina")
+    void testLeaderReordersWhenGainingPlays() {
+        MockItem item1 = new MockItem("1"); item1.setPlayCount(10);
+        MockItem item2 = new MockItem("2"); item2.setPlayCount(8);
+        MockItem item3 = new MockItem("3"); item3.setPlayCount(6);
+        itemsToRank.addAll(item1, item2, item3);
+
+        // item3 (ultimo del podio) scavalca tutti
+        item3.setPlayCount(20);
+
+        assertEquals(item3, rankingService.getTopItems().get(0));
+        assertEquals(item1, rankingService.getTopItems().get(1));
+        assertEquals(item2, rankingService.getTopItems().get(2));
+    }
+
+    @Test
+    @DisplayName("Una canzone fuori podio con pochi ascolti non scalza i campioni")
+    void testNonPodiumItemBelowThresholdStaysOut() {
+        MockItem item1 = new MockItem("1"); item1.setPlayCount(10);
+        MockItem item2 = new MockItem("2"); item2.setPlayCount(8);
+        MockItem item3 = new MockItem("3"); item3.setPlayCount(6);
+        MockItem item4 = new MockItem("4"); // 0 ascolti, fuori dal podio
+        itemsToRank.addAll(item1, item2, item3, item4);
+
+        // item4 viene ascoltato una volta: 1 < 6 (ultimo del podio) → resta fuori
+        item4.incrementNumOfPlay();
+
+        assertEquals(3, rankingService.getTopItems().size());
+        assertFalse(rankingService.getTopItems().contains(item4));
+        assertEquals(item1, rankingService.getTopItems().get(0));
+    }
+
+    @Test
+    @DisplayName("Eliminare una canzone fuori classifica non altera il podio")
+    void testRemovingNonPodiumItemKeepsPodium() {
+        MockItem item1 = new MockItem("1"); item1.setPlayCount(10);
+        MockItem item2 = new MockItem("2"); item2.setPlayCount(8);
+        MockItem item3 = new MockItem("3"); item3.setPlayCount(6);
+        MockItem item4 = new MockItem("4"); item4.setPlayCount(4); // fuori dal podio
+        itemsToRank.addAll(item1, item2, item3, item4);
+
+        itemsToRank.remove(item4);
+
+        assertEquals(3, rankingService.getTopItems().size());
+        assertEquals(item1, rankingService.getTopItems().get(0));
+        assertEquals(item2, rankingService.getTopItems().get(1));
+        assertEquals(item3, rankingService.getTopItems().get(2));
+    }
+
+    @Test
+    @DisplayName("A parità di limite, una nuova canzone con più ascolti entra e fa scendere l'ultima")
+    void testNewItemOvertakesLastOfPodium() {
+        MockItem item1 = new MockItem("1"); item1.setPlayCount(10);
+        MockItem item2 = new MockItem("2"); item2.setPlayCount(8);
+        MockItem item3 = new MockItem("3"); item3.setPlayCount(6);
+        itemsToRank.addAll(item1, item2, item3);
+
+        MockItem nuovo = new MockItem("nuovo");
+        itemsToRank.add(nuovo);
+        nuovo.setPlayCount(9); // supera item3 (6) ma non item1 (10)
+
+        assertEquals(3, rankingService.getTopItems().size());
+        assertTrue(rankingService.getTopItems().contains(nuovo));
+        assertFalse(rankingService.getTopItems().contains(item3),
+                "item3, l'ultimo del podio, deve uscire dalla classifica");
+        assertEquals(nuovo, rankingService.getTopItems().get(1),
+                "Con 9 ascolti il nuovo elemento si colloca dietro item1 (10) e davanti item2 (8)");
     }
 }

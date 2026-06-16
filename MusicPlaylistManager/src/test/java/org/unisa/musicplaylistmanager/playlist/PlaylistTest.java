@@ -101,4 +101,56 @@ class PlaylistTest {
         assertEquals("Test Playlist", playlist.toString());
     }
 
+    // -----------------------------------------------------------------------
+    // Observer: update() casi limite
+    // -----------------------------------------------------------------------
+
+    @Test
+    @DisplayName("update: una traccia non presente non causa errori e non modifica la playlist")
+    void testUpdateTrackNotPresent() {
+        playlist.addTrack(track1);
+
+        // track2 non è nella playlist: l'update (rimozione) deve essere un no-op sicuro
+        assertDoesNotThrow(() -> playlist.update(track2));
+        assertEquals(1, playlist.getSize());
+        assertTrue(playlist.getTracks().contains(track1));
+    }
+
+    @Test
+    @DisplayName("equals: diverso da null e da oggetti di tipo diverso")
+    void testEqualsNullAndDifferentType() {
+        assertNotEquals(null, playlist);
+        assertNotEquals("Test Playlist", playlist);
+    }
+
+    // -----------------------------------------------------------------------
+    // MostPlayed: conteggio riproduzioni della playlist
+    // -----------------------------------------------------------------------
+
+    @Test
+    @DisplayName("getNumOfPlay: il conteggio iniziale è zero")
+    void testInitialNumOfPlay() {
+        assertEquals(0, playlist.getNumOfPlay());
+    }
+
+    @Test
+    @DisplayName("incrementNumOfPlay: incrementa il conteggio di riproduzioni")
+    void testIncrementNumOfPlay() {
+        playlist.incrementNumOfPlay();
+        playlist.incrementNumOfPlay();
+        playlist.incrementNumOfPlay();
+        assertEquals(3, playlist.getNumOfPlay());
+    }
+
+    @Test
+    @DisplayName("playCountProperty: è reattiva e rispecchia il numero di ascolti")
+    void testPlayCountProperty() {
+        assertNotNull(playlist.playCountProperty());
+        assertEquals(0, playlist.playCountProperty().get());
+
+        playlist.incrementNumOfPlay();
+        assertEquals(1, playlist.playCountProperty().get());
+        assertEquals(playlist.getNumOfPlay(), playlist.playCountProperty().get());
+    }
+
 }
