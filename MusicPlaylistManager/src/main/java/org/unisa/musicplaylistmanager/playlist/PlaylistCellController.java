@@ -1,11 +1,13 @@
 package org.unisa.musicplaylistmanager.playlist;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 
+import javax.swing.*;
 import java.io.IOException;
 
 /**
@@ -68,5 +70,13 @@ public class PlaylistCellController extends ListCell<Playlist> {
             setText(null);
             setGraphic(root);
         }
+    }
+
+    public void moveUp(ActionEvent event){
+
+    }
+
+    public void moveDown(ActionEvent event){
+
     }
 }
