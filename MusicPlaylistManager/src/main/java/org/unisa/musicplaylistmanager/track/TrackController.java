@@ -9,7 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.unisa.musicplaylistmanager.alert.AlertManager;
+import org.unisa.musicplaylistmanager.service.alert.AlertManager;
 import org.unisa.musicplaylistmanager.command.AddTrackCommand;
 import org.unisa.musicplaylistmanager.command.BaseTrackCommands;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;

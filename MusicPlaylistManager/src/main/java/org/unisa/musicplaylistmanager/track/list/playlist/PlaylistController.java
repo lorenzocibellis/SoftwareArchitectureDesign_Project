@@ -12,7 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.unisa.musicplaylistmanager.alert.AlertManager;
+import org.unisa.musicplaylistmanager.service.alert.AlertManager;
 import org.unisa.musicplaylistmanager.command.AddTrackCommand;
 import org.unisa.musicplaylistmanager.command.BaseTrackCommands;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;

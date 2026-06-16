@@ -8,7 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.unisa.musicplaylistmanager.alert.AlertManager;
+import org.unisa.musicplaylistmanager.service.alert.AlertManager;
 import org.unisa.musicplaylistmanager.command.AddPlaylistCommand;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;
 import org.unisa.musicplaylistmanager.track.list.playlist.Playlist;

@@ -7,7 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.scene.layout.FlowPane;
-import org.unisa.musicplaylistmanager.alert.AlertManager;
+import org.unisa.musicplaylistmanager.service.alert.AlertManager;
 import org.unisa.musicplaylistmanager.command.AddPlaylistCommand;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;
 import org.unisa.musicplaylistmanager.tag.PersonalTagManager;

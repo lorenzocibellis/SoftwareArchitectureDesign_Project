@@ -7,9 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.Node;
 import javafx.stage.Stage;
-import org.unisa.musicplaylistmanager.alert.AlertManager;
-
-import java.util.Optional;
+import org.unisa.musicplaylistmanager.service.alert.AlertManager;
 
 /**
  * Controller per la gestione dei Tag Personali.

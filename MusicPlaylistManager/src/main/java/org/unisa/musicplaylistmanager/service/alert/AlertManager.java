@@ -1,4 +1,4 @@
-package org.unisa.musicplaylistmanager.alert;
+package org.unisa.musicplaylistmanager.service.alert;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;

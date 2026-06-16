@@ -15,7 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import org.unisa.musicplaylistmanager.alert.AlertManager;
+import org.unisa.musicplaylistmanager.service.alert.AlertManager;
 import org.unisa.musicplaylistmanager.command.BasePlaylistCommands;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;
 import org.unisa.musicplaylistmanager.command.DeletePlaylistCommand;
