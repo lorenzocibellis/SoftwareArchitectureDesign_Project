@@ -471,36 +471,44 @@ public class TrackListController {
      * @param top La lista aggiornata delle tracce attualmente sul podio
      */
     private void refreshTopTracksUI(java.util.List<Track> top) {
+        // reset della lista
         topTracksContainer.getChildren().clear();
 
+        // controlla se la lista è vuota
         if (top.isEmpty()) {
+
+            // se lo è, mostra un messaggio default
             Label emptyLabel = new Label("Ascolta qualche brano per popolare la tua Top " + RANKING_LIMIT + "!");
             emptyLabel.getStyleClass().add("top-track-empty-label");
             topTracksContainer.getChildren().add(emptyLabel);
             return;
         }
 
+        // per ogni traccia presente nella lista
         for (int i = 0; i < top.size(); i++) {
             Track t = top.get(i);
-            
+
+            // creo una card e la inizializzo con i valori che mi servono
             VBox card = new VBox();
             card.setSpacing(2);
             card.setMaxWidth(Double.MAX_VALUE); // Permette alla card di allargarsi
             HBox.setHgrow(card, javafx.scene.layout.Priority.ALWAYS); // Fa espandere la card per riempire lo spazio
             card.getStyleClass().add("top-track-card");
 
+            // mostra la scritta con un certo valore a seconda della posizione in classifica
             String rankClass;
             if (i == 0) rankClass = "top-track-rank-gold";
             else if (i == 1) rankClass = "top-track-rank-silver";
             else if (i == 2) rankClass = "top-track-rank-bronze";
             else rankClass = "top-track-rank-normal";
 
+
             HBox topRow = new HBox(5);
             topRow.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
             
             Label rankLabel = new Label((i + 1) + "°");
             rankLabel.getStyleClass().add(rankClass);
-            
+
             Label titleLabel = new Label(t.getTitle());
             titleLabel.getStyleClass().add("top-track-title");
             
@@ -522,6 +530,8 @@ public class TrackListController {
             bottomRow.getChildren().addAll(authorLabel, spacer, playsLabel);
 
             card.getChildren().addAll(topRow, bottomRow);
+
+            // aggiungo la card alla UI
             topTracksContainer.getChildren().add(card);
         }
     }
