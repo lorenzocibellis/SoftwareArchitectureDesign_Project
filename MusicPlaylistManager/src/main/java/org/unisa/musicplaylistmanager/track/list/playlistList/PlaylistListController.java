@@ -26,6 +26,7 @@ import org.unisa.musicplaylistmanager.service.statistics.RankingService;
 import org.unisa.musicplaylistmanager.track.list.playlist.Playlist;
 import org.unisa.musicplaylistmanager.track.list.playlist.PlaylistCellController;
 import org.unisa.musicplaylistmanager.track.list.playlist.PlaylistController;
+import org.unisa.musicplaylistmanager.track.list.tracklist.TrackList;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -268,6 +269,28 @@ public class  PlaylistListController {
         playlistListObservable.setAll(playlistList.getPlaylists());
         // ricarico gli elementi visuali
         listView.refresh();
+
+        // Se l'undo ha rimosso la playlist attualmente in riproduzione (es. undo della
+        // creazione di una playlist), il player resterebbe attivo su una collezione che
+        // non esiste più: in tal caso lo chiudiamo.
+        closePlayerIfPlayingPlaylistRemoved();
+    }
+
+    /**
+     * Chiude il mini-player se sta riproducendo una playlist che non è più presente
+     * nella lista delle playlist. Non interviene se il player sta riproducendo dalla
+     * libreria principale (TrackList), che non può essere eliminata.
+     */
+    private void closePlayerIfPlayingPlaylistRemoved() {
+        String identifier = ActivePlayerManager.getInstance().getCurrentPlaylistIdentifier();
+        if (identifier == null || identifier.equals(TrackList.TRACKLIST_NAME)) {
+            return;
+        }
+        boolean stillExists = playlistList.getPlaylists().stream()
+                .anyMatch(p -> p.getName().equals(identifier));
+        if (!stillExists) {
+            ActivePlayerManager.getInstance().closePlayer();
+        }
     }
 
     private void refreshTopPlaylistUI(java.util.List<Playlist> top) {

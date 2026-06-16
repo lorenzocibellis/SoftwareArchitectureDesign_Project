@@ -395,10 +395,32 @@ public class PlaylistController {
         playlistObservable.setAll(playlist.getTracks());
         listView.refresh();
 
+        // Se l'undo (es. annullamento di un'aggiunta) ha rimosso dalla playlist il
+        // brano attualmente in riproduzione, il player resterebbe attivo su una traccia
+        // non più presente: in tal caso lo chiudiamo.
+        closePlayerIfPlayingTrackRemoved();
+
         // controllo che esista il validatore e che coincida con la playlist attuale
         if(playlistValidator != null && !playlistValidator.getAsBoolean()){
             // se entrambe le condizioni sono vere, esco dalla vista della playlist
             goBack(event);
+        }
+    }
+
+    /**
+     * Chiude il mini-player se sta riproducendo questa playlist e il brano in
+     * riproduzione non è più presente al suo interno (es. dopo l'undo di un'aggiunta).
+     * Usa la traccia "reale" esposta da {@link ActivePlayerManager} e non quella derivata
+     * dall'indice dell'iteratore, che dopo una modifica della lista potrebbe già puntare
+     * a un brano vicino.
+     */
+    private void closePlayerIfPlayingTrackRemoved() {
+        String identifier = ActivePlayerManager.getInstance().getCurrentPlaylistIdentifier();
+        Track playingTrack = ActivePlayerManager.getInstance().currentTrackProperty().get();
+        if (playingTrack != null
+                && playlist.getName().equals(identifier)
+                && !playlist.getTracks().contains(playingTrack)) {
+            ActivePlayerManager.getInstance().closePlayer();
         }
     }
 
@@ -426,6 +448,7 @@ public class PlaylistController {
         if (i > 0){
             Collections.swap(playlistObservable, i, i-1);
             playlist.swap(i,i-1);
+            ActivePlayerManager.getInstance().refreshCurrentTrackPosition();
             listView.refresh();
         }
     }
@@ -443,6 +466,7 @@ public class PlaylistController {
         if (i < playlist.getSize() - 1) {
             Collections.swap(playlistObservable, i, i+1);
             playlist.swap(i,i+1);
+            ActivePlayerManager.getInstance().refreshCurrentTrackPosition();
             listView.refresh();
         }
     }

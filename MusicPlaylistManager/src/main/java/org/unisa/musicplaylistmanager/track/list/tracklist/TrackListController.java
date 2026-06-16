@@ -183,6 +183,28 @@ public class TrackListController {
         commandInvoker.undoCommand();
         trackListObservable.setAll(trackList.getTracks());
         listView.refresh();
+
+        // Se l'undo (es. annullamento di un'aggiunta) ha rimosso dalla libreria il
+        // brano attualmente in riproduzione, il player resterebbe attivo su una traccia
+        // non più presente: in tal caso lo chiudiamo.
+        closePlayerIfPlayingTrackRemoved();
+    }
+
+    /**
+     * Chiude il mini-player se sta riproducendo la libreria principale e il brano in
+     * riproduzione non è più presente al suo interno (es. dopo l'undo di un'aggiunta).
+     * Usa la traccia "reale" esposta da {@link ActivePlayerManager} e non quella derivata
+     * dall'indice dell'iteratore, che dopo una modifica della lista potrebbe già puntare
+     * a un brano vicino.
+     */
+    private void closePlayerIfPlayingTrackRemoved() {
+        String identifier = ActivePlayerManager.getInstance().getCurrentPlaylistIdentifier();
+        Track playingTrack = ActivePlayerManager.getInstance().currentTrackProperty().get();
+        if (playingTrack != null
+                && trackList.getName().equals(identifier)
+                && !trackList.getTracks().contains(playingTrack)) {
+            ActivePlayerManager.getInstance().closePlayer();
+        }
     }
 
     // Dichiarazione metodi pubblici
@@ -375,6 +397,7 @@ public class TrackListController {
         if (i > 0){
             Collections.swap(trackListObservable, i, i-1);
             trackList.swap(i, i-1);
+            ActivePlayerManager.getInstance().refreshCurrentTrackPosition();
             listView.refresh();
         }
     }
@@ -392,6 +415,7 @@ public class TrackListController {
         if (i < trackList.getSize() - 1) {
             Collections.swap(trackListObservable, i, i+1);
             trackList.swap(i,i+1);
+            ActivePlayerManager.getInstance().refreshCurrentTrackPosition();
             listView.refresh();
         }
     }
