@@ -28,6 +28,7 @@ public class Track implements MostPlayed {
     // variabile per il conteggio delle tracce
     private final javafx.beans.property.IntegerProperty playCount =
         new javafx.beans.property.SimpleIntegerProperty(0);
+
     // variabile per memorizzare la cover opzionale da associare alla traccia
     private String coverImage;
 
@@ -166,6 +167,7 @@ public class Track implements MostPlayed {
 
     /**
      * Setter per il titolo della traccia
+     *
      * @param title
      */
     public void setTitle(String title) {
