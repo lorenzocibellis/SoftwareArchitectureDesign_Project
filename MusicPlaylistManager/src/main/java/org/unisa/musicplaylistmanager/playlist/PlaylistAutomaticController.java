@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.scene.layout.FlowPane;
+import org.unisa.musicplaylistmanager.alert.AlertManager;
 import org.unisa.musicplaylistmanager.command.AddPlaylistCommand;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;
 import org.unisa.musicplaylistmanager.tag.PersonalTagManager;
@@ -243,7 +244,7 @@ public class PlaylistAutomaticController {
     private boolean isInputValid(String playlistName, String yearText) {
         // Validazione nome
         if (playlistName.isEmpty()) {
-            showAlert(Alert.AlertType.WARNING,
+            AlertManager.showMessage(Alert.AlertType.WARNING,
                     "Nome mancante",
                     "Inserisci un nome per la playlist.",
                     "Il nome della playlist è obbligatorio.");
@@ -252,7 +253,7 @@ public class PlaylistAutomaticController {
 
         // Verifica che almeno un filtro sia attivo
         if (!hasAtLeastOneFilter()) {
-            showAlert(Alert.AlertType.WARNING,
+            AlertManager.showMessage(Alert.AlertType.WARNING,
                     "Nessun filtro selezionato",
                     "Seleziona almeno un filtro.",
                     "Devi selezionare almeno un tag, oppure inserire un genere, un autore o un anno.");
@@ -261,7 +262,7 @@ public class PlaylistAutomaticController {
 
         // Verifica TrackList esiste
         if (!TrackList.exists() || TrackList.getTrackListPointer().getTracks().isEmpty()) {
-            showAlert(Alert.AlertType.WARNING,
+            AlertManager.showMessage(Alert.AlertType.WARNING,
                     "Libreria vuota",
                     "Non ci sono tracce nella libreria.",
                     "Aggiungi delle tracce alla libreria prima di creare una playlist automatica.");
@@ -271,7 +272,7 @@ public class PlaylistAutomaticController {
         // Validazione anno se inserito
         if (!yearText.isEmpty()) {
             if (!yearText.matches("\\d{4}")) {
-                showAlert(Alert.AlertType.WARNING,
+                AlertManager.showMessage(Alert.AlertType.WARNING,
                         "Anno non valido",
                         "L'anno deve contenere esattamente 4 cifre numeriche.",
                         "Inserisci un anno in formato numerico (es. 2024).");
@@ -280,14 +281,14 @@ public class PlaylistAutomaticController {
             try {
                 int y = Integer.parseInt(yearText);
                 if (y > Year.now().getValue()) {
-                    showAlert(Alert.AlertType.WARNING,
+                    AlertManager.showMessage(Alert.AlertType.WARNING,
                             "Anno non valido",
                             "L'anno non può essere maggiore di quello attuale.",
                             "L'anno deve essere minore o uguale a " + Year.now().getValue() + ".");
                     return false;
                 }
             } catch (NumberFormatException e) {
-                showAlert(Alert.AlertType.WARNING,
+                AlertManager.showMessage(Alert.AlertType.WARNING,
                         "Anno non valido",
                         "L'anno inserito non è un numero valido.",
                         "Inserisci un anno in formato numerico (es. 2024).");
@@ -297,7 +298,7 @@ public class PlaylistAutomaticController {
 
         // Verifica dati necessari
         if (playlistList == null || playlistListObservable == null) {
-            showAlert(Alert.AlertType.ERROR,
+            AlertManager.showMessage(Alert.AlertType.ERROR,
                     "Errore interno",
                     "Dati mancanti.",
                     "Impossibile creare la playlist. Riprova dalla schermata principale.");
@@ -329,7 +330,7 @@ public class PlaylistAutomaticController {
 
         // Se nessuna traccia corrisponde, avvisa e non crea la playlist
         if (matchingTracks.isEmpty()) {
-            showAlert(Alert.AlertType.INFORMATION,
+            AlertManager.showMessage(Alert.AlertType.INFORMATION,
                     "Nessun risultato",
                     "Nessuna traccia corrisponde ai filtri selezionati.",
                     "Prova a modificare i criteri di ricerca.");
@@ -350,7 +351,7 @@ public class PlaylistAutomaticController {
             CommandInvoker.getCommandInvokerPointer().setCommand(command);
 
             // Mostra conferma
-            showAlert(Alert.AlertType.INFORMATION,
+            AlertManager.showMessage(Alert.AlertType.INFORMATION,
                     "Playlist creata",
                     "La playlist \"" + playlistName + "\" è stata creata con successo!",
                     matchingTracks.size() == 1
@@ -361,7 +362,7 @@ public class PlaylistAutomaticController {
             goBack(actionEvent);
 
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR,
+            AlertManager.showMessage(Alert.AlertType.ERROR,
                     "Errore",
                     "Si è verificato un errore durante la creazione.",
                     e.getMessage());
@@ -379,19 +380,4 @@ public class PlaylistAutomaticController {
         stage.close();
     }
 
-    /**
-     * Mostra un alert all'utente.
-     *
-     * @param type    tipo di alert
-     * @param title   titolo della finestra
-     * @param header  intestazione
-     * @param content contenuto
-     */
-    private void showAlert(Alert.AlertType type, String title, String header, String content) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
 }

@@ -8,6 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.unisa.musicplaylistmanager.alert.AlertManager;
 import org.unisa.musicplaylistmanager.command.AddPlaylistCommand;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;
 
@@ -52,21 +53,6 @@ public class PlaylistManualController {
         return new Playlist(nameInput.getText().trim());
     }
 
-    /**
-     * Mostra un alert all'utente.
-     * 
-     * @param type il tipo di alert
-     * @param title il titolo della finestra
-     * @param header l'intestazione dell'alert
-     * @param content il dettaglio da mostrare
-     */
-    private void showAlert(Alert.AlertType type, String title, String header, String content) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
 
     /**
      * Imposta il riferimento alla collezione globale delle playlist.
@@ -96,12 +82,12 @@ public class PlaylistManualController {
      */
     private boolean isInputValid(String playlistName) {
         if (playlistList == null || playlistListObservable == null) {
-            showAlert(Alert.AlertType.ERROR, "Errore interno", "Dati mancanti.", "Impossibile creare la playlist. Riprova dalla schermata principale.");
+            AlertManager.showMessage(Alert.AlertType.ERROR, "Errore interno", "Dati mancanti.", "Impossibile creare la playlist. Riprova dalla schermata principale.");
             return false;
         }
 
         if (playlistName.isEmpty()) {
-            showAlert(Alert.AlertType.WARNING,
+            AlertManager.showMessage(Alert.AlertType.WARNING,
                     "Nome mancante",
                     "Inserisci un nome per la playlist.",
                     "Il nome della playlist è obbligatorio e non può essere vuoto.");
@@ -133,7 +119,7 @@ public class PlaylistManualController {
             this.add(p);
             this.goBack(actionEvent);
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Errore", "Si è verificato un errore durante la creazione.", e.getMessage());
+            AlertManager.showMessage(Alert.AlertType.ERROR, "Errore", "Si è verificato un errore durante la creazione.", e.getMessage());
         }
     }
 

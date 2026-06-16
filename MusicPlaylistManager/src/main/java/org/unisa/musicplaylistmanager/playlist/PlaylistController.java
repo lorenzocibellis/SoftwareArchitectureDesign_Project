@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.unisa.musicplaylistmanager.alert.AlertManager;
 import org.unisa.musicplaylistmanager.command.AddTrackCommand;
 import org.unisa.musicplaylistmanager.command.BaseTrackCommands;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;
@@ -186,11 +187,7 @@ public class PlaylistController {
                 success = true;
                 
             } catch (IllegalArgumentException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Errore");
-                alert.setHeaderText("Nome non valido");
-                alert.setContentText(e.getMessage());
-                alert.showAndWait();
+                AlertManager.showMessage(Alert.AlertType.ERROR, "Errore", "Nome non valido", e.getMessage());
 
                 initialValue = newNameRaw;
             }
@@ -309,20 +306,20 @@ public class PlaylistController {
             return;
         }
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Conferma Eliminazione");
+        String title = "Conferma Eliminazione";
+        String header;
+        String content;
 
         if (selectedItems.size() == 1) {
-            alert.setHeaderText("Sei sicuro di voler rimuovere la traccia selezionata dalla playlist?");
-            alert.setContentText("La traccia non sarà eliminata dalla libreria principale.");
+            header = "Sei sicuro di voler rimuovere la traccia selezionata dalla playlist?";
+            content = "La traccia non sarà eliminata dalla libreria principale.";
         } else {
-            alert.setHeaderText("Sei sicuro di voler rimuovere le " + selectedItems.size() + " tracce selezionate dalla playlist?");
-            alert.setContentText("Le tracce non saranno eliminate dalla libreria principale.");
+            header =  "Sei sicuro di voler rimuovere le " + selectedItems.size() + " tracce selezionate dalla playlist?";
+            content = "Le tracce non saranno eliminate dalla libreria principale.";
         }
+        boolean result = AlertManager.showConfirmation(title,header, content);
 
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if (result.isPresent() && result.get() == ButtonType.OK) {
+        if (result) {
             ArrayList<Track> toRemove = new ArrayList<>(selectedItems);
             
             // Memorizza lo stato del player PRIMA di rimuovere i dati, 
