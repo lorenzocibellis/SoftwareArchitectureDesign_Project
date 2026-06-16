@@ -16,6 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.unisa.musicplaylistmanager.alert.AlertManager;
 import org.unisa.musicplaylistmanager.command.BaseTrackCommands;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;
 import org.unisa.musicplaylistmanager.command.RemoveTrackCommand;
@@ -256,23 +257,22 @@ public class TrackListController {
         }
 
         // apertura finestra di Alert per accertarsi dell'eliminazione
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Conferma Eliminazione");
+        String title = "Conferma Eliminazione";
+        String content = "L'azione è irreversibile";
+        String header;
 
         // cambia il messaggio in base al numero di elementi selezionati
         if (selectedItems.size() == 1) {
-            alert.setHeaderText("Sei sicuro di voler eliminare la traccia selezionata?");
-            alert.setContentText("L'azione è irreversibile.");
+            header = "Sei sicuro di voler eliminare la traccia selezionata?";
         } else {
-            alert.setHeaderText("Sei sicuro di voler eliminare le " + selectedItems.size() + " tracce selezionate?");
-            alert.setContentText("L'azione è irreversibile.");
+            header = "Sei sicuro di voler eliminare le " + selectedItems.size() + " tracce selezionate?";
         }
 
         // Mostra l'alert e attendi la risposta dell'utente
-        Optional<ButtonType> result = alert.showAndWait();
+        boolean result = AlertManager.showConfirmation(title,header,content);
 
         // controlla se l'utente ha cliccato "OK"
-        if (result.isPresent() && result.get() == ButtonType.OK) {
+        if (result) {
 
             // crea la lista di tracce da rimuovere
             ArrayList<Track> toRemove = new ArrayList<>(selectedItems);

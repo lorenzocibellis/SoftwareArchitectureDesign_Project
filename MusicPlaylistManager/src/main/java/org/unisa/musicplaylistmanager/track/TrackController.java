@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.unisa.musicplaylistmanager.alert.AlertManager;
 import org.unisa.musicplaylistmanager.command.AddTrackCommand;
 import org.unisa.musicplaylistmanager.command.BaseTrackCommands;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;
@@ -444,20 +445,16 @@ public void browseCover(ActionEvent event) {
         return errors;
     }
 
-    // Metodi utilitari
 
     /**
      * Mostra una finestra di avviso in caso di errore.
      * * @param title il titolo della finestra di errore
      * @param header l'intestazione dell'errore
      * @param content il dettaglio dell'errore
+     *
      */
     private void showError(String title, String header, String content) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.setContentText(content);
-        alert.showAndWait();
+        AlertManager.showMessage(Alert.AlertType.ERROR, title, header, content);
     }
 
     /**

@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.Node;
 import javafx.stage.Stage;
+import org.unisa.musicplaylistmanager.alert.AlertManager;
 
 import java.util.Optional;
 
@@ -79,11 +80,10 @@ public class TagManagerController {
         if (tag != null && !tag.trim().isEmpty()) {
             boolean added = PersonalTagManager.getInstance().addTag(tag);
             if (!added) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Attenzione");
-                alert.setHeaderText("Tag non valido o già esistente");
-                alert.setContentText("Il tag esiste già nella tua lista, oppure hai provato a usare un nome riservato di sistema (es. Preferita, Esplicita, Nuova uscita).");
-                alert.showAndWait();
+                AlertManager.showMessage(Alert.AlertType.WARNING,
+                        "Attenzione",
+                        "Tag non valido o già esistente",
+                        "Il tag esiste già nella tua lista, oppure hai provato a usare un nome riservato al sistema.");
             } else {
                 newTagField.clear();
             }
@@ -104,13 +104,15 @@ public class TagManagerController {
      * Gestisce l'eliminazione di un tag delegando la logica al manager globale.
      */
     private void deleteTag(String tag) {
-        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmAlert.setTitle("Conferma Eliminazione");
-        confirmAlert.setHeaderText("Stai per eliminare il tag: " + tag);
-        confirmAlert.setContentText("L'eliminazione rimuoverà questo tag da tutte le tracce che lo possiedono. Sei sicuro di voler procedere?");
+        // inizializzo il pop up di conferma
+        String title = "Conferma Eliminazione";
+        String header = "Stai per eliminare il tag: " + tag;
+        String content = "L'eliminazione rimuoverà questo tag da tutte le tracce che lo possiedono. Sei sicuro di voler procedere?";
 
-        Optional<ButtonType> result = confirmAlert.showAndWait();
-        if (result.isPresent() && result.get() == javafx.scene.control.ButtonType.OK) {
+
+        // controllo che nel pop-up sia stato cliccato il pulsante di conferma
+        boolean result = AlertManager.showConfirmation(title, header, content);
+        if (result) {
             // rimuove il tag dalla lista globale e delega la pulizia delle tracce
             boolean wasRemoved = PersonalTagManager.getInstance().removeTag(tag);
 
