@@ -415,6 +415,14 @@ public class PlaylistController {
         this.playlistValidator = validator;
     }
 
+    /**
+     *
+     * Permette di spostare di una posizione più in alto una traccia, aggiornando al contempo
+     * la lista osservabile.
+     *
+     * @param track traccia da spostare.
+     *
+     */
     private void moveUp(Track track){
         int i = playlist.getIndex(track);
         if (i > 0){
@@ -424,6 +432,14 @@ public class PlaylistController {
         }
     }
 
+    /**
+     *
+     * Permette di spostare di una posizione più in basso una traccia, aggiornando al contempo
+     * la lista osservabile.
+     *
+     * @param track traccia da spostare.
+     *
+     */
     private void moveDown(Track track){
         int i = playlist.getIndex(track);
         if (i < playlist.getSize() - 1) {

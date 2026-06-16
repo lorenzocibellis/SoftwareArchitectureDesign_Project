@@ -84,6 +84,9 @@ public class TrackCellController extends ListCell<Track> {
      * Costruttore.
      *
      * @param onInfoClicked funzione che viene eseguita quando il bottone "info" viene cliccato.
+     * @param moveUp funzione eseguita quando si preme il bottone upButton.
+     * @param moveDown funzione eseguita quando si preme il bottone downButton.
+     *
      */
     public TrackCellController(Consumer<Track> onInfoClicked, Consumer<Track> moveUp, Consumer<Track> moveDown){
         this.onInfoClicked = onInfoClicked;

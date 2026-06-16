@@ -347,6 +347,14 @@ public void initialize() {
         }
     }
 
+    /**
+     *
+     * Permette di spostare di una posizione più in alto una traccia, aggiornando al contempo
+     * la lista osservabile.
+     *
+     * @param track traccia da spostare.
+     *
+     */
     private void moveUp(Track track){
         int i = trackList.getIndex(track);
         if (i > 0){
@@ -356,6 +364,14 @@ public void initialize() {
         }
     }
 
+    /**
+     *
+     * Permette di spostare di una posizione più in basso una traccia, aggiornando al contempo
+     * la lista osservabile.
+     *
+     * @param track traccia da spostare.
+     *
+     */
     private void moveDown(Track track){
         int i = trackList.getIndex(track);
         if (i < trackList.getSize() - 1) {
