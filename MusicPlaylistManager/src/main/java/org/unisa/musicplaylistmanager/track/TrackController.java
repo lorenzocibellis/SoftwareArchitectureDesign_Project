@@ -76,7 +76,7 @@ public class TrackController {
     private Button browseCoverButton;
     @FXML
     private FlowPane personalTagsPane;
-
+    
     private List<RadioButton> personalTags = new ArrayList<>();
 
     // definizione attributi
