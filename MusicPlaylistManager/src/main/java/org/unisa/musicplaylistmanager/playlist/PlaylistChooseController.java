@@ -19,15 +19,16 @@ import java.io.IOException;
  * @author gruppo10
  */
 public class PlaylistChooseController {
-    @FXML
-    private Button buttonManual;
-    @FXML
-    private Button buttonAutomatic;
-    @FXML
-    private Button buttonBack;
+
+    // Definizione attributi
+
+    // path alle view
     private String resourceRoot = "/org/unisa/musicplaylistmanager/playlist/";
 
+    // riferimento alla lista di playlist
     private PlaylistList playlistList;
+
+    // riferimento alla lista di playlist osservabile
     private ObservableList<Playlist> playlistListObservable;
 
     /**
@@ -48,12 +49,28 @@ public class PlaylistChooseController {
         this.playlistListObservable = o;
     }
 
+    /**
+     *
+     * Permette di chiudere la schermata attuale.
+     *
+     * @param actionEvent evento che genera una chiamata a questa funzione.
+     *
+     */
     @FXML
     public void goBack(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
     }
 
+    /**
+     *
+     * Permette di aprire la schermata che verrà utilizzata per generare una playlist automaticamente.
+     *
+     * @param actionEvent Evento che genera la chiamata di funzione.
+     *
+     * @throws IOException Eccezione lanciata nel caso di errori.
+     *
+     */
     @FXML
     public void createAutomatic(ActionEvent actionEvent) throws IOException {
         // Chiudi la finestra di scelta
@@ -75,6 +92,15 @@ public class PlaylistChooseController {
         stage.show();
     }
 
+    /**
+     *
+     * Permette di aprire la schermata che verrà utilizzata per generare una playlist vuota.
+     *
+     * @param actionEvent Evento che genera la chiamata di funzione.
+     *
+     * @throws IOException Eccezione lanciata nel caso di errori.
+     *
+     */
     @FXML
     public void createManual(ActionEvent actionEvent) throws IOException {
         // Chiudi la finestra di scelta

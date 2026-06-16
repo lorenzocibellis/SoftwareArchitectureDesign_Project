@@ -254,7 +254,9 @@ public class  PlaylistListController {
      */
     @FXML
     void undo(ActionEvent event){
+        // invoco l'undo del commandInvoker
         commandInvoker.undoCommand();
+        // aggiorno la lista osservabile
         playlistListObservable.setAll(playlistList.getPlaylists());
         // ricarico gli elementi visuali
         listView.refresh();
