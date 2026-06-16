@@ -81,20 +81,43 @@ public abstract class TrackCollection implements IterableCollection {
     }
 
 
+    /**
+     *
+     * Permette di rimuovere un insieme di tracce dalla TrackCollection
+     *
+     * @param tracks Lista di tracce da rimuovere
+     *
+     */
     public void removeAllTracks(ArrayList<Track> tracks){
         getTracks().removeAll(tracks);
     }
+
     /**
      * Restituisce l'indice di una traccia all'interno della playlist (non supportato al momento).
      *
-     * @param track la traccia da cercare
-     * @return l'indice della traccia
-     * @throws UnsupportedOperationException sempre
+     * @param track la traccia di cui cercare l'indice.
+     *
+     * @return l'indice della traccia.
+     *
      */
     public int getIndex(Track track){
-        throw new UnsupportedOperationException("L'operazione getIndex non è attualmente supportata.");
+        return this.getTracks().indexOf(track);
     }
 
+    /**
+     *
+     * Effettua lo swap delle tracce agli indici indicati.
+     *
+     * @param index1 Indice numero 1 da swappare.
+     * @param index2 Indice numero 2 da swappare
+     *
+     */
+    public void swap(int index1, int index2){
+        ArrayList<Track> tracks = this.getTracks();
+        Track temp = tracks.get(index1);
+        tracks.set(index1, tracks.get(index2));
+        tracks.set(index2, temp);
+    }
     /**
      * Restituisce il numero di tracce contenute nella playlist.
      *

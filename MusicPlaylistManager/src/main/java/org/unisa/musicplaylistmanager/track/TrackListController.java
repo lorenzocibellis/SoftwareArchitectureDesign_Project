@@ -348,25 +348,19 @@ public void initialize() {
     }
 
     private void moveUp(Track track){
-        int i = trackListObservable.indexOf(track);
+        int i = trackList.getIndex(track);
         if (i > 0){
             Collections.swap(trackListObservable, i, i-1);
-            ArrayList<Track> tracks = trackList.getTracks();
-            Track temp = tracks.get(i-1);
-            tracks.set(i-1, track);
-            tracks.set(i,temp);
+            trackList.swap(i, i-1);
             listView.refresh();
         }
     }
 
     private void moveDown(Track track){
-        int i = trackListObservable.indexOf(track);
-        if (i < trackListObservable.size() - 1) {
+        int i = trackList.getIndex(track);
+        if (i < trackList.getSize() - 1) {
             Collections.swap(trackListObservable, i, i+1);
-            ArrayList<Track> tracks = trackList.getTracks();
-            Track temp = tracks.get(i+1);
-            tracks.set(i+1, track);
-            tracks.set(i,temp);
+            trackList.swap(i,i+1);
             listView.refresh();
         }
     }
