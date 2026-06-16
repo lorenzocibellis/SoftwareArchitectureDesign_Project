@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import org.unisa.musicplaylistmanager.alert.AlertManager;
 import org.unisa.musicplaylistmanager.command.BasePlaylistCommands;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;
 import org.unisa.musicplaylistmanager.command.DeletePlaylistCommand;
@@ -141,10 +142,10 @@ public class  PlaylistListController {
 
         // Ascolta i cambiamenti
         PlaylistRankingService.getTopItems().addListener((ListChangeListener.Change<? extends Playlist> c) -> {
-            Platform.runLater(() -> refreshTopTracksUI(PlaylistRankingService.getTopItems()));
+            Platform.runLater(() -> refreshTopPlaylistUI(PlaylistRankingService.getTopItems()));
         });
 
-        refreshTopTracksUI(PlaylistRankingService.getTopItems());
+        refreshTopPlaylistUI(PlaylistRankingService.getTopItems());
     }
 
     /**
@@ -183,23 +184,27 @@ public class  PlaylistListController {
             return;
         }
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Conferma Eliminazione");
+        // inizializzazione Alert di conferma
+        String header;
+        String title = "Conferma Eliminazione";
+        String content = "L'azione è irreversibile.";
 
         // cambia il messaggio in base al numero di elementi selezionati
         if (selectedItems.size() == 1) {
-            alert.setHeaderText("Sei sicuro di voler eliminare la playlist selezionata?");
-            alert.setContentText("L'azione è irreversibile.");
+
+            header = "Sei sicuro di voler eliminare la playlist selezionata?";
+
         } else {
-            alert.setHeaderText("Sei sicuro di voler eliminare le " + selectedItems.size() + " playlist selezionate?");
-            alert.setContentText("L'azione è irreversibile.");
+
+            header = "Sei sicuro di voler eliminare le " + selectedItems.size() + " playlist selezionate?";
+
         }
 
         // Mostra l'alert e attendi la risposta dell'utente
-        Optional<ButtonType> result = alert.showAndWait();
+        boolean result = AlertManager.showConfirmation(title, header, content);
 
         // Se l'utente ha cliccato "OK"
-        if (result.isPresent() && result.get() == ButtonType.OK) {
+        if (result) {
 
             ArrayList<Playlist> toRemove = new ArrayList<>(selectedItems);
 
@@ -262,7 +267,7 @@ public class  PlaylistListController {
         listView.refresh();
     }
 
-    private void refreshTopTracksUI(java.util.List<Playlist> top) {
+    private void refreshTopPlaylistUI(java.util.List<Playlist> top) {
         topPlaylistContainer.getChildren().clear();
 
         if (top.isEmpty()) {

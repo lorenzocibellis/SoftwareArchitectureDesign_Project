@@ -14,7 +14,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.unisa.musicplaylistmanager.command.BaseTrackCommands;
@@ -84,60 +83,73 @@ public class TrackListController {
      * imposta la selezione multipla e gestisce l'evento di doppio click
      * per l'apertura del player.
      */
+
     @FXML
-public void initialize() {
+    public void initialize() {
 
-    trackList = TrackList.getTrackListPointer();
+        // ottenimento puntatore alla trackList
+        trackList = TrackList.getTrackListPointer();
 
-    libraryName.setText(trackList.getName());
+        libraryName.setText(trackList.getName());
 
-    if (trackList.getTracks().isEmpty()) {
-        loadMockTracksFromCSV();
-    }
-
-    trackListObservable = FXCollections.observableArrayList(trackList.getTracks());
-
-    commandInvoker = CommandInvoker.getCommandInvokerPointer();
-    undoButton.disableProperty().bind(commandInvoker.hasCommandsToUndoProperty().not());
-
-    listView.setCellFactory(param -> new TrackCellController(this::showTrackDetails, this::moveUp, this::moveDown));
-    listView.setItems(trackListObservable);
-
-    listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
-    deleteButton.disableProperty().bind(
-        Bindings.isEmpty(listView.getSelectionModel().getSelectedItems())
-    );
-
-    listView.setOnMouseClicked(event -> {
-        if (event.getClickCount() == 2) {
-            Track selected = listView.getSelectionModel().getSelectedItem();
-            if (selected == null) return;
-            openPlayerFor(selected);
+        // caricamento tracce
+        if (trackList.getTracks().isEmpty()) {
+            loadMockTracksFromCSV();
         }
-    });
 
-    playerActiveListener = (obs, oldVal, newVal) -> updateBottomPadding();
-    ActivePlayerManager.getInstance().playerActiveProperty().addListener(
-            new WeakChangeListener<>(playerActiveListener)
-    );
+        //  creazione lista osservabile di tracce
+        trackListObservable = FXCollections.observableArrayList(trackList.getTracks());
 
-    updateBottomPadding();
+        // ottenimento puntatore al CommandInvoker
+        commandInvoker = CommandInvoker.getCommandInvokerPointer();
 
-    // imposta il titolo in base al limite
-    topTracksTitle.setText("La tua Top " + RANKING_LIMIT);
+        // disabilitazione bottone Undo
+        undoButton.disableProperty().bind(commandInvoker.hasCommandsToUndoProperty().not());
 
-    // inizializza il RankingService per gestire la classifica
-    RankingService<Track> trackRankingService =
-        new RankingService<>(trackListObservable, RANKING_LIMIT);
-    
-    // Ascolta i cambiamenti
-    trackRankingService.getTopItems().addListener((ListChangeListener.Change<? extends Track> c) -> {
-        Platform.runLater(() -> refreshTopTracksUI(trackRankingService.getTopItems()));
-    });
+        // popolamento lista osservabile dalla View
+        listView.setCellFactory(param -> new TrackCellController(this::showTrackDetails, this::moveUp, this::moveDown));
+        listView.setItems(trackListObservable);
 
-    refreshTopTracksUI(trackRankingService.getTopItems());
-}
+        // abilitazione selezione multipla di elementi
+        listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        // disabilitazione pulsante di eliminazione
+        deleteButton.disableProperty().bind(
+            Bindings.isEmpty(listView.getSelectionModel().getSelectedItems())
+        );
+
+        // definizione comportamento su doppio click
+        listView.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                Track selected = listView.getSelectionModel().getSelectedItem();
+                if (selected == null) return;
+                openPlayerFor(selected);
+            }
+        });
+
+        // definizione comportamento del player
+        playerActiveListener = (obs, oldVal, newVal) -> updateBottomPadding();
+        ActivePlayerManager.getInstance().playerActiveProperty().addListener(
+                new WeakChangeListener<>(playerActiveListener)
+        );
+
+        updateBottomPadding();
+
+        // imposta il titolo in base al limite
+        topTracksTitle.setText("La tua Top " + RANKING_LIMIT);
+
+        // inizializza il RankingService per gestire la classifica
+        RankingService<Track> trackRankingService =
+            new RankingService<>(trackListObservable, RANKING_LIMIT);
+
+        // Ascolta i cambiamenti
+        trackRankingService.getTopItems().addListener((ListChangeListener.Change<? extends Track> c) -> {
+            Platform.runLater(() -> refreshTopTracksUI(trackRankingService.getTopItems()));
+        });
+
+        // forza refresh della top
+        refreshTopTracksUI(trackRankingService.getTopItems());
+    }
 
     /**
      * Naviga verso la schermata delle Playlist (PlaylistListView).
@@ -380,7 +392,7 @@ public void initialize() {
             listView.refresh();
         }
     }
-    
+
     private void loadMockTracksFromCSV() {
         String resourcePath = "/data/tracks.csv";
         InputStream is = getClass().getResourceAsStream(resourcePath);
@@ -450,26 +462,26 @@ public void initialize() {
         listView.setPadding(new Insets(0, 0, padding, 0));
     }
     /**
-     * Rigenera l'interfaccia grafica della Top 3 (il podio orizzontale).
+     * Rigenera l'interfaccia grafica della Top (il podio orizzontale).
      * Viene invocato automaticamente ogni volta che il {@link RankingService}
      * rileva un cambiamento (nuovi ascolti, sorpassi in classifica, eliminazioni).
      * Svuota il contenitore e ricrea le card grafiche aggiornate basandosi sulla lista passata in input.
      * Se la lista è vuota, visualizza un messaggio informativo.
      * 
-     * @param top3 La lista aggiornata delle tracce attualmente sul podio
+     * @param top La lista aggiornata delle tracce attualmente sul podio
      */
-    private void refreshTopTracksUI(java.util.List<Track> top3) {
+    private void refreshTopTracksUI(java.util.List<Track> top) {
         topTracksContainer.getChildren().clear();
 
-        if (top3.isEmpty()) {
+        if (top.isEmpty()) {
             Label emptyLabel = new Label("Ascolta qualche brano per popolare la tua Top " + RANKING_LIMIT + "!");
             emptyLabel.getStyleClass().add("top-track-empty-label");
             topTracksContainer.getChildren().add(emptyLabel);
             return;
         }
 
-        for (int i = 0; i < top3.size(); i++) {
-            Track t = top3.get(i);
+        for (int i = 0; i < top.size(); i++) {
+            Track t = top.get(i);
             
             VBox card = new VBox();
             card.setSpacing(2);

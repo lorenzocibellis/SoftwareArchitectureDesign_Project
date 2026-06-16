@@ -110,7 +110,6 @@ public class TrackList extends TrackCollection implements BaseSubject{
         super.updateTrack(existingTrack, newDataTrack);
     }
 
-    // ===================== OBSERVER =====================
 
     /**
      * Registra un observer interessato agli eventi della TrackList.
