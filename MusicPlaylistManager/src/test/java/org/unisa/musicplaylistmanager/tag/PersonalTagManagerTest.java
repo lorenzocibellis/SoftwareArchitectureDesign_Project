@@ -3,7 +3,10 @@ package org.unisa.musicplaylistmanager.tag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.unisa.musicplaylistmanager.track.Track;
+import org.unisa.musicplaylistmanager.track.TrackList;
 
+import java.time.Year;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -75,5 +78,45 @@ class PersonalTagManagerTest {
     @DisplayName("Rimozione di un tag non esistente")
     void testRemoveNonExistingTag() {
         assertFalse(manager.removeTag("Metal"));
+    }
+
+    @Test
+    @DisplayName("Rimozione tag nullo o vuoto restituisce false")
+    void testRemoveNullOrBlankTag() {
+        assertFalse(manager.removeTag(null));
+        assertFalse(manager.removeTag(""));
+        assertFalse(manager.removeTag("   "));
+    }
+
+    @Test
+    @DisplayName("getPersonalTags: la lista esposta è di sola lettura")
+    void testPersonalTagsListIsUnmodifiable() {
+        manager.addTag("Live");
+        assertThrows(UnsupportedOperationException.class,
+                () -> manager.getPersonalTags().add("Hack"));
+    }
+
+    @Test
+    @DisplayName("removeTag: elimina il tag anche dalle tracce in libreria (integrazione TrackList)")
+    void testRemoveTagAlsoCleansTracks() {
+        TrackList trackList = TrackList.getTrackListPointer();
+        Track track = new Track("Summer Song", "Artista", Year.of(2020), "Pop", 180, false, false, false);
+
+        try {
+            if (!trackList.getTracks().contains(track)) {
+                trackList.addTrack(track);
+            }
+            manager.addTag("Estate");
+            track.addPersonalTag("Estate");
+            assertTrue(track.getPersonalTags().contains("Estate"));
+
+            // La rimozione globale del tag deve propagarsi alle tracce in libreria
+            assertTrue(manager.removeTag("Estate"));
+            assertFalse(track.getPersonalTags().contains("Estate"),
+                    "Il tag rimosso globalmente deve sparire anche dalla traccia");
+        } finally {
+            // Cleanup del Singleton condiviso fra i test
+            trackList.getTracks().remove(track);
+        }
     }
 }

@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import org.unisa.musicplaylistmanager.playlist.Playlist;
 import org.unisa.musicplaylistmanager.strategy.ExecutionStrategy;
+import org.unisa.musicplaylistmanager.strategy.Loop;
+import org.unisa.musicplaylistmanager.strategy.Sequential;
 import org.unisa.musicplaylistmanager.track.Track;
 
 import java.time.Year;
@@ -81,5 +83,120 @@ class IteratorTest {
     @DisplayName("Constructor: oggetto non nullo")
     void testConstructorNotNull() {
         assertNotNull(iterator);
+    }
+
+    // -----------------------------------------------------------------------
+    // getIdentifier
+    // -----------------------------------------------------------------------
+
+    @Test
+    @DisplayName("getIdentifier: restituisce il nome della collezione")
+    void testGetIdentifier() {
+        assertEquals("Test Playlist", iterator.getIdentifier());
+    }
+
+    // -----------------------------------------------------------------------
+    // moveToTrack
+    // -----------------------------------------------------------------------
+
+    @Test
+    @DisplayName("moveToTrack: posiziona l'iteratore sulla traccia indicata")
+    void testMoveToTrack() {
+        iterator.moveToTrack(track3);
+        assertEquals(track3, iterator.getCurrent());
+
+        // Da track3 il successivo (circolare) è track1
+        assertEquals(track1, iterator.getNext());
+    }
+
+    @Test
+    @DisplayName("moveToTrack: una traccia non presente non sposta l'iteratore")
+    void testMoveToTrackNotPresent() {
+        assertEquals(track1, iterator.getCurrent());
+
+        Track estranea = new Track("Imagine", "John Lennon", Year.of(1971), "Pop", 183, false, false, false);
+        iterator.moveToTrack(estranea);
+
+        // L'iteratore deve restare sulla traccia corrente precedente
+        assertEquals(track1, iterator.getCurrent());
+    }
+
+    // -----------------------------------------------------------------------
+    // Sincronizzazione dinamica (syncWithPlaylist)
+    // -----------------------------------------------------------------------
+
+    @Test
+    @DisplayName("Resync: una traccia aggiunta a runtime diventa raggiungibile")
+    void testDynamicResyncAfterAdd() {
+        Track track4 = new Track("Imagine", "John Lennon", Year.of(1971), "Pop", 183, false, false, false);
+        playlist.addTrack(track4);
+
+        // La prima chiamata dopo la modifica forza il ricalcolo dell'ordine di iterazione
+        assertEquals(track1, iterator.getCurrent(), "La traccia corrente deve essere preservata");
+
+        java.util.Set<Track> visitate = new java.util.HashSet<>();
+        visitate.add(iterator.getCurrent());
+        for (int i = 0; i < 3; i++) {
+            visitate.add(iterator.getNext());
+        }
+
+        assertTrue(visitate.contains(track4), "La nuova traccia deve essere raggiungibile dall'iteratore");
+        assertEquals(4, visitate.size(), "Devono essere raggiungibili tutte e 4 le tracce");
+    }
+
+    @Test
+    @DisplayName("Resync: una traccia rimossa a runtime non viene più restituita")
+    void testDynamicResyncAfterRemove() {
+        // Rimuoviamo una traccia diversa da quella corrente (track1)
+        playlist.removeTrack(track3);
+
+        assertEquals(track1, iterator.getCurrent());
+
+        java.util.Set<Track> visitate = new java.util.HashSet<>();
+        visitate.add(iterator.getCurrent());
+        for (int i = 0; i < 3; i++) {
+            visitate.add(iterator.getNext());
+        }
+
+        assertFalse(visitate.contains(track3), "La traccia rimossa non deve più comparire");
+        assertEquals(2, visitate.size(), "Devono restare solo le 2 tracce ancora presenti");
+    }
+
+    // -----------------------------------------------------------------------
+    // Strategie applicate tramite l'Iterator
+    // -----------------------------------------------------------------------
+
+    @Test
+    @DisplayName("Strategy Loop: getNext restituisce sempre la traccia corrente")
+    void testLoopStrategyIntegration() {
+        iterator.moveToTrack(track2);
+        iterator.setStrategy(new Loop());
+
+        assertEquals(track2, iterator.getCurrent());
+        assertEquals(track2, iterator.getNext());
+        assertEquals(track2, iterator.getNext());
+        assertEquals(track2, iterator.getPrevious());
+    }
+
+    @Test
+    @DisplayName("Strategy Sequential: ripristina l'ordine naturale dopo un'altra strategia")
+    void testSequentialStrategyRestoresOrder() {
+        iterator.setStrategy(new Loop());
+        assertEquals(track1, iterator.getNext()); // in loop resta su track1
+
+        iterator.setStrategy(new Sequential());
+        assertEquals(track1, iterator.getCurrent());
+        assertEquals(track2, iterator.getNext());
+        assertEquals(track3, iterator.getNext());
+    }
+
+    @Test
+    @DisplayName("setStrategy: su playlist vuota non causa errori")
+    void testSetStrategyOnEmptyPlaylist() {
+        Playlist vuota = new Playlist("Vuota");
+        Iterator itVuoto = new Iterator(vuota);
+
+        assertDoesNotThrow(() -> itVuoto.setStrategy(new Loop()));
+        assertNull(itVuoto.getCurrent());
     }
 }
