@@ -297,4 +297,43 @@ class PlayerTest {
 
         assertEquals(before, ticks.get());
     }
+
+
+    @Test
+    @DisplayName("Seek: scorrimento normale entro i limiti")
+    void testSeekToNormal() {
+        AtomicInteger reportedTime = new AtomicInteger(-1);
+        player.setOnTimeTick(t -> reportedTime.set(t));
+
+        // la traccia di test creata nel setUp (Bohemian Rhapsody) ha durata 5 secondi.
+        player.seekTo(3);
+
+        // verifica che il tempo impostato sia 3 e la callback sia scattata
+        assertEquals(3, reportedTime.get());
+    }
+
+    @Test
+    @DisplayName("Seek: scorrimento con valore negativo limitato a 0")
+    void testSeekToNegative() {
+        AtomicInteger reportedTime = new AtomicInteger(-1);
+        player.setOnTimeTick(t -> reportedTime.set(t));
+
+        player.seekTo(-10);
+
+        // Verifica che Math.max(0, ...) abbia forzato il tempo a 0
+        assertEquals(0, reportedTime.get());
+    }
+
+    @Test
+    @DisplayName("Seek: scorrimento oltre durata massima")
+    void testSeekToBeyondDuration() {
+        AtomicInteger reportedTime = new AtomicInteger(-1);
+        player.setOnTimeTick(t -> reportedTime.set(t));
+
+        // Durata massima = 5
+        player.seekTo(100);
+
+        // Verifica che Math.min(seconds, duration) abbia forzato il tempo a 5
+        assertEquals(5, reportedTime.get());
+    }
 }
