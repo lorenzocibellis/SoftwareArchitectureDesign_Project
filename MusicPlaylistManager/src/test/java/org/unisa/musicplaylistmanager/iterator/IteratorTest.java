@@ -189,6 +189,56 @@ class IteratorTest {
         assertEquals(track3, iterator.getNext());
     }
 
+    // -----------------------------------------------------------------------
+    // Riordino della lista (swap) durante l'iterazione
+    // -----------------------------------------------------------------------
+
+    @Test
+    @DisplayName("Riordino: spostare la traccia corrente la mantiene corrente e aggiorna il next")
+    void testReorderCurrentTrackKeepsCurrentAndNext() {
+        // Posiziono l'iteratore su track2 (indice 1)
+        iterator.moveToTrack(track2);
+        assertEquals(track2, iterator.getCurrent());
+
+        // Sposto track2 in cima scambiandola con track1 -> ordine: track2, track1, track3
+        playlist.swap(0, 1);
+
+        // L'iteratore segue il brano: track2 resta corrente
+        assertEquals(track2, iterator.getCurrent());
+        // Il successivo è ora track1 (che segue track2 nel nuovo ordine)
+        assertEquals(track1, iterator.getNext());
+    }
+
+    @Test
+    @DisplayName("Riordino: scambiare due tracce non correnti non altera la corrente")
+    void testReorderOtherTracksKeepsCurrent() {
+        iterator.moveToTrack(track1);
+        assertEquals(track1, iterator.getCurrent());
+
+        // Scambio track2 e track3 (entrambe diverse dalla corrente) -> track1, track3, track2
+        playlist.swap(1, 2);
+
+        assertEquals(track1, iterator.getCurrent());
+        assertEquals(track3, iterator.getNext());
+        assertEquals(track2, iterator.getNext());
+    }
+
+    @Test
+    @DisplayName("Riordino in Loop: spostare la traccia in loop continua a ripetere quella giusta")
+    void testReorderUnderLoopStrategy() {
+        iterator.moveToTrack(track2);
+        iterator.setStrategy(new Loop());
+        assertEquals(track2, iterator.getCurrent());
+
+        // Sposto track2 -> ordine: track2, track1, track3
+        playlist.swap(0, 1);
+
+        // Il loop deve continuare a ripetere track2, non un altro brano
+        assertEquals(track2, iterator.getCurrent());
+        assertEquals(track2, iterator.getNext());
+        assertEquals(track2, iterator.getNext());
+    }
+
     @Test
     @DisplayName("setStrategy: su playlist vuota non causa errori")
     void testSetStrategyOnEmptyPlaylist() {

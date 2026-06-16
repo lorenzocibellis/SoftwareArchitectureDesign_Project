@@ -397,7 +397,6 @@ public class TrackListController {
         if (i > 0){
             Collections.swap(trackListObservable, i, i-1);
             trackList.swap(i, i-1);
-            ActivePlayerManager.getInstance().refreshCurrentTrackPosition();
             listView.refresh();
         }
     }
@@ -415,7 +414,6 @@ public class TrackListController {
         if (i < trackList.getSize() - 1) {
             Collections.swap(trackListObservable, i, i+1);
             trackList.swap(i,i+1);
-            ActivePlayerManager.getInstance().refreshCurrentTrackPosition();
             listView.refresh();
         }
     }

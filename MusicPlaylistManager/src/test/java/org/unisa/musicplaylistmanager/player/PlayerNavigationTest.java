@@ -144,52 +144,23 @@ class PlayerNavigationTest {
     // Riordino delle tracce durante la riproduzione (BUG goNext/goPrevious)
     //
     // L'iteratore segue la traccia corrente tramite la sua POSIZIONE nell'array.
-    // Uno swap riordina l'ArrayList condiviso senza notificare l'iteratore: se non
-    // si ri-ancora l'iteratore alla traccia realmente in riproduzione, next/previous
-    // partono dalla posizione sbagliata. Il fix (lato controller) chiama
-    // ActivePlayerManager.refreshCurrentTrackPosition(), che a sua volta esegue
-    // iterator.moveToTrack(tracciaInRiproduzione): qui ne verifichiamo il meccanismo.
+    // Uno swap riordina l'ArrayList condiviso senza variarne la dimensione: l'iteratore
+    // rileva la discrepanza e si riallinea automaticamente al brano in riproduzione,
+    // così che next/previous restino coerenti col nuovo ordine, senza intervento esterno.
     // -----------------------------------------------------------------------
 
     @Test
-    @DisplayName("Riordino (root cause): senza ri-ancoraggio, spostare la traccia corrente desincronizza next")
-    void testReorderWithoutReanchorDesyncsNavigation() {
-        // Riproduco track3 (posizione 2)
-        player.nextTrack();
-        player.nextTrack();
-        assertEquals(track3, player.getCurrentTrack());
-
-        // Sposto track3 "in su" scambiandola con track2 -> ordine: t1, t3, t2, t4, t5
-        playlist.swap(2, 1);
-
-        // L'iteratore punta ancora alla posizione 2, che ora contiene track2:
-        // la traccia corrente risulta sbagliata...
-        assertEquals(track2, player.getCurrentTrack(),
-                "Root cause: senza ri-ancoraggio la posizione punta alla traccia sbagliata");
-
-        // ...e il next salta a track4, ovvero 'quella che veniva dopo prima dello spostamento'
-        player.nextTrack();
-        assertEquals(track4, player.getCurrentTrack(),
-                "Root cause: il next salta la traccia che ora segue quella spostata");
-    }
-
-    @Test
-    @DisplayName("Riordino in su: dopo il ri-ancoraggio, la traccia corrente e il next restano corretti")
+    @DisplayName("Riordino in su: spostare la traccia corrente mantiene corretti current e next")
     void testReorderCurrentTrackUpKeepsNavigationConsistent() {
         // Riproduco track3 (posizione 2)
         player.nextTrack();
         player.nextTrack();
         assertEquals(track3, player.getCurrentTrack());
 
-        Track playing = player.getCurrentTrack(); // catturato PRIMA dello spostamento
-
         // Sposto track3 in su (swap con track2) -> ordine: t1, t3, t2, t4, t5
         playlist.swap(2, 1);
 
-        // Ri-ancoraggio: equivalente a ActivePlayerManager.refreshCurrentTrackPosition()
-        player.getIterator().moveToTrack(playing);
-
-        // La traccia corrente resta track3
+        // La traccia corrente resta track3 (riallineamento automatico)
         assertEquals(track3, player.getCurrentTrack(),
                 "La traccia in riproduzione non deve cambiare dopo lo spostamento");
 
@@ -200,19 +171,14 @@ class PlayerNavigationTest {
     }
 
     @Test
-    @DisplayName("Riordino in giù: dopo il ri-ancoraggio, previous e next restano corretti")
+    @DisplayName("Riordino in giù: spostare la traccia corrente mantiene corretti current e previous")
     void testReorderCurrentTrackDownKeepsNavigationConsistent() {
         // Riproduco track2 (posizione 1)
         player.nextTrack();
         assertEquals(track2, player.getCurrentTrack());
 
-        Track playing = player.getCurrentTrack(); // catturato PRIMA dello spostamento
-
         // Sposto track2 in giù (swap con track3) -> ordine: t1, t3, t2, t4, t5
         playlist.swap(1, 2);
-
-        // Ri-ancoraggio
-        player.getIterator().moveToTrack(playing);
 
         assertEquals(track2, player.getCurrentTrack(),
                 "La traccia in riproduzione non deve cambiare dopo lo spostamento");
@@ -224,23 +190,39 @@ class PlayerNavigationTest {
     }
 
     @Test
-    @DisplayName("Riordino di tracce non in riproduzione: il ri-ancoraggio non altera la navigazione")
+    @DisplayName("Riordino di tracce non in riproduzione: la navigazione resta invariata")
     void testReorderOtherTracksDoesNotAffectCurrent() {
         // Riproduco track5 (ultima posizione)
         for (int i = 0; i < 4; i++) player.nextTrack();
         assertEquals(track5, player.getCurrentTrack());
 
-        Track playing = player.getCurrentTrack();
-
         // Sposto due tracce all'inizio, lontane da quella in riproduzione -> t2, t1, t3, t4, t5
         playlist.swap(0, 1);
-        player.getIterator().moveToTrack(playing);
 
         // track5 resta corrente e il next torna ciclicamente alla prima posizione (track2)
         assertEquals(track5, player.getCurrentTrack());
         player.nextTrack();
         assertEquals(track2, player.getCurrentTrack(),
                 "Comportamento circolare corretto rispetto al nuovo ordine");
+    }
+
+    @Test
+    @DisplayName("Riordino ripetuto: spostamenti multipli consecutivi restano coerenti")
+    void testRepeatedReordersStayConsistent() {
+        // Riproduco track3
+        player.nextTrack();
+        player.nextTrack();
+        assertEquals(track3, player.getCurrentTrack());
+
+        // Spostamenti consecutivi della traccia corrente verso l'alto
+        playlist.swap(2, 1); // t1, t3, t2, t4, t5  (track3 in pos 1)
+        assertEquals(track3, player.getCurrentTrack());
+        playlist.swap(1, 0); // t3, t1, t2, t4, t5  (track3 in pos 0)
+        assertEquals(track3, player.getCurrentTrack());
+
+        // Dopo gli spostamenti, il next segue il nuovo ordine: track1
+        player.nextTrack();
+        assertEquals(track1, player.getCurrentTrack());
     }
 
     @Test

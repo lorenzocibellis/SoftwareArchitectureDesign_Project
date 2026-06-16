@@ -181,29 +181,6 @@ public class ActivePlayerManager implements PlayerManager {
     }
 
     /**
-     * Ri-ancora l'iteratore del player alla traccia attualmente in riproduzione.
-     *
-     * Va chiamato dopo un riordino (swap) delle tracce, poiché l'iteratore tiene
-     * traccia del brano corrente tramite la sua posizione nell'array: uno spostamento
-     * cambia quella posizione senza notificare l'iteratore, facendo sì che
-     * next/previous calcolino la traccia successiva a partire dalla posizione
-     * sbagliata. Riposizionando l'iteratore sul brano realmente in riproduzione si
-     * mantiene corretta la navigazione.
-     *
-     * L'operazione è sicura anche quando il riordino riguarda una collezione diversa
-     * da quella in riproduzione: in tal caso la posizione del brano corrente non
-     * cambia e il riposizionamento è un no-op.
-     */
-    public void refreshCurrentTrackPosition() {
-        if (playerController != null && playerController.getPlayer() != null) {
-            Track playing = currentTrack.get();
-            if (playing != null) {
-                playerController.getPlayer().getIterator().moveToTrack(playing);
-            }
-        }
-    }
-
-    /**
      * Ritorna la proprietà osservabile in sola lettura contenente la traccia attualmente riprodotta.
      * I controller della lista si collegano a questa proprietà per aggiornare la grafica della canzone e mostrarla
      * attualmente in riproduzione

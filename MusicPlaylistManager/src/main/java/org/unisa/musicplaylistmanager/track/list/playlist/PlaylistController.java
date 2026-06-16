@@ -448,7 +448,6 @@ public class PlaylistController {
         if (i > 0){
             Collections.swap(playlistObservable, i, i-1);
             playlist.swap(i,i-1);
-            ActivePlayerManager.getInstance().refreshCurrentTrackPosition();
             listView.refresh();
         }
     }
@@ -466,7 +465,6 @@ public class PlaylistController {
         if (i < playlist.getSize() - 1) {
             Collections.swap(playlistObservable, i, i+1);
             playlist.swap(i,i+1);
-            ActivePlayerManager.getInstance().refreshCurrentTrackPosition();
             listView.refresh();
         }
     }
