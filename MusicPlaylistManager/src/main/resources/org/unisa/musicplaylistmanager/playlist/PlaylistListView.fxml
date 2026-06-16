@@ -7,11 +7,11 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.playlist.PlaylistListController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.playlist.PlaylistListController">
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="70.0" style="-fx-background-color: #F8F8F8; -fx-border-color: #E0E0E0; -fx-border-width: 0 0 1 0;">
             <children>
@@ -37,21 +37,6 @@
             </padding>
         </HBox>
     </top>
-    <center>
-        <StackPane fx:id="mainStackPane">
-            <children>
-                <ListView fx:id="listView">
-                    <placeholder>
-                        <Label text="Nessuna playlist creata" textFill="#888888">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                        </Label>
-                    </placeholder>
-                </ListView>
-            </children>
-        </StackPane>
-    </center>
     <bottom>
         <HBox alignment="CENTER" prefHeight="70.0" spacing="15.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 1 0 0 0;">
             <children>
@@ -71,4 +56,33 @@
             </children>
         </HBox>
     </bottom>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox fx:id="mainVBox" prefWidth="800.0">
+               <children>
+                  <VBox fx:id="topPlaylistArea" spacing="5.0" styleClass="top-tracks-area">
+                     <children>
+                        <Label fx:id="topPlaylistTitle" text="La tua Top 3" textFill="#333333">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <HBox fx:id="topPlaylistContainer" alignment="CENTER_LEFT" spacing="15.0" />
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+                <ListView fx:id="listView">
+                    <placeholder>
+                        <Label text="Nessuna playlist creata" textFill="#888888">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </Label>
+                    </placeholder>
+                </ListView>
+         </children>
+      </VBox>
+   </center>
 </BorderPane>

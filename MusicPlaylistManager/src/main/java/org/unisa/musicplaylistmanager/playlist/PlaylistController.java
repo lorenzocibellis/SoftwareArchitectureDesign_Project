@@ -198,10 +198,16 @@ public class PlaylistController {
     /**
      * Apre il player musicale avviando la traccia selezionata all'interno del
      * contesto di questa playlist.
+     * Aggiorna inoltre il numero di ascolti della playlist.
+     *
      * * @param selected la traccia da riprodurre
      */
     private void openPlayerFor(Track selected) {
         ActivePlayerManager.getInstance().openPlayer(selected, playlist);
+
+        // aumentiamo il numero di riproduzioni della playlist
+        playlist.incrementNumOfPlay();
+
         updateBottomPadding();
     }
 

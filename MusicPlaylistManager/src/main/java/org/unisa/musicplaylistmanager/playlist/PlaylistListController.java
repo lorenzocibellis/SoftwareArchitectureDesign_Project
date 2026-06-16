@@ -3,24 +3,29 @@ package org.unisa.musicplaylistmanager.playlist;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import org.unisa.musicplaylistmanager.command.BasePlaylistCommands;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;
 import org.unisa.musicplaylistmanager.command.DeletePlaylistCommand;
 import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
+import org.unisa.musicplaylistmanager.service.statistics.RankingService;
+import org.unisa.musicplaylistmanager.track.Track;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -49,15 +54,21 @@ public class  PlaylistListController {
     private ListView<Playlist> listView;
 
     @FXML
-    private StackPane mainStackPane;
+    private HBox topPlaylistContainer;
+
 
     @FXML
     private Button undoButton;
+
+    @FXML
+    private Label topPlaylistTitle;
 
     private String resourceRoot = "/org/unisa/musicplaylistmanager/playlist/";
     private ObservableList<Playlist> playlistListObservable;
     private PlaylistList playlistList;
     private CommandInvoker commandInvoker;
+    private RankingService<Playlist> PlaylistRankingService;
+    private int DIM_RANK = 3;
 
     //METODI
 
@@ -91,6 +102,7 @@ public class  PlaylistListController {
          undoButton.disableProperty().bind(commandInvoker.hasCommandsToUndoProperty().not());
 
 
+
         playlistListObservable = FXCollections.observableArrayList(playlistList.getPlaylists());
 
         listView.setCellFactory(param -> new PlaylistCellController());
@@ -113,6 +125,19 @@ public class  PlaylistListController {
                 }
             }
         });
+
+        // imposta il titolo in base al limite
+        topPlaylistTitle.setText("La tua Top " + DIM_RANK);
+
+        // inizializzo il ranking
+        PlaylistRankingService = new RankingService<>(playlistListObservable, DIM_RANK);
+
+        // Ascolta i cambiamenti
+        PlaylistRankingService.getTopItems().addListener((ListChangeListener.Change<? extends Playlist> c) -> {
+            Platform.runLater(() -> refreshTopTracksUI(PlaylistRankingService.getTopItems()));
+        });
+
+        refreshTopTracksUI(PlaylistRankingService.getTopItems());
     }
 
     /**
@@ -226,6 +251,59 @@ public class  PlaylistListController {
         playlistListObservable.setAll(playlistList.getPlaylists());
         // ricarico gli elementi visuali
         listView.refresh();
+    }
+
+    private void refreshTopTracksUI(java.util.List<Playlist> top) {
+        topPlaylistContainer.getChildren().clear();
+
+        if (top.isEmpty()) {
+            Label emptyLabel = new Label("Ascolta qualche brano per popolare la tua Top " + DIM_RANK + "!");
+            emptyLabel.getStyleClass().add("top-track-empty-label");
+            topPlaylistContainer.getChildren().add(emptyLabel);
+            return;
+        }
+
+        for (int i = 0; i < top.size(); i++) {
+            Playlist p = top.get(i);
+
+            VBox card = new VBox();
+            card.setSpacing(2);
+            card.setMaxWidth(Double.MAX_VALUE); // Permette alla card di allargarsi
+            HBox.setHgrow(card, Priority.ALWAYS); // Fa espandere la card per riempire lo spazio
+            card.getStyleClass().add("top-track-card");
+
+            String rankClass;
+            if (i == 0) rankClass = "top-track-rank-gold";
+            else if (i == 1) rankClass = "top-track-rank-silver";
+            else if (i == 2) rankClass = "top-track-rank-bronze";
+            else rankClass = "top-track-rank-normal";
+
+            HBox topRow = new HBox(5);
+            topRow.setAlignment(Pos.CENTER_LEFT);
+
+            Label rankLabel = new Label((i + 1) + "°");
+            rankLabel.getStyleClass().add(rankClass);
+
+            Label titleLabel = new Label(p.getName());
+            titleLabel.getStyleClass().add("top-track-title");
+
+            topRow.getChildren().addAll(rankLabel, titleLabel);
+
+            HBox bottomRow = new HBox(5);
+            bottomRow.setAlignment(Pos.CENTER_LEFT);
+
+            Region spacer = new Region();
+            HBox.setHgrow(spacer, Priority.ALWAYS);
+
+            String playText = (p.getNumOfPlay() == 1) ? "1 ascolto" : p.getNumOfPlay() + " ascolti";
+            Label playsLabel = new Label(playText);
+            playsLabel.getStyleClass().add("top-track-plays");
+
+            bottomRow.getChildren().addAll(playsLabel);
+
+            card.getChildren().addAll(topRow, bottomRow);
+            topPlaylistContainer.getChildren().add(card);
+        }
     }
 
 }

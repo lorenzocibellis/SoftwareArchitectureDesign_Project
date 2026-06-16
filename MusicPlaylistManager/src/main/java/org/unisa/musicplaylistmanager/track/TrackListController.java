@@ -161,7 +161,7 @@ public void initialize() {
     }
 
     /**
-     * Naviga annulla l'ultima operazione effettuata.
+     * Annulla l'ultima operazione effettuata.
      *
      * @param event l'evento generato dal click.
      *

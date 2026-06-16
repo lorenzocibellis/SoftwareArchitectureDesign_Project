@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Servizio responsabile del mantenimento di una classifica in tempo reale.
  * 
- * Questa classe agisce prende in input una lista (es. tutta la libreria di canzoni)
+ * Questa classe agisce prendendo in input una lista (es. tutta la libreria di canzoni)
  * e restituisce costantemente una sottolista ordinata dei migliori elementi (es. le Top 3).
  * L'uso dei Generics (<T extends MostPlayed>) permette di riutilizzare questa esatta logica
  * sia per le Track che per le Playlist.
@@ -22,7 +22,7 @@ public class RankingService<T extends MostPlayed> {
     // La lista di partenza
     private final ObservableList<T> itemsToRank;
     
-    // le top 3 canzoni
+    // le top "limit" canzoni
     private final ObservableList<T> topItems;
     
     // limite del podio
@@ -30,8 +30,10 @@ public class RankingService<T extends MostPlayed> {
 
     public RankingService(ObservableList<T> itemsToRank, int limit) {
         this.itemsToRank = itemsToRank;
+
+        //controllo sulla dimensione del ranking
         this.limit = limit;
-        
+
 
         // l'extractor avvisa la UI anche quando il numero di ascolti
         // cambia ma la canzone non cambia di posizione in classifica.
@@ -45,7 +47,7 @@ public class RankingService<T extends MostPlayed> {
                 if (c.wasAdded()) {
                     // è stata aggiunta una nuova canzone alla libreria
                     for (T item : c.getAddedSubList()) {
-                        // aggiungiamo un listener a questa nuova canzone per avere traccia dei suoi futuri ascolti
+                        // aggiungiamo un listener a questa nuova MostPlayed per avere traccia dei suoi futuri ascolti
                         attachListener(item);
                         // se la canzone aggiunta ha già degli ascolti, potrebbe cambiare il podio (ad esempio dopo undo)
                         if (item.getNumOfPlay() > 0) {
@@ -111,14 +113,14 @@ public class RankingService<T extends MostPlayed> {
             } else {
                 // il podio è pieno
                 // controlliamo se la canzone appena riprodotta ha superato l'ultima nel podio
-                T lastInTop = topItems.get(topItems.size() - 1); // prende il 3° classificato
+                T lastInTop = topItems.get(topItems.size() - 1); // prende l'ultimo classificato
                 
                 if (item.getNumOfPlay() > lastInTop.getNumOfPlay()) {
-                    // eliminiamo il 3° classificato dal podio
+                    // eliminiamo l'ultimo classificato dal podio
                     topItems.remove(topItems.size() - 1);
                     // mettiamo al suo posto la nuova canzone
                     topItems.add(item);
-                    // riordiniamo i 3 posti del podio
+                    // riordiniamo i "limit" posti del podio
                     topItems.sort(Comparator.comparingInt(MostPlayed::getNumOfPlay).reversed());
                 }
             }
@@ -126,7 +128,7 @@ public class RankingService<T extends MostPlayed> {
     }
 
     /**
-     * Prende tutta la libreria, la ordina, e prende le prime 3.
+     * Prende tutta la libreria, la ordina, e prende le prime "limit" MostPlayed.
      * Lo fa solo all'avvio dell'app o se cancelli una canzone che stava fisicamente in classifica.
      */
     private void fullRefreshRanking() {
