@@ -88,7 +88,7 @@ public class  PlaylistListController {
     }
 
     /**
-     * 
+     *
      * Metodo di inizializzazione chiamato automaticamente da JavaFX.
      * Recupera o inizializza il Singleton delle playlist, imposta la lista 
      * osservabile e configura le funzionalità della ListView.
@@ -97,10 +97,12 @@ public class  PlaylistListController {
     @FXML
     public void initialize(){
          playlistList = PlaylistList.getPlaylistListPointer();
+
+         // ottiene il riferimento al commandInvoker
          commandInvoker = CommandInvoker.getCommandInvokerPointer();
-         undoButton.disableProperty().bind(commandInvoker.hasCommandsToUndoProperty().not());
 
-
+         // disattiva inizialmente il bottone di undo
+        undoButton.disableProperty().bind(commandInvoker.hasCommandsToUndoProperty().not());
 
         playlistListObservable = FXCollections.observableArrayList(playlistList.getPlaylists());
 
