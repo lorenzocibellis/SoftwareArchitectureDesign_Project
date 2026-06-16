@@ -104,17 +104,23 @@ public class  PlaylistListController {
          // disattiva inizialmente il bottone di undo
         undoButton.disableProperty().bind(commandInvoker.hasCommandsToUndoProperty().not());
 
+        // wrappa come lista osservabile la lista da mostrare nella UI
         playlistListObservable = FXCollections.observableArrayList(playlistList.getPlaylists());
 
+        // definisce la UI come una lista di CellView
         listView.setCellFactory(param -> new PlaylistCellController());
 
+        // definisce gli elementi da visualizzare sulla UI
         listView.setItems(playlistListObservable);
 
+        // abilita la selezione multipla
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
+        // disabilita inizialmente il bottone di eliminazione
         deleteButton.disableProperty().bind(Bindings.isEmpty(listView.getSelectionModel().getSelectedItems()));
 
 
+        // definisce evento al doppio click
         listView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) { // Apri la playlist con doppio click
                 Playlist selected = listView.getSelectionModel().getSelectedItem();
