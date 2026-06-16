@@ -241,6 +241,22 @@ public class TrackCellController extends ListCell<Track> {
                 }
             });
 
+            // gestione dei bottoni di spostamento della traccia
+            if (getListView() != null && getListView().getItems() != null){
+                // otteniamo l'indice della traccia
+                int i = getIndex();
+                int size = getListView().getItems().size();
+
+                // se indice = 0, disabilito bottone e nascondo "UP"
+                if(upButton != null) {
+                    upButton.setDisable(i == 0);
+                }
+
+                // se indice = size -1, disabilito e nascondo bottone "DOWN"
+                if(downButton != null) {
+                    downButton.setDisable(i == size - 1);
+                }
+            }
             // Gestione dell'aspetto grafico in base al fatto che la traccia sia in riproduzione o meno.
             // Recupera la traccia attualmente attiva da ActivePlayerManager.
             Track playingTrack = ActivePlayerManager.getInstance().currentTrackProperty().get();
