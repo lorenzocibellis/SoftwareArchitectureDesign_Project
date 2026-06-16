@@ -21,11 +21,9 @@ import org.unisa.musicplaylistmanager.command.DeletePlaylistCommand;
 import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
 import org.unisa.musicplaylistmanager.service.statistics.RankingService;
-import org.unisa.musicplaylistmanager.track.Track;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -37,45 +35,44 @@ import java.util.Optional;
  */
 public class  PlaylistListController {
 
-    //Dichiarazione attributi
-    @FXML
-    private Button button1;
-
-    @FXML
-    private Button closeButton;
-
+    // DEFINIZIONE OGGETTI JAVAFX
     @FXML
     private Button deleteButton;
-
-    @FXML
-    private Button tracksButton;
-
     @FXML
     private ListView<Playlist> listView;
-
     @FXML
     private HBox topPlaylistContainer;
-
-
     @FXML
     private Button undoButton;
-
     @FXML
     private Label topPlaylistTitle;
 
+    // definizione attributi
+
+    // root per le view
     private String resourceRoot = "/org/unisa/musicplaylistmanager/playlist/";
+
+    // lista osservabile di playlist
     private ObservableList<Playlist> playlistListObservable;
+
+    // lista di playlist
     private PlaylistList playlistList;
+
+    // riferimento al CommandInvoker
     private CommandInvoker commandInvoker;
+
+    // riferimento al servizio di Ranking
     private RankingService<Playlist> PlaylistRankingService;
-    private int DIM_RANK = 3;
+
+    // limite di oggetti da rankare
+    private int RANKING_LIMIT = 3;
 
     //METODI
-
     /**
      * Apre la schermata di dettaglio per la playlist specificata.
      * Naviga verso la vista della playlist utilizzando il {@link NavigationManager}.
      * * @param p la playlist da visualizzare
+     *
      * @throws IOException se il caricamento del file FXML fallisce
      */
     private void openPlaylist(Playlist p) throws IOException {
@@ -91,9 +88,11 @@ public class  PlaylistListController {
     }
 
     /**
+     * 
      * Metodo di inizializzazione chiamato automaticamente da JavaFX.
      * Recupera o inizializza il Singleton delle playlist, imposta la lista 
      * osservabile e configura le funzionalità della ListView.
+     *
      */
     @FXML
     public void initialize(){
@@ -127,10 +126,10 @@ public class  PlaylistListController {
         });
 
         // imposta il titolo in base al limite
-        topPlaylistTitle.setText("La tua Top " + DIM_RANK);
+        topPlaylistTitle.setText("La tua Top " + RANKING_LIMIT);
 
         // inizializzo il ranking
-        PlaylistRankingService = new RankingService<>(playlistListObservable, DIM_RANK);
+        PlaylistRankingService = new RankingService<>(playlistListObservable, RANKING_LIMIT);
 
         // Ascolta i cambiamenti
         PlaylistRankingService.getTopItems().addListener((ListChangeListener.Change<? extends Playlist> c) -> {
@@ -257,7 +256,7 @@ public class  PlaylistListController {
         topPlaylistContainer.getChildren().clear();
 
         if (top.isEmpty()) {
-            Label emptyLabel = new Label("Ascolta qualche brano per popolare la tua Top " + DIM_RANK + "!");
+            Label emptyLabel = new Label("Ascolta qualche brano per popolare la tua Top " + RANKING_LIMIT + "!");
             emptyLabel.getStyleClass().add("top-track-empty-label");
             topPlaylistContainer.getChildren().add(emptyLabel);
             return;

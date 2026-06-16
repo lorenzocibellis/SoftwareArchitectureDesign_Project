@@ -48,15 +48,9 @@ public class TrackListController {
 
     //DEFINIZIONE OGGETTI JAVAFX
     @FXML
-    private StackPane mainStackPane;
-    @FXML
     private ListView<Track> listView;
     @FXML
     private Button deleteButton;
-    @FXML
-    private Button closeButton;
-    @FXML
-    private Button goPlaylistButton;
     @FXML
     private Button undoButton;
     @FXML
@@ -79,6 +73,7 @@ public class TrackListController {
     // Riferimento forte al listener per prevenire la garbage collection precoce quando usiamo WeakChangeListener
     private ChangeListener<Boolean> playerActiveListener;
 
+    // Riferimento al CommandInvoker
     private CommandInvoker commandInvoker;
 
     /**
