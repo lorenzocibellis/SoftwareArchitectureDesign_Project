@@ -11,7 +11,6 @@ import java.time.Year;
 import java.util.List;
 import java.util.ArrayList;
 import javafx.beans.property.IntegerProperty;
-import org.unisa.musicplaylistmanager.service.statistics.MostPlayed;
 
 
 public class Track implements MostPlayed {

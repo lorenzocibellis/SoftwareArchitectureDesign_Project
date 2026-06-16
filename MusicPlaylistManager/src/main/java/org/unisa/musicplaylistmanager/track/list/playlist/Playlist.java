@@ -10,7 +10,7 @@ package org.unisa.musicplaylistmanager.track.list.playlist;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import org.unisa.musicplaylistmanager.observer.BaseObserver;
-import org.unisa.musicplaylistmanager.service.statistics.MostPlayed;
+import org.unisa.musicplaylistmanager.track.MostPlayed;
 import org.unisa.musicplaylistmanager.track.Track;
 import javafx.beans.property.IntegerProperty;
 import org.unisa.musicplaylistmanager.track.list.TrackCollection;
