@@ -5,6 +5,7 @@ package org.unisa.musicplaylistmanager.track;
  * 
  * @author gruppo10
  */
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import java.time.Year;
@@ -26,8 +27,8 @@ public class Track implements MostPlayed {
     private boolean newRelease;
     private List<String> personalTags;
     // variabile per il conteggio delle tracce
-    private final javafx.beans.property.IntegerProperty playCount =
-        new javafx.beans.property.SimpleIntegerProperty(0);
+    private final IntegerProperty playCount =
+        new SimpleIntegerProperty(0);
 
     // variabile per memorizzare la cover opzionale da associare alla traccia
     private String coverImage;

@@ -4,10 +4,14 @@ import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.WeakChangeListener;
 import org.unisa.musicplaylistmanager.track.MostPlayed;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Servizio responsabile del mantenimento di una classifica in tempo reale.
@@ -27,6 +31,9 @@ public class RankingService<T extends MostPlayed> {
     
     // limite del podio
     private final int limit;
+
+    // mappa per tenere i riferimenti forti ai listener, prevenendo garbage collection prematuro
+    private final Map<T, ChangeListener<Number>> playCountListeners = new HashMap<>();
 
     public RankingService(ObservableList<T> itemsToRank, int limit) {
         this.itemsToRank = itemsToRank;
@@ -63,6 +70,8 @@ public class RankingService<T extends MostPlayed> {
                         if (topItems.contains(item)) {
                             rankingUpdate = true;
                         }
+
+                        playCountListeners.remove(item);
                     }
                 }
             }
@@ -85,14 +94,18 @@ public class RankingService<T extends MostPlayed> {
     }
 
     /**
-     * Aggancia un listener alla singola canzone/playlist.
+     * Aggancia un listener debole (WeakChangeListener) alla singola canzone/playlist.
      * Appena la canzone viene ascoltata (e il suo playCountProperty cambia), 
      * avvisa il RankingService di aggiornare il podio.
+     * Il listener viene mantenuto in vita dalla mappa playCountListeners per prevenire
+     * la sua rimozione prematura
      */
     private void attachListener(T item) {
-        item.playCountProperty().addListener((obs, oldVal, newVal) -> {
+        ChangeListener<Number> listener = (obs, oldVal, newVal) -> {
             handlePlayCountChange(item);
-        });
+        };
+        playCountListeners.put(item, listener);
+        item.playCountProperty().addListener(new WeakChangeListener<>(listener));
     }
 
     /**
