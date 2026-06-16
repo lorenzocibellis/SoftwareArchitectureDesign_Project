@@ -45,6 +45,10 @@ public class TrackCellController extends ListCell<Track> {
     private javafx.scene.image.ImageView coverImageView;
     @FXML
     private HBox personalTagsBox;
+    @FXML
+    private Button upButton;
+    @FXML
+    private Button downButton;
 
     // definizione attributi
 
@@ -78,8 +82,18 @@ public class TrackCellController extends ListCell<Track> {
      *
      * @param onInfoClicked funzione che viene eseguita quando il bottone "info" viene cliccato.
      */
-    public TrackCellController(Consumer<Track> onInfoClicked) {
+    public TrackCellController(Consumer<Track> onInfoClicked, Consumer<Track> moveUp, Consumer<Track> moveDown){
         this.onInfoClicked = onInfoClicked;
+
+        // associo le funzioni di movimento ai Consumer passati dal controller superiore
+        this.moveUp = moveUp;
+        this.moveDown = moveDown;
+
+
+        // associo i comportamenti dei Consumero ai bottoni
+        upButton.setOnAction(e -> moveUp.accept(getItem()));
+        downButton.setOnAction(e -> moveDown.accept(getItem()));
+
         loadFXML();
         
         //  listener legato alla cella per reagire istantaneamente ai cambi di traccia

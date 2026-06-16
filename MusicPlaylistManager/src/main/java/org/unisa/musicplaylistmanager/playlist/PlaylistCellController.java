@@ -3,12 +3,14 @@ package org.unisa.musicplaylistmanager.playlist;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.util.function.Consumer;
 
 /**
  * Controller per una singola cella (riga) nella ListView delle playlist.
@@ -18,19 +20,30 @@ import java.io.IOException;
  */
 public class PlaylistCellController extends ListCell<Playlist> {
 
+    // DEFINIZIONE OGGETTI FXML
     @FXML
     private Label nameLabel;
-
     @FXML
     private Label detailsLabel;
+    @FXML
+    private Button upButton;
+    @FXML
+    private Button downButton;
+
 
     private String resourceRoot = "/org/unisa/musicplaylistmanager/playlist/";
     private HBox root;
+
+
+    private Consumer<Playlist> moveUp;
+    private Consumer<Playlist> moveDown;
+
 
     /**
      * Costruttore.
      */
     public PlaylistCellController() {
+        // carico la View sulla UI
         loadFXML();
     }
 
