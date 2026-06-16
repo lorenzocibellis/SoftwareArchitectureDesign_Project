@@ -6,6 +6,6 @@ public interface MostPlayed {
     int getNumOfPlay();
     void incrementNumOfPlay();
     ReadOnlyIntegerProperty playCountProperty();
-    String getDisplayName();
+
 }
 
