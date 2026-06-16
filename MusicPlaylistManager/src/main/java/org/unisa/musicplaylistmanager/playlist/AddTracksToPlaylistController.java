@@ -41,13 +41,14 @@ public class AddTracksToPlaylistController {
     @FXML
     void initialize() {
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        
+
         // Imposta TrackCellController per mostrare le tracce con il layout personalizzato.
         // Poiché in questa finestra stiamo solo selezionando tracce,
         // possiamo passare un'azione vuota per il pulsante info.
         listView.setCellFactory(param -> {
-            TrackCellController cell = new TrackCellController(track -> {});
+            TrackCellController cell = new TrackCellController(track -> {}, track -> {}, track -> {});
             cell.setInfoButtonVisible(false);
+            cell.setMoveButtonVisible(false);
             return cell;
         });
     }

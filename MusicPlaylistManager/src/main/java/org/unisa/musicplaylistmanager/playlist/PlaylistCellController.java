@@ -25,19 +25,10 @@ public class PlaylistCellController extends ListCell<Playlist> {
     private Label nameLabel;
     @FXML
     private Label detailsLabel;
-    @FXML
-    private Button upButton;
-    @FXML
-    private Button downButton;
 
 
     private String resourceRoot = "/org/unisa/musicplaylistmanager/playlist/";
     private HBox root;
-
-
-    private Consumer<Playlist> moveUp;
-    private Consumer<Playlist> moveDown;
-
 
     /**
      * Costruttore.

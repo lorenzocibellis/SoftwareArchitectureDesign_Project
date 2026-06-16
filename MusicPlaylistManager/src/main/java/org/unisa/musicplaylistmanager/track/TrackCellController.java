@@ -61,9 +61,12 @@ public class TrackCellController extends ListCell<Track> {
     // utilitaria per operazioni "on-click"
     private final Consumer<Track> onInfoClicked;
 
+    // utilitaria per operazioni di spostamento della traccia
+    private final Consumer<Track> moveUp;
+    private final Consumer<Track> moveDown;
+
 
     // METODI
-
     /**
      * Listener che osserva i cambiamenti della traccia in riproduzione.
      * Mantenuto come riferimento forte per evitare che venga rimosso dal Garbage Collector
@@ -89,18 +92,19 @@ public class TrackCellController extends ListCell<Track> {
         this.moveUp = moveUp;
         this.moveDown = moveDown;
 
+        // carico la View nella UI
+        loadFXML();
 
         // associo i comportamenti dei Consumero ai bottoni
         upButton.setOnAction(e -> moveUp.accept(getItem()));
         downButton.setOnAction(e -> moveDown.accept(getItem()));
-
-        loadFXML();
         
         //  listener legato alla cella per reagire istantaneamente ai cambi di traccia
         ActivePlayerManager.getInstance().currentTrackProperty().addListener(
             new WeakChangeListener<>(playerListener)
         );
     }
+
 
     /**
      * Carica il file FXML associato e imposta questo controller.
@@ -254,13 +258,29 @@ public class TrackCellController extends ListCell<Track> {
      * Rende il bottone delle informazioni (i) visibile o nascosto in base
      * al parametro passato. Utile ad esempio per nasconderlo quando si stanno
      * semplicemente selezionando tracce da aggiungere a una playlist.
-     * * @param visible {@code true} per mostrare il bottone, {@code false} per nasconderlo
-     * @param visible
+     * @param visible {@code true} per mostrare il bottone, {@code false} per nasconderlo
      */
     public void setInfoButtonVisible(boolean visible) {
         if (infoButton != null) {
             infoButton.setVisible(visible);
             infoButton.setManaged(visible);
+        }
+    }
+
+    /**
+     *
+     * Rende i bottoni per spostare le tracce visibili o nascosti in base
+     * al parametro passato.
+     *
+     * @param visible {@code true} per mostrare il bottone, {@code false} per nasconderlo
+     *
+     */
+    public void setMoveButtonVisible(boolean visible){
+        if (upButton != null && downButton != null){
+            upButton.setVisible(visible);
+            upButton.setManaged(visible);
+            downButton.setVisible(visible);
+            downButton.setManaged(visible);
         }
     }
 

@@ -24,6 +24,8 @@ import org.unisa.musicplaylistmanager.track.TrackController;
 import org.unisa.musicplaylistmanager.track.TrackList;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.WeakChangeListener;
+
+import java.util.Collections;
 import java.util.function.BooleanSupplier;
 
 import java.io.IOException;
@@ -121,7 +123,7 @@ public class PlaylistController {
             playlistObservable = FXCollections.observableArrayList(playlist.getTracks());
 
             // fa in modo che la list view usi la cella personalizzata
-            listView.setCellFactory(param -> new TrackCellController(this::showTrackDetails));
+            listView.setCellFactory(param -> new TrackCellController(this::showTrackDetails, this::moveUp, this::moveDown));
 
             listView.setItems(playlistObservable);
 
@@ -411,5 +413,29 @@ public class PlaylistController {
      */
     public void setPlaylistValidator(BooleanSupplier validator){
         this.playlistValidator = validator;
+    }
+
+    private void moveUp(Track track){
+        int i = playlistObservable.indexOf(track);
+        if (i > 0){
+            Collections.swap(playlistObservable, i, i-1);
+            ArrayList<Track> tracks = playlist.getTracks();
+            Track temp = tracks.get(i-1);
+            tracks.set(i-1, track);
+            tracks.set(i,temp);
+            listView.refresh();
+        }
+    }
+
+    private void moveDown(Track track){
+        int i = playlistObservable.indexOf(track);
+        if (i < playlistObservable.size() - 1) {
+            Collections.swap(playlistObservable, i, i+1);
+            ArrayList<Track> tracks = playlist.getTracks();
+            Track temp = tracks.get(i+1);
+            tracks.set(i+1, track);
+            tracks.set(i,temp);
+            listView.refresh();
+        }
     }
 }

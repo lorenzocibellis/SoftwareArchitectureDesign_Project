@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
@@ -99,7 +100,7 @@ public void initialize() {
     commandInvoker = CommandInvoker.getCommandInvokerPointer();
     undoButton.disableProperty().bind(commandInvoker.hasCommandsToUndoProperty().not());
 
-    listView.setCellFactory(param -> new TrackCellController(this::showTrackDetails));
+    listView.setCellFactory(param -> new TrackCellController(this::showTrackDetails, this::moveUp, this::moveDown));
     listView.setItems(trackListObservable);
 
     listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -343,6 +344,30 @@ public void initialize() {
 
         } catch (IOException e) { //catch di eventuali eccezioni e print dello stack
             e.printStackTrace();
+        }
+    }
+
+    private void moveUp(Track track){
+        int i = trackListObservable.indexOf(track);
+        if (i > 0){
+            Collections.swap(trackListObservable, i, i-1);
+            ArrayList<Track> tracks = trackList.getTracks();
+            Track temp = tracks.get(i-1);
+            tracks.set(i-1, track);
+            tracks.set(i,temp);
+            listView.refresh();
+        }
+    }
+
+    private void moveDown(Track track){
+        int i = trackListObservable.indexOf(track);
+        if (i < trackListObservable.size() - 1) {
+            Collections.swap(trackListObservable, i, i+1);
+            ArrayList<Track> tracks = trackList.getTracks();
+            Track temp = tracks.get(i+1);
+            tracks.set(i+1, track);
+            tracks.set(i,temp);
+            listView.refresh();
         }
     }
     
