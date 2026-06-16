@@ -1,12 +1,13 @@
 package org.unisa.musicplaylistmanager.playlist;
 
-import org.unisa.musicplaylistmanager.playlist.Playlist;
-import org.unisa.musicplaylistmanager.playlist.PlaylistList;
+import org.unisa.musicplaylistmanager.track.list.playlist.Playlist;
+
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import org.junit.jupiter.api.DisplayName;
+import org.unisa.musicplaylistmanager.track.list.playlistList.PlaylistList;
 
 class PlaylistListTest {
 

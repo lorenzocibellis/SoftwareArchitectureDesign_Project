@@ -2,7 +2,7 @@ package org.unisa.musicplaylistmanager.tag;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.unisa.musicplaylistmanager.track.TrackList;
+import org.unisa.musicplaylistmanager.track.list.tracklist.TrackList;
 
 /**
  * Singleton che gestisce i tag personali globali.

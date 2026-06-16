@@ -1,4 +1,4 @@
-package org.unisa.musicplaylistmanager.playlist;
+package org.unisa.musicplaylistmanager.track.list.playlistCreation;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -7,8 +7,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import org.unisa.musicplaylistmanager.track.list.playlist.Playlist;
+import org.unisa.musicplaylistmanager.track.list.playlistList.PlaylistList;
 
 import java.io.IOException;
 

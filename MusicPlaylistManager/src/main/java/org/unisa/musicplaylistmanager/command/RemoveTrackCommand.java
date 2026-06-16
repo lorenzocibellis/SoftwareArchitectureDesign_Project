@@ -1,16 +1,14 @@
 package org.unisa.musicplaylistmanager.command;
 
 import javafx.collections.ObservableList;
-import org.unisa.musicplaylistmanager.playlist.Playlist;
-import org.unisa.musicplaylistmanager.playlist.PlaylistList;
-import org.unisa.musicplaylistmanager.playlist.TrackCollection;
+import org.unisa.musicplaylistmanager.track.list.playlist.Playlist;
+import org.unisa.musicplaylistmanager.track.list.playlistList.PlaylistList;
+import org.unisa.musicplaylistmanager.track.list.TrackCollection;
 import org.unisa.musicplaylistmanager.track.Track;
-import org.unisa.musicplaylistmanager.track.TrackList;
+import org.unisa.musicplaylistmanager.track.list.tracklist.TrackList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class RemoveTrackCommand extends BaseTrackCommands{
 

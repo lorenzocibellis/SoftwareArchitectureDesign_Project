@@ -1,4 +1,4 @@
-package org.unisa.musicplaylistmanager.playlist;
+package org.unisa.musicplaylistmanager.track.list.playlistCreation;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 import org.unisa.musicplaylistmanager.alert.AlertManager;
 import org.unisa.musicplaylistmanager.command.AddPlaylistCommand;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;
+import org.unisa.musicplaylistmanager.track.list.playlist.Playlist;
+import org.unisa.musicplaylistmanager.track.list.playlistList.PlaylistList;
 
 /**
  * Controller per la finestra di dialogo di creazione di una nuova playlist.

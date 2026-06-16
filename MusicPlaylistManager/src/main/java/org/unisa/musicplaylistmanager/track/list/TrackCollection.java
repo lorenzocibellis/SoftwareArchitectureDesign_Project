@@ -1,14 +1,15 @@
-package org.unisa.musicplaylistmanager.playlist;
+package org.unisa.musicplaylistmanager.track.list;
 
 import org.unisa.musicplaylistmanager.iterator.AbstractIterator;
 import org.unisa.musicplaylistmanager.iterator.IterableCollection;
 import org.unisa.musicplaylistmanager.iterator.Iterator;
-import org.unisa.musicplaylistmanager.track.Track;
-import org.unisa.musicplaylistmanager.track.TrackList;
+import org.unisa.musicplaylistmanager.track.list.playlist.Playlist;
 
 import java.util.ArrayList;
 import javafx.beans.property.StringProperty;
 import javafx.beans.property.SimpleStringProperty;
+import org.unisa.musicplaylistmanager.track.Track;
+import org.unisa.musicplaylistmanager.track.list.tracklist.TrackList;
 
 public abstract class TrackCollection implements IterableCollection {
     private final StringProperty name = new SimpleStringProperty();

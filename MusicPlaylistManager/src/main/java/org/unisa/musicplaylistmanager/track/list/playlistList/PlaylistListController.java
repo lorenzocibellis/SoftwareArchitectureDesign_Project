@@ -1,4 +1,4 @@
-package org.unisa.musicplaylistmanager.playlist;
+package org.unisa.musicplaylistmanager.track.list.playlistList;
 
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -19,13 +19,16 @@ import org.unisa.musicplaylistmanager.alert.AlertManager;
 import org.unisa.musicplaylistmanager.command.BasePlaylistCommands;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;
 import org.unisa.musicplaylistmanager.command.DeletePlaylistCommand;
+import org.unisa.musicplaylistmanager.track.list.playlistCreation.PlaylistChooseController;
 import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
 import org.unisa.musicplaylistmanager.service.statistics.RankingService;
+import org.unisa.musicplaylistmanager.track.list.playlist.Playlist;
+import org.unisa.musicplaylistmanager.track.list.playlist.PlaylistCellController;
+import org.unisa.musicplaylistmanager.track.list.playlist.PlaylistController;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Optional;
 
 /**
  * Controller per la schermata principale di visualizzazione di tutte le playlist.

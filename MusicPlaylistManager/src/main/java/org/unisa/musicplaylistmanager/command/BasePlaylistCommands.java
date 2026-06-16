@@ -1,7 +1,7 @@
 package org.unisa.musicplaylistmanager.command;
 
-import org.unisa.musicplaylistmanager.playlist.Playlist;
-import org.unisa.musicplaylistmanager.playlist.PlaylistList;
+import org.unisa.musicplaylistmanager.track.list.playlist.Playlist;
+import org.unisa.musicplaylistmanager.track.list.playlistList.PlaylistList;
 
 import java.util.ArrayList;
 

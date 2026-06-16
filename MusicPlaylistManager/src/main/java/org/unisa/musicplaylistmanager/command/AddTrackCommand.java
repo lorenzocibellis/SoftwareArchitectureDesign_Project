@@ -1,9 +1,9 @@
 package org.unisa.musicplaylistmanager.command;
 
 import javafx.collections.ObservableList;
-import org.unisa.musicplaylistmanager.playlist.TrackCollection;
+import org.unisa.musicplaylistmanager.track.list.TrackCollection;
 import org.unisa.musicplaylistmanager.track.Track;
-import org.unisa.musicplaylistmanager.track.TrackList;
+
 import java.util.ArrayList;
 
 /**

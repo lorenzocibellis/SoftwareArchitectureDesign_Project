@@ -13,9 +13,9 @@ import org.unisa.musicplaylistmanager.alert.AlertManager;
 import org.unisa.musicplaylistmanager.command.AddTrackCommand;
 import org.unisa.musicplaylistmanager.command.BaseTrackCommands;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;
-import org.unisa.musicplaylistmanager.playlist.TrackCollection;
 import org.unisa.musicplaylistmanager.tag.PersonalTagManager;
 import org.unisa.musicplaylistmanager.tag.TagUIHelper;
+import org.unisa.musicplaylistmanager.track.list.TrackCollection;
 
 import java.io.File;
 import java.io.IOException;

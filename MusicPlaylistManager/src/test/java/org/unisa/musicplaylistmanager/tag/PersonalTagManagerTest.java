@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.unisa.musicplaylistmanager.track.Track;
-import org.unisa.musicplaylistmanager.track.TrackList;
+import org.unisa.musicplaylistmanager.track.list.tracklist.TrackList;
 
 import java.time.Year;
 import java.util.ArrayList;

@@ -4,12 +4,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.unisa.musicplaylistmanager.command.RemoveTrackCommand;
 import org.unisa.musicplaylistmanager.observer.BaseObserver;
-import org.unisa.musicplaylistmanager.playlist.Playlist;
-import org.unisa.musicplaylistmanager.playlist.PlaylistList;
+import org.unisa.musicplaylistmanager.track.list.playlist.Playlist;
+import org.unisa.musicplaylistmanager.track.list.playlistList.PlaylistList;
 import org.unisa.musicplaylistmanager.track.Track;
-import org.unisa.musicplaylistmanager.track.TrackList;
+import org.unisa.musicplaylistmanager.track.list.tracklist.TrackList;
 
 import java.time.Year;
 import java.util.ArrayList;

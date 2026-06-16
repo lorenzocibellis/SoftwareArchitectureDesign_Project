@@ -1,4 +1,4 @@
-package org.unisa.musicplaylistmanager.track;
+package org.unisa.musicplaylistmanager.track.list.tracklist;
 
 import java.io.BufferedReader;
 import javafx.application.Platform;
@@ -30,12 +30,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Optional;
+
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.unisa.musicplaylistmanager.service.statistics.RankingService;
 import org.unisa.musicplaylistmanager.tag.TagManagerController;
+import org.unisa.musicplaylistmanager.track.Track;
+import org.unisa.musicplaylistmanager.track.TrackCellController;
+import org.unisa.musicplaylistmanager.track.TrackController;
 
 /**
  * Controller per la schermata principale della libreria musicale (TrackListView).

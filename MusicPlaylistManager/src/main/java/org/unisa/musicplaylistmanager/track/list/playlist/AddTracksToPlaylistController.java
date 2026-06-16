@@ -1,4 +1,4 @@
-package org.unisa.musicplaylistmanager.playlist;
+package org.unisa.musicplaylistmanager.track.list.playlist;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

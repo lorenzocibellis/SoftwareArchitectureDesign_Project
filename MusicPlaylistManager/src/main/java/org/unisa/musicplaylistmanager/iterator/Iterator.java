@@ -1,6 +1,6 @@
 package org.unisa.musicplaylistmanager.iterator;
 
-import org.unisa.musicplaylistmanager.playlist.TrackCollection;
+import org.unisa.musicplaylistmanager.track.list.TrackCollection;
 import org.unisa.musicplaylistmanager.strategy.ExecutionStrategy;
 import org.unisa.musicplaylistmanager.strategy.Sequential;
 import org.unisa.musicplaylistmanager.track.Track;

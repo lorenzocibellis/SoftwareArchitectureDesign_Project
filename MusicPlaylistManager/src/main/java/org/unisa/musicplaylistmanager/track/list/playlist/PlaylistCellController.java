@@ -1,16 +1,13 @@
-package org.unisa.musicplaylistmanager.playlist;
+package org.unisa.musicplaylistmanager.track.list.playlist;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 
-import javax.swing.*;
 import java.io.IOException;
-import java.util.function.Consumer;
 
 /**
  * Controller per una singola cella (riga) nella ListView delle playlist.

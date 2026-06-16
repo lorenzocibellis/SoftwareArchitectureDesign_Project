@@ -7,7 +7,7 @@ import org.unisa.musicplaylistmanager.track.Track;
 
 import java.time.Year;
 import static org.junit.jupiter.api.Assertions.*;
-import org.unisa.musicplaylistmanager.playlist.Playlist;
+import org.unisa.musicplaylistmanager.track.list.playlist.Playlist;
 
 class PlaylistTest {
     private Playlist playlist;

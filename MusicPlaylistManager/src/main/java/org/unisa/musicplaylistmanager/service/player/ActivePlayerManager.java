@@ -3,7 +3,7 @@ package org.unisa.musicplaylistmanager.service.player;
 import javafx.fxml.FXMLLoader;
 import org.unisa.musicplaylistmanager.player.Player;
 import org.unisa.musicplaylistmanager.player.PlayerController;
-import org.unisa.musicplaylistmanager.playlist.TrackCollection;
+import org.unisa.musicplaylistmanager.track.list.TrackCollection;
 import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
 import org.unisa.musicplaylistmanager.track.Track;
 

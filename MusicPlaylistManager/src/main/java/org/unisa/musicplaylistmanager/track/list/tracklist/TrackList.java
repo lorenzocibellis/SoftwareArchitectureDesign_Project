@@ -1,15 +1,14 @@
-package org.unisa.musicplaylistmanager.track;
+package org.unisa.musicplaylistmanager.track.list.tracklist;
 
 import org.unisa.musicplaylistmanager.observer.BaseObserver;
 import org.unisa.musicplaylistmanager.observer.BaseSubject;
-import org.unisa.musicplaylistmanager.playlist.Playlist;
-import org.unisa.musicplaylistmanager.playlist.TrackCollection;
+import org.unisa.musicplaylistmanager.track.list.playlist.Playlist;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import javafx.collections.FXCollections;
+
 import javafx.collections.ObservableList;
+import org.unisa.musicplaylistmanager.track.Track;
+import org.unisa.musicplaylistmanager.track.list.TrackCollection;
 
 /**
  * Rappresenta la libreria musicale principale (TrackList), contenente tutte le tracce

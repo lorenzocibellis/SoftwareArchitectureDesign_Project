@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import org.unisa.musicplaylistmanager.playlist.Playlist;
+import org.unisa.musicplaylistmanager.track.list.playlist.Playlist;
 import org.unisa.musicplaylistmanager.strategy.ExecutionStrategy;
 import org.unisa.musicplaylistmanager.strategy.Loop;
 import org.unisa.musicplaylistmanager.strategy.Sequential;
@@ -12,7 +12,6 @@ import org.unisa.musicplaylistmanager.track.Track;
 
 import java.time.Year;
 import static org.junit.jupiter.api.Assertions.*;
-import org.unisa.musicplaylistmanager.iterator.Iterator;
 
 /**
  * Test class for {@link Iterator}.

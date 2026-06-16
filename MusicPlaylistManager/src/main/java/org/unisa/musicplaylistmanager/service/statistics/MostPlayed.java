@@ -1,4 +1,4 @@
-package org.unisa.musicplaylistmanager.playlist;
+package org.unisa.musicplaylistmanager.service.statistics;
 
 import javafx.beans.property.ReadOnlyIntegerProperty;
 

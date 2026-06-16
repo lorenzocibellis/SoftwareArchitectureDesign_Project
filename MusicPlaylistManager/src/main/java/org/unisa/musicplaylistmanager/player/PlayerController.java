@@ -10,10 +10,9 @@ import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-import org.unisa.musicplaylistmanager.playlist.TrackCollection;
+import org.unisa.musicplaylistmanager.track.list.TrackCollection;
 import org.unisa.musicplaylistmanager.state.Play;
 import org.unisa.musicplaylistmanager.track.Track;
-import org.unisa.musicplaylistmanager.track.TrackList;
 import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 
 import java.io.File;

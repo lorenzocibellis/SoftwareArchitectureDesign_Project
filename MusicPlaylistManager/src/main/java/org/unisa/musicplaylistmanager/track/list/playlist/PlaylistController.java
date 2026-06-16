@@ -1,4 +1,4 @@
-package org.unisa.musicplaylistmanager.playlist;
+package org.unisa.musicplaylistmanager.track.list.playlist;
 
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -17,12 +17,13 @@ import org.unisa.musicplaylistmanager.command.AddTrackCommand;
 import org.unisa.musicplaylistmanager.command.BaseTrackCommands;
 import org.unisa.musicplaylistmanager.command.CommandInvoker;
 import org.unisa.musicplaylistmanager.command.RemoveTrackCommand;
+import org.unisa.musicplaylistmanager.track.list.playlistList.PlaylistList;
 import org.unisa.musicplaylistmanager.service.player.ActivePlayerManager;
 import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
 import org.unisa.musicplaylistmanager.track.Track;
 import org.unisa.musicplaylistmanager.track.TrackCellController;
 import org.unisa.musicplaylistmanager.track.TrackController;
-import org.unisa.musicplaylistmanager.track.TrackList;
+import org.unisa.musicplaylistmanager.track.list.tracklist.TrackList;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.WeakChangeListener;
 

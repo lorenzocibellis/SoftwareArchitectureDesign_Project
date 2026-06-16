@@ -1,8 +1,5 @@
 package org.unisa.musicplaylistmanager.command;
 
-import org.unisa.musicplaylistmanager.track.Track;
-import org.unisa.musicplaylistmanager.track.TrackList;
-
 import java.util.ArrayDeque;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;

@@ -1,7 +1,6 @@
 package org.unisa.musicplaylistmanager.command;
 
 import javafx.collections.ObservableList;
-import org.unisa.musicplaylistmanager.playlist.Playlist;
 
 /**
  *

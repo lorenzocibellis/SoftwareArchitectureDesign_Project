@@ -1,4 +1,4 @@
-package org.unisa.musicplaylistmanager.playlist;
+package org.unisa.musicplaylistmanager.track.list.playlist;
 
 /**
  * Rappresenta una playlist musicale, ovvero una collezione ordinata di tracce.
@@ -9,13 +9,11 @@ package org.unisa.musicplaylistmanager.playlist;
  */
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.control.Alert;
 import org.unisa.musicplaylistmanager.observer.BaseObserver;
+import org.unisa.musicplaylistmanager.service.statistics.MostPlayed;
 import org.unisa.musicplaylistmanager.track.Track;
-import org.unisa.musicplaylistmanager.track.TrackList;
 import javafx.beans.property.IntegerProperty;
-
-import java.util.ArrayList;
+import org.unisa.musicplaylistmanager.track.list.TrackCollection;
 
 public class Playlist extends TrackCollection implements BaseObserver, MostPlayed {
 

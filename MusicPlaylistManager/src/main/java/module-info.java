@@ -9,8 +9,6 @@ module org.unisa.musicplaylistmanager {
     opens org.unisa.musicplaylistmanager.app to javafx.fxml;
     exports org.unisa.musicplaylistmanager.track;
     opens org.unisa.musicplaylistmanager.track to javafx.fxml;
-    exports org.unisa.musicplaylistmanager.playlist;
-    opens org.unisa.musicplaylistmanager.playlist to javafx.fxml;
     exports org.unisa.musicplaylistmanager.observer;
     opens org.unisa.musicplaylistmanager.observer to javafx.fxml;
     exports org.unisa.musicplaylistmanager.strategy;
@@ -27,4 +25,16 @@ module org.unisa.musicplaylistmanager {
     opens org.unisa.musicplaylistmanager.service.navigation to javafx.fxml;
     exports org.unisa.musicplaylistmanager.tag;
     opens org.unisa.musicplaylistmanager.tag to javafx.fxml;
+    exports org.unisa.musicplaylistmanager.service.statistics;
+    opens org.unisa.musicplaylistmanager.service.statistics to javafx.fxml;
+    exports org.unisa.musicplaylistmanager.track.list;
+    opens org.unisa.musicplaylistmanager.track.list to javafx.fxml;
+    exports org.unisa.musicplaylistmanager.track.list.tracklist;
+    opens org.unisa.musicplaylistmanager.track.list.tracklist to javafx.fxml;
+    exports org.unisa.musicplaylistmanager.track.list.playlist;
+    opens org.unisa.musicplaylistmanager.track.list.playlist to javafx.fxml;
+    exports org.unisa.musicplaylistmanager.track.list.playlistList;
+    opens org.unisa.musicplaylistmanager.track.list.playlistList to javafx.fxml;
+    exports org.unisa.musicplaylistmanager.track.list.playlistCreation;
+    opens org.unisa.musicplaylistmanager.track.list.playlistCreation to javafx.fxml;
 }

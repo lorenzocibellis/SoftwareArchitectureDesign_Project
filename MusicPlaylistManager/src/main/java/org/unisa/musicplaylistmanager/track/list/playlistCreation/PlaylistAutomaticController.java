@@ -1,4 +1,4 @@
-package org.unisa.musicplaylistmanager.playlist;
+package org.unisa.musicplaylistmanager.track.list.playlistCreation;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,7 +13,9 @@ import org.unisa.musicplaylistmanager.command.CommandInvoker;
 import org.unisa.musicplaylistmanager.tag.PersonalTagManager;
 import org.unisa.musicplaylistmanager.tag.TagUIHelper;
 import org.unisa.musicplaylistmanager.track.Track;
-import org.unisa.musicplaylistmanager.track.TrackList;
+import org.unisa.musicplaylistmanager.track.list.playlist.Playlist;
+import org.unisa.musicplaylistmanager.track.list.playlistList.PlaylistList;
+import org.unisa.musicplaylistmanager.track.list.tracklist.TrackList;
 
 import java.time.Year;
 import java.util.ArrayList;
