@@ -63,7 +63,6 @@ public class TrackList extends TrackCollection implements BaseSubject{
         return new TrackList();
     }
 
-    // ===================== CORE OPERATIONS =====================
 
     /**
      * Aggiunge una traccia alla libreria.
