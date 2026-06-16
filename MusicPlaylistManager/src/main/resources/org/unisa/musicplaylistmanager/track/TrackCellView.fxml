@@ -55,10 +55,10 @@
 
 
         <Button fx:id="infoButton" mnemonicParsing="false" styleClass="info-button" text="i" />
-      <VBox>
+      <VBox spacing="6.0" alignment="CENTER">
          <children>
-            <Button fx:id="upButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="26.0" text="^" />
-            <Button fx:id="downButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="26.0" text="v" />
+            <Button fx:id="upButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="26.0" styleClass="move-button" text="▲" />
+            <Button fx:id="downButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="26.0" styleClass="move-button" text="▼" />
          </children>
       </VBox>
     </children>

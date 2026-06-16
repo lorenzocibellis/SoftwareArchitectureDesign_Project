@@ -449,3 +449,23 @@
 .tags-scroll-pane > .viewport {
     -fx-background-color: transparent;
 }
+
+/* Stile per i bottoni sposta Su/Giù nelle celle delle tracce */
+.move-button {
+    -fx-background-color: #007AFF;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 50;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+    -fx-padding: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 122, 255, 0.4), 4, 0, 0, 2);
+}
+
+.move-button:hover {
+    -fx-background-color: #0056b3;
+    -fx-scale-x: 1.15;
+    -fx-scale-y: 1.15;
+    -fx-effect: dropshadow(gaussian, rgba(0, 86, 179, 0.6), 6, 0, 0, 3);
+}
