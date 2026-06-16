@@ -73,8 +73,4 @@ public class Playlist extends TrackCollection implements BaseObserver, MostPlaye
         return numOfPlay;
     }
 
-    @Override
-    public String getDisplayName() {
-        return this.getName();
-    }
 }

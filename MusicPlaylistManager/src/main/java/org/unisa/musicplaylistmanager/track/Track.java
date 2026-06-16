@@ -317,9 +317,4 @@ public class Track implements MostPlayed {
     public String toString(){
         return this.getTitle() + " | " + this.getAuthor() + " | " + this.getYear();
     }
-
-    @Override
-    public String getDisplayName() {
-        return this.getTitle() + " di " + this.getAuthor();
-    }
 }
