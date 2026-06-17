@@ -203,8 +203,12 @@ public class ActivePlayerManager implements PlayerManager {
      * @return l'altezza del player
      */
     public double getPlayerHeight() {
-    return hasActivePlayer() ? 130.0 : 0.0;
-}
+        if (hasActivePlayer()) {
+            double height = miniPlayerBar.getPrefHeight();
+            return height > 0 ? height : miniPlayerBar.getHeight();
+        }
+        return 0.0;
+    }
 
     /**
      * Ritorna la proprietà di sola lettura per osservare lo stato di attivazione/visibilità del player.
