@@ -109,7 +109,7 @@ public class PlaylistChooseController {
         chooseStage.close();
 
         // Apri la finestra di creazione manuale
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "PlaylistCreationView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "PlaylistManualView.fxml"));
         Parent root = loader.load();
 
         PlaylistManualController controller = loader.getController();
