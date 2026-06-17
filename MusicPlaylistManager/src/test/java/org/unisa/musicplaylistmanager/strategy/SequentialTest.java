@@ -3,7 +3,7 @@ package org.unisa.musicplaylistmanager.strategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import org.unisa.musicplaylistmanager.strategy.Sequential;
+import org.unisa.musicplaylistmanager.player.strategy.Sequential;
 
 class SequentialTest {
 

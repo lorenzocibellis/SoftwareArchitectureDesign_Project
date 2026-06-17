@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
-import org.unisa.musicplaylistmanager.service.navigation.NavigationManager;
+import org.unisa.musicplaylistmanager.core.navigation.NavigationManager;
 
 import java.io.IOException;
 

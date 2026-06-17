@@ -3,11 +3,11 @@ package org.unisa.musicplaylistmanager.playlist;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.unisa.musicplaylistmanager.track.Track;
+import org.unisa.musicplaylistmanager.track.model.Track;
 
 import java.time.Year;
 import static org.junit.jupiter.api.Assertions.*;
-import org.unisa.musicplaylistmanager.track.list.playlist.Playlist;
+import org.unisa.musicplaylistmanager.collections.playlist.model.Playlist;
 
 class PlaylistTest {
     private Playlist playlist;

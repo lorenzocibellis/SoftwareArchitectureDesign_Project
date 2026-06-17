@@ -3,8 +3,9 @@ package org.unisa.musicplaylistmanager.tag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.unisa.musicplaylistmanager.track.Track;
-import org.unisa.musicplaylistmanager.track.list.tracklist.TrackList;
+import org.unisa.musicplaylistmanager.tag.model.PersonalTagManager;
+import org.unisa.musicplaylistmanager.track.model.Track;
+import org.unisa.musicplaylistmanager.collections.tracklist.model.TrackList;
 
 import java.time.Year;
 import java.util.ArrayList;

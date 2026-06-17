@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import org.unisa.musicplaylistmanager.strategy.Shuffle;
+import org.unisa.musicplaylistmanager.player.strategy.Shuffle;
 
 class ShuffleTest {
 

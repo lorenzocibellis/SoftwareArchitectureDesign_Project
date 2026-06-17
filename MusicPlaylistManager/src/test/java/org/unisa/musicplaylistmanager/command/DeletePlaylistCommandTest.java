@@ -4,8 +4,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.unisa.musicplaylistmanager.track.list.playlist.Playlist;
-import org.unisa.musicplaylistmanager.track.list.playlistList.PlaylistList;
+import org.unisa.musicplaylistmanager.collections.playlist.command.DeletePlaylistCommand;
+import org.unisa.musicplaylistmanager.collections.playlist.model.Playlist;
+import org.unisa.musicplaylistmanager.collections.playlist.model.PlaylistList;
 
 import java.util.ArrayList;
 

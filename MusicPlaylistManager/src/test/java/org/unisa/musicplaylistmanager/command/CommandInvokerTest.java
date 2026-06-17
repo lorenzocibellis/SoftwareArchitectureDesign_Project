@@ -2,8 +2,8 @@ package org.unisa.musicplaylistmanager.command;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.unisa.musicplaylistmanager.command.AbstractCommand;
-import org.unisa.musicplaylistmanager.command.CommandInvoker;
+import org.unisa.musicplaylistmanager.core.command.AbstractCommand;
+import org.unisa.musicplaylistmanager.core.command.CommandInvoker;
 
 import static org.junit.jupiter.api.Assertions.*;
 

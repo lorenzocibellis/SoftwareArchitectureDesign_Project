@@ -3,11 +3,11 @@ package org.unisa.musicplaylistmanager.playlist;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.unisa.musicplaylistmanager.iterator.AbstractIterator;
-import org.unisa.musicplaylistmanager.track.Track;
-import org.unisa.musicplaylistmanager.track.list.TrackCollection;
-import org.unisa.musicplaylistmanager.track.list.playlist.Playlist;
-import org.unisa.musicplaylistmanager.track.list.tracklist.TrackList;
+import org.unisa.musicplaylistmanager.core.iterator.AbstractIterator;
+import org.unisa.musicplaylistmanager.track.model.Track;
+import org.unisa.musicplaylistmanager.collections.TrackCollection;
+import org.unisa.musicplaylistmanager.collections.playlist.model.Playlist;
+import org.unisa.musicplaylistmanager.collections.tracklist.model.TrackList;
 
 import java.time.Year;
 import java.util.ArrayList;

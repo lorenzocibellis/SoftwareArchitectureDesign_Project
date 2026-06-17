@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane id="AnchorPane" StackPane.alignment="BOTTOM_CENTER" prefHeight="130.0" prefWidth="600.0" maxHeight="130.0" pickOnBounds="false" style="-fx-background-color: transparent;" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.player.PlayerController">
+<AnchorPane id="AnchorPane" StackPane.alignment="BOTTOM_CENTER" prefHeight="130.0" prefWidth="600.0" maxHeight="130.0" pickOnBounds="false" style="-fx-background-color: transparent;" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unisa.musicplaylistmanager.player.controller.PlayerController">
     
     <StackPane.margin>
         <Insets bottom="70.0" />

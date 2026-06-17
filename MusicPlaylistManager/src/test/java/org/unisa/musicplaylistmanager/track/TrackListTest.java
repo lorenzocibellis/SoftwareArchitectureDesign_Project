@@ -5,8 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import javafx.application.Platform;
-import org.unisa.musicplaylistmanager.observer.BaseObserver;
-import org.unisa.musicplaylistmanager.track.list.tracklist.TrackList;
+import org.unisa.musicplaylistmanager.core.observer.BaseObserver;
+import org.unisa.musicplaylistmanager.collections.tracklist.model.TrackList;
+import org.unisa.musicplaylistmanager.track.model.Track;
 
 import java.time.Year;
 import java.util.ArrayList;

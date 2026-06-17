@@ -1,11 +1,12 @@
 package org.unisa.musicplaylistmanager.player;
 
 import org.junit.jupiter.api.*;
-import org.unisa.musicplaylistmanager.iterator.AbstractIterator;
-import org.unisa.musicplaylistmanager.iterator.IterableCollection;
-import org.unisa.musicplaylistmanager.state.PlayerState;
-import org.unisa.musicplaylistmanager.strategy.ExecutionStrategy;
-import org.unisa.musicplaylistmanager.track.Track;
+import org.unisa.musicplaylistmanager.core.iterator.AbstractIterator;
+import org.unisa.musicplaylistmanager.core.iterator.IterableCollection;
+import org.unisa.musicplaylistmanager.player.model.Player;
+import org.unisa.musicplaylistmanager.player.state.PlayerState;
+import org.unisa.musicplaylistmanager.player.strategy.ExecutionStrategy;
+import org.unisa.musicplaylistmanager.track.model.Track;
 
 import java.time.Year;
 import java.util.concurrent.atomic.AtomicBoolean;

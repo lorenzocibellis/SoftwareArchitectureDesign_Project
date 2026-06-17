@@ -10,7 +10,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.unisa.musicplaylistmanager.track.MostPlayed;
+import org.unisa.musicplaylistmanager.core.statistics.MostPlayed;
+import org.unisa.musicplaylistmanager.core.statistics.RankingService;
 
 import static org.junit.jupiter.api.Assertions.*;
 
