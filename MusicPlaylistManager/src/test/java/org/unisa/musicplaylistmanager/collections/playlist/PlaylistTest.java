@@ -1,4 +1,4 @@
-package org.unisa.musicplaylistmanager.playlist;
+package org.unisa.musicplaylistmanager.collections.playlist;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

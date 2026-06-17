@@ -1,10 +1,9 @@
-package org.unisa.musicplaylistmanager.iterator;
+package org.unisa.musicplaylistmanager.core.iterator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import org.unisa.musicplaylistmanager.core.iterator.Iterator;
 import org.unisa.musicplaylistmanager.collections.playlist.model.Playlist;
 import org.unisa.musicplaylistmanager.player.strategy.ExecutionStrategy;
 import org.unisa.musicplaylistmanager.player.strategy.Loop;

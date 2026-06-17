@@ -1,4 +1,4 @@
-package org.unisa.musicplaylistmanager.playlist;
+package org.unisa.musicplaylistmanager.collections.playlist;
 
 import org.unisa.musicplaylistmanager.collections.playlist.model.Playlist;
 

@@ -1,4 +1,4 @@
-package org.unisa.musicplaylistmanager.service.statistics;
+package org.unisa.musicplaylistmanager.core.statistics;
 
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
@@ -10,8 +10,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.unisa.musicplaylistmanager.core.statistics.MostPlayed;
-import org.unisa.musicplaylistmanager.core.statistics.RankingService;
 
 import static org.junit.jupiter.api.Assertions.*;
 

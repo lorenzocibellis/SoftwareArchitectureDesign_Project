@@ -1,9 +1,8 @@
-package org.unisa.musicplaylistmanager.strategy;
+package org.unisa.musicplaylistmanager.player.strategy;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import org.unisa.musicplaylistmanager.player.strategy.Loop;
 
 class LoopTest {
 

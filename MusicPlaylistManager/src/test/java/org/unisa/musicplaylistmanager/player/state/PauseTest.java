@@ -1,4 +1,4 @@
-package org.unisa.musicplaylistmanager.state;
+package org.unisa.musicplaylistmanager.player.state;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

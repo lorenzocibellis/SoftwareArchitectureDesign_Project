@@ -1,9 +1,8 @@
-package org.unisa.musicplaylistmanager.player;
+package org.unisa.musicplaylistmanager.player.model;
 
 import org.junit.jupiter.api.*;
 import org.unisa.musicplaylistmanager.core.iterator.AbstractIterator;
 import org.unisa.musicplaylistmanager.core.iterator.IterableCollection;
-import org.unisa.musicplaylistmanager.player.model.Player;
 import org.unisa.musicplaylistmanager.player.state.PlayerState;
 import org.unisa.musicplaylistmanager.player.strategy.ExecutionStrategy;
 import org.unisa.musicplaylistmanager.track.model.Track;

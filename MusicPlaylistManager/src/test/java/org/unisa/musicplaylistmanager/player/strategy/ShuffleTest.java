@@ -1,4 +1,4 @@
-package org.unisa.musicplaylistmanager.strategy;
+package org.unisa.musicplaylistmanager.player.strategy;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import org.unisa.musicplaylistmanager.player.strategy.Shuffle;
 
 class ShuffleTest {
 

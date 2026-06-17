@@ -1,11 +1,11 @@
-package org.unisa.musicplaylistmanager.playlist;
+package org.unisa.musicplaylistmanager.collections;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.unisa.musicplaylistmanager.collections.playlist.PlaylistTest;
 import org.unisa.musicplaylistmanager.core.iterator.AbstractIterator;
 import org.unisa.musicplaylistmanager.track.model.Track;
-import org.unisa.musicplaylistmanager.collections.TrackCollection;
 import org.unisa.musicplaylistmanager.collections.playlist.model.Playlist;
 import org.unisa.musicplaylistmanager.collections.tracklist.model.TrackList;
 
