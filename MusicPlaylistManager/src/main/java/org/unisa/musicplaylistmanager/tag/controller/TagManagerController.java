@@ -24,6 +24,8 @@ public class TagManagerController {
     @FXML
     private Button addButton;
 
+    private Runnable onTagDeleted;
+
     /**
      * Popola la ListView con i tag esistenti e configura l'aspetto delle celle.
      * Gestisce inoltre lo stato abilitato/disabilitato del pulsante di aggiunta.
@@ -89,7 +91,7 @@ public class TagManagerController {
         }
     }
 
-    private Runnable onTagDeleted;
+
 
     /**
      * Imposta un'azione da eseguire quando un tag viene eliminato 
