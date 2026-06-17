@@ -74,10 +74,20 @@ public class PlaylistCellController extends ListCell<Playlist> {
         }
     }
 
+    /**
+     * Sposta la playlist selezionata in alto.
+     * 
+     * @param event l'evento generato dall'azione
+     */
     public void moveUp(ActionEvent event){
 
     }
 
+    /**
+     * Sposta la playlist selezionata in basso.
+     * 
+     * @param event l'evento generato dall'azione
+     */
     public void moveDown(ActionEvent event){
 
     }

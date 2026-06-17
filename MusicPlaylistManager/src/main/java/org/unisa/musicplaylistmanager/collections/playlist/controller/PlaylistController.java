@@ -357,6 +357,9 @@ public class PlaylistController {
     }
 
     @FXML
+    /**
+     * Gestisce l'azione di riproduzione di tutte le tracce della playlist.
+     */
     public void handlePlayAll() {
         if (playlist == null || playlist.getTracks().isEmpty()) {
             return;
@@ -369,6 +372,9 @@ public class PlaylistController {
     }
 
     @FXML
+    /**
+     * Gestisce l'azione di riproduzione casuale di tutte le tracce della playlist.
+     */
     public void handleShuffleAll() {
         if (playlist == null || playlist.getTracks().isEmpty()) {
             return;

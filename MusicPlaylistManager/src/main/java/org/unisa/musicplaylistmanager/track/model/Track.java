@@ -101,12 +101,11 @@ public class Track implements MostPlayed {
 
     /**
      * Metodo di supporto per la validazione dell'anno.
-     *
+     * Verifica se l'anno è stato inserito e se è valido.
      * @param y Anno da validare.
      *
      * @return true se l'anno non è nullo e minore o uguale all'anno attuale, false altrimenti
      */
-    //verifica se l'anno è stato inserito e se è valido
     private static boolean validateYear(Year y){
         return y != null && y.getValue() <= Year.now().getValue();
     }

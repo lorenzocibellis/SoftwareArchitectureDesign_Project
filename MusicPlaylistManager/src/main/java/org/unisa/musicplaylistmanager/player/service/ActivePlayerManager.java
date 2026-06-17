@@ -49,6 +49,9 @@ public class ActivePlayerManager implements PlayerManager {
 
     private final String resourceRoot = "/org/unisa/musicplaylistmanager/player/";
 
+    /**
+     * Costruttore privato di ActivePlayerManager.
+     */
     private ActivePlayerManager() {}
 
     /**
@@ -194,6 +197,11 @@ public class ActivePlayerManager implements PlayerManager {
         return miniPlayerBar != null;
     }
     
+    /**
+     * Restituisce l'altezza del player.
+     * 
+     * @return l'altezza del player
+     */
     public double getPlayerHeight() {
     return hasActivePlayer() ? 130.0 : 0.0;
 }

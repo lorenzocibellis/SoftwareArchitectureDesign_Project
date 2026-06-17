@@ -272,6 +272,11 @@ public class  PlaylistListController {
         ActivePlayerManager.getInstance().validatePlayerState();
     }
 
+    /**
+     * Aggiorna l'interfaccia utente con le playlist principali.
+     * 
+     * @param top lista delle playlist principali
+     */
     private void refreshTopPlaylistUI(java.util.List<Playlist> top) {
         topPlaylistContainer.getChildren().clear();
 

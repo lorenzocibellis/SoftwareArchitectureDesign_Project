@@ -167,6 +167,9 @@ public class Player {
         timer.scheduleAtFixedRate(new TimerTask() {
             // Thread per la riproduzione 
             @Override
+    /**
+     * Avvia l'esecuzione del player.
+     */
             public void run() {
                 Track current = getCurrentTrack();
                 if (current != null) {

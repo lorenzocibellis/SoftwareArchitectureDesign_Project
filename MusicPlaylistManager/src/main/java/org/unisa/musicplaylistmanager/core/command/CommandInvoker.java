@@ -28,6 +28,11 @@ public class CommandInvoker {
 
     //METODI
     
+    /**
+     * Restituisce la proprietà che indica se ci sono comandi da annullare.
+     * 
+     * @return la proprietà booleana hasCommandsToUndo
+     */
     public BooleanProperty hasCommandsToUndoProperty() {
         return hasCommandsToUndo;
     }

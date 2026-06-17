@@ -14,6 +14,9 @@ public class PersonalTagManager {
     private static PersonalTagManager instance;
     private final ObservableList<String> personalTags;
 
+    /**
+     * Costruttore privato di PersonalTagManager.
+     */
     private PersonalTagManager() {
         personalTags = FXCollections.observableArrayList();
     }

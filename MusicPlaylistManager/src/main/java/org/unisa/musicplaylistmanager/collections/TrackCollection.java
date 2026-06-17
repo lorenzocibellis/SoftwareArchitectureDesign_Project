@@ -53,6 +53,11 @@ public abstract class TrackCollection implements IterableCollection {
         this.name.set(name);
     }
 
+    /**
+     * Restituisce la proprietà del nome.
+     * 
+     * @return la proprietà StringProperty del nome
+     */
     public StringProperty nameProperty() {
         return name;
     }
@@ -222,6 +227,11 @@ public abstract class TrackCollection implements IterableCollection {
         }
     }
 
+    /**
+     * Crea e restituisce un iteratore per la collezione.
+     * 
+     * @return l'iteratore della collezione
+     */
     public AbstractIterator createIterator(){
         return new Iterator(this);
     }

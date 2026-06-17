@@ -402,6 +402,9 @@ public class TrackListController {
         }
     }
 
+    /**
+     * Carica tracce mock da un file CSV.
+     */
     private void loadMockTracksFromCSV() {
         String resourcePath = "/data/tracks.csv";
         InputStream is = getClass().getResourceAsStream(resourcePath);

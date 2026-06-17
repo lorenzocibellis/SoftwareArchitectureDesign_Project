@@ -44,6 +44,11 @@ public class Playlist extends TrackCollection implements BaseObserver, MostPlaye
     }
 
     @Override
+    /**
+     * Aggiorna la playlist con la traccia specificata.
+     * 
+     * @param track la traccia da aggiornare
+     */
     public void update(Track track) {
         this.removeTrack(track);
     }
@@ -67,6 +72,11 @@ public class Playlist extends TrackCollection implements BaseObserver, MostPlaye
     public void incrementNumOfPlay(){ numOfPlay.set(numOfPlay.get() + 1);}
 
     @Override
+    /**
+     * Restituisce la proprietà di sola lettura del conteggio delle riproduzioni.
+     * 
+     * @return la proprietà ReadOnlyIntegerProperty del conteggio
+     */
     public ReadOnlyIntegerProperty playCountProperty() {
         return numOfPlay;
     }

@@ -34,6 +34,12 @@ public class RankingService<T extends MostPlayed> {
     // mappa per tenere i riferimenti forti ai listener, prevenendo garbage collection prematuro
     private final Map<T, ChangeListener<Number>> playCountListeners = new HashMap<>();
 
+    /**
+     * Costruttore di RankingService.
+     * 
+     * @param itemsToRank lista osservabile degli elementi da classificare
+     * @param limit limite della classifica
+     */
     public RankingService(ObservableList<T> itemsToRank, int limit) {
         this.itemsToRank = itemsToRank;
 

@@ -20,6 +20,9 @@ public class NavigationManager implements Navigator {
     private StackPane rootLayout;
     private Parent currentContent;
 
+    /**
+     * Costruttore privato di NavigationManager.
+     */
     private NavigationManager() {}
 
     /**

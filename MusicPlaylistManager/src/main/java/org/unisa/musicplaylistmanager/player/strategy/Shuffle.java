@@ -13,25 +13,23 @@ public class Shuffle implements ExecutionStrategy {
 
     /**
      *
-     * @param a Indice della traccia 1
-     * @param b Indice della traccia 2
+     * @param size La dimensione della playlist o dell'elenco complessivo dei brani
+     * @param currentIndex L'indice della traccia corrente
      * @return L'array di navgiazione del player
      */
     @Override
-    public int[] execute(int a, int b) {
-        int size = a;
-        int currentTrackIndex = b;
+    public int[] execute(int size, int currentIndex) {
         int[] order = new int[size];
         
         if (size <= 0) return order;
 
         // 1. Mettiamo la traccia corrente in prima posizione
-        order[0] = currentTrackIndex;
+        order[0] = currentIndex;
         
         // 2. Creiamo una lista con tutti gli altri indici della playlist
         List<Integer> otherIndices = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            if (i != currentTrackIndex) {
+            if (i != currentIndex) {
                 otherIndices.add(i);
             }
         }

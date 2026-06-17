@@ -9,13 +9,12 @@ public class Sequential implements ExecutionStrategy {
 
     /**
      *
-     * @param a Indice della traccia 1
-     * @param b Indice della traccia 2
+     * @param size La dimensione della playlist o dell'elenco complessivo dei brani
+     * @param currentIndex L'indice della traccia corrente
      * @return L'array di navigazione del player
      */
     @Override
-    public int[] execute(int a, int b) {
-        int size = a;
+    public int[] execute(int size, int currentIndex) {
         int[] order = new int[size];
         
         // Popola l'array in ordine crescente: [0, 1, 2, 3, ...]

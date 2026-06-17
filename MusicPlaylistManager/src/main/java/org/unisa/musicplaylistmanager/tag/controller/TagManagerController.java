@@ -38,6 +38,12 @@ public class TagManagerController {
 
         tagsList.setCellFactory(lv -> new ListCell<String>() {
             @Override
+    /**
+     * Aggiorna l'elemento con il testo specificato.
+     * 
+     * @param item l'elemento da aggiornare
+     * @param empty true se l'elemento è vuoto, false altrimenti
+     */
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) {
