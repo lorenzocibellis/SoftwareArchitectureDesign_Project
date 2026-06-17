@@ -24,7 +24,7 @@ public class PlaylistChooseController {
     // Definizione attributi
 
     // path alle view
-    private String resourceRoot = "/org/unisa/musicplaylistmanager/playlist/";
+    private String resourceRoot = "/org/unisa/musicplaylistmanager/collections/playlist/creation/";
 
     // riferimento alla lista di playlist
     private PlaylistList playlistList;

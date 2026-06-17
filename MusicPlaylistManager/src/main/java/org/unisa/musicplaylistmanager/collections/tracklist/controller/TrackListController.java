@@ -16,7 +16,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.unisa.musicplaylistmanager.collections.TrackCollection;
 import org.unisa.musicplaylistmanager.collections.tracklist.model.TrackList;
 import org.unisa.musicplaylistmanager.core.alert.AlertManager;
 import org.unisa.musicplaylistmanager.tag.model.PersonalTagManager;
@@ -168,7 +167,7 @@ public class TrackListController {
     void goPlaylist(ActionEvent event) throws IOException {
 
         //caricamento della View
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/unisa/musicplaylistmanager/playlist/PlaylistListView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/unisa/musicplaylistmanager/collections/playlist/PlaylistListView.fxml"));
         Parent playlistParent = loader.load();
 
         // cambio contenuto mantenendo il player

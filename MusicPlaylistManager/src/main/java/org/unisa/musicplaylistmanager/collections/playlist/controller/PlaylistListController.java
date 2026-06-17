@@ -53,7 +53,8 @@ public class  PlaylistListController {
     // definizione attributi
 
     // root per le view
-    private String resourceRoot = "/org/unisa/musicplaylistmanager/playlist/";
+    private String resourceRoot = "/org/unisa/musicplaylistmanager/collections/playlist/";
+    private String creationRoot = "/org/unisa/musicplaylistmanager/collections/playlist/creation/";
 
     // lista osservabile di playlist
     private ObservableList<Playlist> playlistListObservable;
@@ -157,7 +158,7 @@ public class  PlaylistListController {
      */
     @FXML
     void addNewPlaylist(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(resourceRoot + "PlaylistChooseView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(creationRoot + "PlaylistChooseView.fxml"));
         Parent root = loader.load();
 
         PlaylistChooseController controller = loader.getController();
@@ -232,7 +233,7 @@ public class  PlaylistListController {
      */
     @FXML
     public void goTrackList(ActionEvent actionEvent) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/unisa/musicplaylistmanager/track/TrackListView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/unisa/musicplaylistmanager/collections/tracklist/TrackListView.fxml"));
         Parent playlistParent = loader.load();
 
         // Cambio contenuto mantenendo il player

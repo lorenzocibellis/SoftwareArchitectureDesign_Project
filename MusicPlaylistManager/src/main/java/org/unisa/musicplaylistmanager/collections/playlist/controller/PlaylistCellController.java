@@ -25,7 +25,7 @@ public class PlaylistCellController extends ListCell<Playlist> {
     private Label detailsLabel;
 
 
-    private String resourceRoot = "/org/unisa/musicplaylistmanager/playlist/";
+    private String resourceRoot = "/org/unisa/musicplaylistmanager/collections/playlist/";
     private HBox root;
 
     /**

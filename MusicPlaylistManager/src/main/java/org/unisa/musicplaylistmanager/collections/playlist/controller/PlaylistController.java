@@ -75,7 +75,7 @@ public class PlaylistController {
     @FXML
     private Label namePlaylist;
 
-    private String resourceRoot = "/org/unisa/musicplaylistmanager/playlist/";
+    private String resourceRoot = "/org/unisa/musicplaylistmanager/collections/playlist/";
     private ObservableList<Track> playlistObservable;
     private Playlist playlist;
     private BooleanSupplier playlistValidator;
