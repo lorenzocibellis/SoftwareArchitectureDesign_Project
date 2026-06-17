@@ -15,7 +15,7 @@ public class Iterator implements AbstractIterator {
     private int currentindext; // Puntatore all'interno dell'array iterationindex
     private int[] iterationindex; // Array che mappa l'ordine di riproduzione
     private ArrayList<Track> tracks;
-    private String name;
+    private TrackCollection trackCollection;
 
     // Riferimento al brano realmente puntato: serve a riallineare il puntatore quando
     // la lista viene riordinata (uno swap non cambia la dimensione ma sposta le tracce)
@@ -29,8 +29,8 @@ public class Iterator implements AbstractIterator {
      * @param trackCollection L'elenco delle tracce in cui scorrere
      */
     public Iterator(TrackCollection trackCollection) {
+        this.trackCollection = trackCollection;
         this.tracks = trackCollection.getTracks();
-        this.name = trackCollection.getName();
         this.currentindext = 0;
         
         // Inizializza con la strategia sequenziale di default
@@ -223,6 +223,6 @@ public class Iterator implements AbstractIterator {
      * @return L'identificatore della TrackCollection che l'iterator rappresenta.
      */
     public String getIdentifier(){
-        return this.name;
+        return this.trackCollection.getName();
     }
 }
