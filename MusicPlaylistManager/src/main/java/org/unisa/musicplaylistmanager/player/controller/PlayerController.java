@@ -224,20 +224,26 @@ public class PlayerController implements Initializable {
             duration.setText(formatTime(track.getDuration()));
             counter.setText("0:00");
 
-            if (track.getCoverImage() != null && !track.getCoverImage().trim().isEmpty()) {
-                try {
-                    File file = new File(track.getCoverImage());
-                    if (file.exists()) {
-                        playerCoverImageView.setImage(new Image(file.toURI().toString()));
-                    } else {
-                        setDefaultPlayerIcon();
+            playerCoverImageView.imageProperty().unbind();
+            playerCoverImageView.imageProperty().bind(Bindings.createObjectBinding(() -> {
+                String path = track.getCoverImage();
+                if (path != null && !path.trim().isEmpty()) {
+                    try {
+                        File file = new File(path);
+                        if (file.exists()) {
+                            return new Image(file.toURI().toString());
+                        }
+                    } catch (Exception e) {
+
                     }
-                } catch (Exception e) {
-                    setDefaultPlayerIcon();
                 }
-            } else {
-                setDefaultPlayerIcon();
-            }
+                try {
+                    return new Image(getClass().getResourceAsStream(iconsRoot + "musical-note.png"));
+                } catch (Exception e) {
+                    System.err.println("Immagine di default del player non trovata.");
+                    return null;
+                }
+            }, track.coverImageProperty()));
         }
     }
 

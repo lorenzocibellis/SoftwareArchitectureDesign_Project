@@ -32,7 +32,7 @@ public class Track implements MostPlayed {
         new SimpleIntegerProperty(0);
 
     // variabile per memorizzare la cover opzionale da associare alla traccia
-    private String coverImage;
+    private final StringProperty coverImage = new SimpleStringProperty();
 
     //METODI
 
@@ -66,7 +66,7 @@ public class Track implements MostPlayed {
         this.explicit = explicit;
         this.newRelease = newRelease;
         this.personalTags = new ArrayList<>();
-        this.coverImage = coverImage;
+        this.coverImage.set(coverImage);
     }
 
 // COSTRUTTORE SECONDARIO TEMPORANEO PER NON ROMPERE IL CARICAMENTO DELLE TRACCE DA CSV
@@ -154,7 +154,8 @@ public class Track implements MostPlayed {
     /** @return La lista dei tag personali assegnati alla traccia */
     public List<String> getPersonalTags() { return personalTags; }
     /** @return Il nome del file della copertina (può essere null) */
-    public String getCoverImage() { return coverImage; }
+    public String getCoverImage() { return coverImage.get(); }
+    public StringProperty coverImageProperty() { return coverImage; }
 
     /**
      * Getter per il conteggio delle riproduzioni
@@ -263,7 +264,7 @@ public class Track implements MostPlayed {
     public StringProperty authorProperty() { return author; }
 
     /** @param coverImage Il nome del file della copertina */
-    public void setCoverImage(String coverImage) { this.coverImage = coverImage; }
+    public void setCoverImage(String coverImage) { this.coverImage.set(coverImage); }
     // METODI OVERRIDATI DALL'INTERFACCIA MOST PLAYED PER LA VISUALIZZAZIONE DELLE TRACCE PIU' RIPRODOTTE
 
     /**
