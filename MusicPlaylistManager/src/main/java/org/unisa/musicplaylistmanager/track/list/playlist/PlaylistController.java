@@ -396,7 +396,7 @@ public class PlaylistController {
         playlistObservable.setAll(playlist.getTracks());
         listView.refresh();
 
-        // Se l'undo (es. annullamento di un'aggiunta) ha rimosso dalla playlist il
+        // Se l'undo ha rimosso dalla playlist il
         // brano attualmente in riproduzione, il player resterebbe attivo su una traccia
         // non più presente: in tal caso lo chiudiamo.
         closePlayerIfPlayingTrackRemoved();
@@ -419,7 +419,8 @@ public class PlaylistController {
         String identifier = ActivePlayerManager.getInstance().getCurrentPlaylistIdentifier();
         Track playingTrack = ActivePlayerManager.getInstance().currentTrackProperty().get();
         if (playingTrack != null
-                && playlist.getName().equals(identifier)){
+                && playlist.getName().equals(identifier)
+                && !playlist.getTracks().contains(playingTrack)) {
             ActivePlayerManager.getInstance().closePlayer();
         }
     }

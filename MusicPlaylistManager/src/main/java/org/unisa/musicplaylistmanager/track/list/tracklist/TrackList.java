@@ -31,12 +31,13 @@ public class TrackList extends TrackCollection implements BaseSubject{
     //definizione puntatore per pattern Singleton
     private static TrackList pnt = null;
 
+    // nome default della TrackList
+    public static final String TRACKLIST_NAME = "La Mia Libreria";
+
     /**
      * Costruisce l'unica istanza della libreria principale.
      * Inizializza il subject per il pattern Observer e imposta il puntatore Singleton.
      */
-    public static final String TRACKLIST_NAME = "La Mia Libreria";
-
     private TrackList(){
         super(TRACKLIST_NAME);
         observers = new ArrayList<>();
