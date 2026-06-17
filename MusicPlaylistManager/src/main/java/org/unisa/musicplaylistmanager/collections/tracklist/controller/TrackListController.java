@@ -16,6 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.unisa.musicplaylistmanager.collections.TrackCollection;
 import org.unisa.musicplaylistmanager.collections.tracklist.model.TrackList;
 import org.unisa.musicplaylistmanager.core.alert.AlertManager;
 import org.unisa.musicplaylistmanager.tag.model.PersonalTagManager;
