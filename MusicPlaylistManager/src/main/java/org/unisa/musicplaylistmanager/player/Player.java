@@ -169,12 +169,17 @@ public class Player {
             @Override
             public void run() {
                 Track current = getCurrentTrack();
-                if (current != null && elapsedSeconds < current.getDuration()) {
-                    elapsedSeconds++;
-                    if (onTimeTick != null) onTimeTick.accept(elapsedSeconds);
+                if (current != null) {
+                    if (elapsedSeconds < current.getDuration()) {
+                        elapsedSeconds++;
+                        if (onTimeTick != null) onTimeTick.accept(elapsedSeconds);
+                    } else {
+                        // La canzone è finita: passa alla successiva
+                        javafx.application.Platform.runLater(() -> nextTrack());
+                    }
                 } else {
-                    // La canzone è finita: passa automaticamente alla successiva in JavaFX Thread
-                    javafx.application.Platform.runLater(() -> nextTrack());
+                    // Se la traccia è nulla, fermiamo il timer invece di skippare
+                    stopPlayback();
                 }
             }
         }, 1000, 1000);
@@ -216,13 +221,16 @@ public class Player {
     public void nextTrack() {
         stopPlayback();
         this.elapsedSeconds = 0;
-        this.trackIterator.getNext();
+        Track next = this.trackIterator.getNext();
 
         // nuova traccia = NON resume
         resumed = false;
     
         if (onTrackChanged != null) onTrackChanged.run();
-        startPlayback();
+        
+        if (next != null) {
+            startPlayback();
+        }
     }
 
     /**
@@ -231,13 +239,16 @@ public class Player {
     public void previousTrack() {
         stopPlayback();
         this.elapsedSeconds = 0;
-        this.trackIterator.getPrevious();
+        Track prev = this.trackIterator.getPrevious();
 
         // nuova traccia = NON resume
         resumed = false;
 
         if (onTrackChanged != null) onTrackChanged.run();
-        startPlayback();
+        
+        if (prev != null) {
+            startPlayback();
+        }
     }
 
     /**

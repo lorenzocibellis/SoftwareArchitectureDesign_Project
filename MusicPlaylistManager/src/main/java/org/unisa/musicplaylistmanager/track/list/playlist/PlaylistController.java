@@ -396,32 +396,13 @@ public class PlaylistController {
         playlistObservable.setAll(playlist.getTracks());
         listView.refresh();
 
-        // Se l'undo ha rimosso dalla playlist il
-        // brano attualmente in riproduzione, il player resterebbe attivo su una traccia
-        // non più presente: in tal caso lo chiudiamo.
-        closePlayerIfPlayingTrackRemoved();
+        // Deleghiamo al manager la verifica globale dello stato del player
+        ActivePlayerManager.getInstance().validatePlayerState();
 
         // controllo che esista il validatore e che coincida con la playlist attuale
         if(playlistValidator != null && !playlistValidator.getAsBoolean()){
             // se entrambe le condizioni sono vere, esco dalla vista della playlist
             goBack(event);
-        }
-    }
-
-    /**
-     * Chiude il mini-player se sta riproducendo questa playlist e il brano in
-     * riproduzione non è più presente al suo interno (es. dopo l'undo di un'aggiunta).
-     * Usa la traccia "reale" esposta da {@link ActivePlayerManager} e non quella derivata
-     * dall'indice dell'iteratore, che dopo una modifica della lista potrebbe già puntare
-     * a un brano vicino.
-     */
-    private void closePlayerIfPlayingTrackRemoved() {
-        String identifier = ActivePlayerManager.getInstance().getCurrentPlaylistIdentifier();
-        Track playingTrack = ActivePlayerManager.getInstance().currentTrackProperty().get();
-        if (playingTrack != null
-                && playlist.getName().equals(identifier)
-                && !playlist.getTracks().contains(playingTrack)) {
-            ActivePlayerManager.getInstance().closePlayer();
         }
     }
 
@@ -454,14 +435,11 @@ public class PlaylistController {
     }
 
     /**
-     *
-     * Permette di spostare di una posizione più in basso una traccia, aggiornando al contempo
-     * la lista osservabile.
-     *
-     * @param track traccia da spostare.
-     *
+     * Sposta la traccia selezionata di una posizione verso il basso
+     * all'interno della playlist.
+     * @param track la traccia da spostare.
      */
-    private void moveDown(Track track){
+    private void moveDown(Track track) {
         int i = playlist.getIndex(track);
         if (i < playlist.getSize() - 1) {
             Collections.swap(playlistObservable, i, i+1);

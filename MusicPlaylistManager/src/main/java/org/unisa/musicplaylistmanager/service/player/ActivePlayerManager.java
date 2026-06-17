@@ -15,6 +15,13 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.scene.layout.AnchorPane;
+import org.unisa.musicplaylistmanager.track.list.playlistList.PlaylistList;
+import org.unisa.musicplaylistmanager.track.list.playlist.Playlist;
+import org.unisa.musicplaylistmanager.track.list.tracklist.TrackList;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * Singleton responsabile esclusivamente del ciclo di vita del mini-player.
@@ -143,6 +150,41 @@ public class ActivePlayerManager implements PlayerManager {
     public void toggleShuffle() {
         if (playerController != null) {
             playerController.handleShuffle();
+        }
+    }
+
+    /**
+     * Valida lo stato del player, verificando che la traccia e la playlist in riproduzione
+     * esistano ancora globalmente (es. dopo un undo). Se non esistono, chiude il player.
+     */
+    public void validatePlayerState() {
+        if (!playerActive.get()) return;
+        
+        Track playingTrack = getCurrentTrack();
+        if (playingTrack == null) {
+            // Se la traccia corrente è diventata nulla ma il player è attivo, 
+            // significa che l'iteratore è rimasto senza tracce (es. playlist svuotata da undo).
+            closePlayer();
+            return;
+        }
+
+        String identifier = getCurrentPlaylistIdentifier();
+        
+        if (TrackList.TRACKLIST_NAME.equals(identifier)) {
+            // Riproduzione dalla libreria principale
+            if (!TrackList.getTrackListPointer().getTracks().contains(playingTrack)) {
+                closePlayer();
+            }
+        } else if (identifier != null) {
+            // Riproduzione da una playlist 
+            PlaylistList playlistList = PlaylistList.getPlaylistListPointer();
+            Playlist p = playlistList.getPlaylists().stream()
+                .filter(pl -> pl.getName().equals(identifier))
+                .findFirst().orElse(null);
+                
+            if (p == null || !p.getTracks().contains(playingTrack)) {
+                closePlayer();
+            }
         }
     }
 

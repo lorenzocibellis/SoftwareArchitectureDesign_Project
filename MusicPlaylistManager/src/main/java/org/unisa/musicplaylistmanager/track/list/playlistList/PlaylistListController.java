@@ -270,27 +270,8 @@ public class  PlaylistListController {
         // ricarico gli elementi visuali
         listView.refresh();
 
-        // Se l'undo ha rimosso la playlist attualmente in riproduzione (es. undo della
-        // creazione di una playlist), il player resterebbe attivo su una collezione che
-        // non esiste più: in tal caso lo chiudiamo.
-        closePlayerIfPlayingPlaylistRemoved();
-    }
-
-    /**
-     * Chiude il mini-player se sta riproducendo una playlist che non è più presente
-     * nella lista delle playlist. Non interviene se il player sta riproducendo dalla
-     * libreria principale (TrackList), che non può essere eliminata.
-     */
-    private void closePlayerIfPlayingPlaylistRemoved() {
-        String identifier = ActivePlayerManager.getInstance().getCurrentPlaylistIdentifier();
-        if (identifier == null || identifier.equals(TrackList.TRACKLIST_NAME)) {
-            return;
-        }
-        boolean stillExists = playlistList.getPlaylists().stream()
-                .anyMatch(p -> p.getName().equals(identifier));
-        if (!stillExists) {
-            ActivePlayerManager.getInstance().closePlayer();
-        }
+        // Deleghiamo al manager la verifica globale dello stato del player
+        ActivePlayerManager.getInstance().validatePlayerState();
     }
 
     private void refreshTopPlaylistUI(java.util.List<Playlist> top) {

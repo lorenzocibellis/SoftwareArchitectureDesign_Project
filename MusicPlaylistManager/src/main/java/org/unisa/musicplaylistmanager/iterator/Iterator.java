@@ -84,7 +84,7 @@ public class Iterator implements AbstractIterator {
      * (caso in cui il piano corrente non contiene la nuova posizione, es. Loop).
      */
     private void reanchorIfReordered() {
-        if (currentTrack == null || iterationindex == null || iterationindex.length == 0
+        if (tracks == null || tracks.isEmpty() || currentTrack == null || iterationindex == null || iterationindex.length == 0
                 || currentindext >= iterationindex.length) {
             return;
         }
@@ -124,7 +124,7 @@ public class Iterator implements AbstractIterator {
     public Track getNext() {
         syncWithPlaylist(); // Sincronizza la coda prima di fare skip!
 
-        if (iterationindex == null || iterationindex.length == 0) return null;
+        if (iterationindex == null || iterationindex.length == 0 || tracks == null || tracks.isEmpty()) return null;
 
         reanchorIfReordered(); // Parte dalla posizione reale del brano corrente
 
@@ -145,7 +145,7 @@ public class Iterator implements AbstractIterator {
     public Track getPrevious() {
         syncWithPlaylist(); // Sincronizza la coda prima di fare back!
 
-        if (iterationindex == null || iterationindex.length == 0) return null;
+        if (iterationindex == null || iterationindex.length == 0 || tracks == null || tracks.isEmpty()) return null;
 
         reanchorIfReordered(); // Parte dalla posizione reale del brano corrente
 

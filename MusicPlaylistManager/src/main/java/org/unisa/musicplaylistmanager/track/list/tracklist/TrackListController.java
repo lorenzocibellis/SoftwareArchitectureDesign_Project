@@ -184,27 +184,8 @@ public class TrackListController {
         trackListObservable.setAll(trackList.getTracks());
         listView.refresh();
 
-        // Se l'undo (es. annullamento di un'aggiunta) ha rimosso dalla libreria il
-        // brano attualmente in riproduzione, il player resterebbe attivo su una traccia
-        // non più presente: in tal caso lo chiudiamo.
-        closePlayerIfPlayingTrackRemoved();
-    }
-
-    /**
-     * Chiude il mini-player se sta riproducendo la libreria principale e il brano in
-     * riproduzione non è più presente al suo interno (es. dopo l'undo di un'aggiunta).
-     * Usa la traccia "reale" esposta da {@link ActivePlayerManager} e non quella derivata
-     * dall'indice dell'iteratore, che dopo una modifica della lista potrebbe già puntare
-     * a un brano vicino.
-     */
-    private void closePlayerIfPlayingTrackRemoved() {
-        String identifier = ActivePlayerManager.getInstance().getCurrentPlaylistIdentifier();
-        Track playingTrack = ActivePlayerManager.getInstance().currentTrackProperty().get();
-        if (playingTrack != null
-                && trackList.getName().equals(identifier)
-                && !trackList.getTracks().contains(playingTrack)) {
-            ActivePlayerManager.getInstance().closePlayer();
-        }
+        // Deleghiamo al manager la verifica globale dello stato del player (es. se la playlist è stata eliminata o la traccia rimossa)
+        ActivePlayerManager.getInstance().validatePlayerState();
     }
 
     // Dichiarazione metodi pubblici
