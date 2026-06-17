@@ -159,7 +159,7 @@ public class ActivePlayerManager implements PlayerManager {
     public void validatePlayerState() {
         if (!playerActive.get()) return;
         
-        Track playingTrack = getCurrentTrack();
+        Track playingTrack = currentTrack.get();
         if (playingTrack == null) {
             // Se la traccia corrente è diventata nulla ma il player è attivo, 
             // significa che l'iteratore è rimasto senza tracce (es. playlist svuotata da undo).
