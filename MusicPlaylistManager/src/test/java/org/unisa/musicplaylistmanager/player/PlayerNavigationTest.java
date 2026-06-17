@@ -240,4 +240,18 @@ class PlayerNavigationTest {
         
         p.terminate();
     }
+
+    @Test
+    @DisplayName("Gestione svuotamento improvviso: se la playlist si svuota mentre è in riproduzione")
+    void testPlaylistEmptiedDuringPlayback() {
+        // Riproduco track2 (posizione 1)
+        player.nextTrack();
+        assertEquals(track2, player.getCurrentTrack());
+
+        // Svuotamento improvviso della playlist (simulando undo o rimozione globale)
+        playlist.getTracks().clear();
+
+        assertDoesNotThrow(() -> player.nextTrack(), "Chiamare nextTrack su playlist svuotata non deve generare IndexOutOfBoundsException");
+        assertNull(player.getCurrentTrack(), "Dopo svuotamento, getCurrentTrack deve essere null");
+    }
 }
