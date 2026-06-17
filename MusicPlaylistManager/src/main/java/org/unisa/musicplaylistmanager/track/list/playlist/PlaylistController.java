@@ -419,8 +419,7 @@ public class PlaylistController {
         String identifier = ActivePlayerManager.getInstance().getCurrentPlaylistIdentifier();
         Track playingTrack = ActivePlayerManager.getInstance().currentTrackProperty().get();
         if (playingTrack != null
-                && playlist.getName().equals(identifier)
-                && !playlist.getTracks().contains(playingTrack)) {
+                && playlist.getName().equals(identifier)){
             ActivePlayerManager.getInstance().closePlayer();
         }
     }
