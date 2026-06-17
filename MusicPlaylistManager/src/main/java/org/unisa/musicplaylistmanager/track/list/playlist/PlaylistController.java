@@ -26,10 +26,8 @@ import org.unisa.musicplaylistmanager.track.TrackController;
 import org.unisa.musicplaylistmanager.track.list.tracklist.TrackList;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.WeakChangeListener;
-
 import java.util.Collections;
 import java.util.function.BooleanSupplier;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -204,10 +202,6 @@ public class PlaylistController {
      */
     private void openPlayerFor(Track selected) {
         ActivePlayerManager.getInstance().openPlayer(selected, playlist);
-
-        // aumentiamo il numero di riproduzioni della playlist
-        playlist.incrementNumOfPlay();
-
         updateBottomPadding();
     }
 
@@ -368,6 +362,9 @@ public class PlaylistController {
         }
         // Avvia la prima traccia
         openPlayerFor(playlist.getTracks().get(0));
+
+        // aumentiamo il numero di riproduzioni della playlist
+        playlist.incrementNumOfPlay();
     }
 
     @FXML
@@ -381,6 +378,10 @@ public class PlaylistController {
         
         // Attiva lo shuffle sul player appena aperto tramite il Manager
         ActivePlayerManager.getInstance().toggleShuffle();
+
+        // aumentiamo il numero di riproduzioni della playlist
+        playlist.incrementNumOfPlay();
+
     }
 
     /**
