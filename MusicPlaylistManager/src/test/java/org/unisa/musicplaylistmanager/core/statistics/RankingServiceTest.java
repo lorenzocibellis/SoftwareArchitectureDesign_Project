@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Si utilizza un oggetto MockItem che implementa l'interfaccia MostPlayed
  * per testare esclusivamente la logica della classifica in modo isolato
  */
-class RankingServiceTest {
+public class RankingServiceTest {
 
     // mock per testare la logica
     private static class MockItem implements MostPlayed {

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.DisplayName;
 import org.unisa.musicplaylistmanager.collections.playlist.model.PlaylistList;
 
-class PlaylistListTest {
+public class PlaylistListTest {
 
     private PlaylistList playlistList;
 

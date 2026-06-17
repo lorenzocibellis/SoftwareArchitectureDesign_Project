@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Classe di test per {@link CommandInvoker}
  *
  */
-class CommandInvokerTest {
+public class CommandInvokerTest {
 
     //Attributi
     private CommandInvoker invoker;

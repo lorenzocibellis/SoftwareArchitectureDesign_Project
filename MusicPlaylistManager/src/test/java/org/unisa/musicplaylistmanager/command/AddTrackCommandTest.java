@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Classe che implementa test per {@link AddTrackCommand}
  *
  */
-class AddTrackCommandTest {
+public class AddTrackCommandTest {
 
     private Track track1;
     private Track track2;

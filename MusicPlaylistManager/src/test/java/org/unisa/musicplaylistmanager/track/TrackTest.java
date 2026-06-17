@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test class for {@link Track}.
  * @author gruppo10
  */
-class TrackTest {
+public class TrackTest {
 
     private Track track;
 

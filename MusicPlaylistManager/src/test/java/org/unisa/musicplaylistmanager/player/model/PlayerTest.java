@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Test class for {@link Player}.
  */
-class PlayerTest {
+public class PlayerTest {
 
     private Player player;
     private IterableCollection collection;

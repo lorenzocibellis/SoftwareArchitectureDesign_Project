@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Verifica che il Player interagisca correttamente con l'Iteratore e con le strategie
  * (Sequential e Shuffle), testando casi limite e comportamenti circolari.
  */
-class PlayerNavigationTest {
+public class PlayerNavigationTest {
 
     private Player player;
     private Playlist playlist;

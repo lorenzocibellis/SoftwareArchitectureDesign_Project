@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * @author gruppo10
  */
-class PlayTest {
+public class PlayTest {
 
     private Player player;
     private Play playState;

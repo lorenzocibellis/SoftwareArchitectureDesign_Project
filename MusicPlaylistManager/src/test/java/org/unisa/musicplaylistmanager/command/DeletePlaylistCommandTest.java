@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Classe di test per {@link DeletePlaylistCommand}
  *
  */
-class DeletePlaylistCommandTest {
+public class DeletePlaylistCommandTest {
 
     //Attributi
 

@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test class for {@link Iterator}.
  * @author gruppo10
  */
-class IteratorTest {
+public class IteratorTest {
     
     private Playlist playlist;
     private Iterator iterator;

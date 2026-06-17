@@ -7,7 +7,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ShuffleTest {
+public class ShuffleTest {
 
     private Shuffle shuffleStrategy;
 

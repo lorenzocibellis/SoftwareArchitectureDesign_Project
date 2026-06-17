@@ -9,7 +9,7 @@ import java.time.Year;
 import static org.junit.jupiter.api.Assertions.*;
 import org.unisa.musicplaylistmanager.collections.playlist.model.Playlist;
 
-class PlaylistTest {
+public class PlaylistTest {
     private Playlist playlist;
     private Track track1;
     private Track track2;

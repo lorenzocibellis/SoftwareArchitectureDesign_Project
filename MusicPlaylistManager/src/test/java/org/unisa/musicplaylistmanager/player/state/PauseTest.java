@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test class for {@link Pause}.
  * @author gruppo10
  */
-class PauseTest {
+public class PauseTest {
 
     private Player player;
     private Pause pauseState;

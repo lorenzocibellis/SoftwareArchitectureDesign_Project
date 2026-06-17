@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author gruppo10
  */
-class TrackCollectionTest {
+public class TrackCollectionTest {
 
     private TrackCollection collection;
     private Track track1;

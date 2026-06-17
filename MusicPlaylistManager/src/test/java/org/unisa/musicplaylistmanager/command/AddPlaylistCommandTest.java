@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Classe di test per {@link AddPlaylistCommand}
  *
  */
-class AddPlaylistCommandTest {
+public class AddPlaylistCommandTest {
 
     //Attributi
     private Playlist playlist;

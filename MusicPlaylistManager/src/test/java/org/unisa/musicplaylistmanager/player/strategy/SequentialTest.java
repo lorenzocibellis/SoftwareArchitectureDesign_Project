@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class SequentialTest {
+public class SequentialTest {
 
     private Sequential sequentialStrategy;
 

@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Test class for {@link ActivePlayerManager}.
  */
-class ActivePlayerManagerTest {
+public class ActivePlayerManagerTest {
 
     private ActivePlayerManager manager;
     private Playlist playlist;

@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Classe che implementa test per {@link RemoveTrackCommand}
  *
  */
-class RemoveTrackCommandTest {
+public class RemoveTrackCommandTest {
 
     private Track track1;
     private Track track2;
