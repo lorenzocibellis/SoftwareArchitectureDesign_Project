@@ -1,6 +1,5 @@
 package org.unisa.musicplaylistmanager.collections.tracklist.controller;
 
-import java.io.BufferedReader;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -18,7 +17,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.unisa.musicplaylistmanager.collections.tracklist.model.TrackList;
 import org.unisa.musicplaylistmanager.core.alert.AlertManager;
-import org.unisa.musicplaylistmanager.tag.model.PersonalTagManager;
 import org.unisa.musicplaylistmanager.track.command.BaseTrackCommands;
 import org.unisa.musicplaylistmanager.core.command.CommandInvoker;
 import org.unisa.musicplaylistmanager.track.command.RemoveTrackCommand;
@@ -28,8 +26,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.WeakChangeListener;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -97,11 +93,6 @@ public class TrackListController {
         trackList = TrackList.getTrackListPointer();
 
         libraryName.setText(trackList.getName());
-
-        // caricamento tracce
-        if (trackList.getTracks().isEmpty()) {
-            loadMockTracksFromCSV();
-        }
 
         //  creazione lista osservabile di tracce
         trackListObservable = FXCollections.observableArrayList(trackList.getTracks());
@@ -398,67 +389,6 @@ public class TrackListController {
             Collections.swap(trackListObservable, i, i+1);
             trackList.swap(i,i+1);
             listView.refresh();
-        }
-    }
-
-    /**
-     * Carica tracce mock da un file CSV.
-     */
-    private void loadMockTracksFromCSV() {
-        String resourcePath = "/data/tracks.csv";
-        InputStream is = getClass().getResourceAsStream(resourcePath);
-
-        if (is == null) {
-            System.err.println("Errore: impossibile trovare il file " + resourcePath);
-            return;
-        }
-
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
-            String line;
-            
-            // Salta la prima riga di intestazione
-            br.readLine(); 
-            
-            while ((line = br.readLine()) != null) {
-                // Ignora le righe vuote
-                if (line.trim().isEmpty()) continue;
-
-                String[] data = line.split(";");
-                
-                if (data.length >= 8) {
-                    // Estrazione e conversione dei dati
-                    String title = data[0].trim();
-                    String author = data[1].trim();
-                    String genre = data[2].trim();
-                    java.time.Year year = java.time.Year.of(Integer.parseInt(data[3].trim()));
-                    int duration = Integer.parseInt(data[4].trim());
-                    boolean favourite = Boolean.parseBoolean(data[5].trim());
-                    boolean explicit = Boolean.parseBoolean(data[6].trim());
-                    boolean newRelease = Boolean.parseBoolean(data[7].trim());
-                    
-                    // Creazione della traccia
-                    Track t = new Track(title, author, year, genre, duration, favourite, explicit, newRelease);
-                    
-                    // estrazione dei tag personali (se presenti nella nona colonna separati da virgola)
-                    if (data.length >= 9 && !data[8].trim().isEmpty()) {
-                        String[] tags = data[8].split(",");
-                        for (String tag : tags) {
-                            String trimmedTag = tag.trim();
-                            t.addPersonalTag(trimmedTag);
-                            PersonalTagManager.getInstance().addTag(trimmedTag);
-                        }
-                    }
-                    
-                    // Aggiunta effettiva alla TrackList!
-                    trackList.addTrack(t);
-                }
-            }
-            System.out.println("Tracce caricate e aggiunte alla lista con successo!");
-            
-        } catch (Exception e) { 
-            // Uso Exception generica per catturare anche eventuali errori di conversione numeri (NumberFormatException)
-            System.err.println("C'è un errore in una riga del file CSV: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
